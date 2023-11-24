@@ -12,7 +12,7 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-   res.status(200).send("server is running");
+   res.status(200).send("server is running ok");
 });
 
 app.listen(port, () => {

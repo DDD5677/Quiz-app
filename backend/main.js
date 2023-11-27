@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 const api = process.env.API_URL;
+const errorHandler = require("./helpers/error-handler");
 
 //! import routers
 const usersRouter = require("./routers/users");
@@ -20,6 +21,9 @@ app.options("*", cors());
 
 //! routers
 app.use(`${api}/users`, usersRouter);
+
+//! Error Handler
+app.use(errorHandler);
 
 mongoose
    .connect(process.env.CONNECTING_STRING)

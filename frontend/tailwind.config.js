@@ -7,20 +7,25 @@ module.exports = {
       ms: '420px',
       sm: '575px',
       md: '767px',
-      lg: '992px',
-      xl: '1080px',
-      '2xl': '1280px'
+      lg: '820px',
+      xl: '992px',
+      '2xl': '1080px',
+      '3xl': '1280px'
     },
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: '1rem'
-      }
-    },
+    //  container: {
+    //    center: true,
+    //    padding: {
+    //      DEFAULT: '1rem'
+    //    }
+    //  },
     fontSize: {
       xl: ['28px', '32px']
     },
     extend: {}
+  },
+  corePlugins: {
+    // ...
+    container: false
   },
   plugins: []
 }

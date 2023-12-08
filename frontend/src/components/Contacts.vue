@@ -12,7 +12,7 @@
 				</p>
 				<form class="flex justify-between" action="">
 					<input placeholder="Enter Your E-mail" type="text">
-					<button>Subscribe</button>
+					<dark-button>Subscribe</dark-button>
 				</form>
 			</div>
 		</div>
@@ -78,13 +78,8 @@
 
 			button {
 				flex: 0 0 38%;
-				border-radius: 10px;
-				background: #263238;
-				color: #FFF;
 				font-size: 20px;
-				font-style: normal;
 				font-weight: 500;
-				line-height: normal;
 			}
 		}
 	}

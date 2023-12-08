@@ -9,7 +9,7 @@
 					each student, you will be able to make your
 					first sketch after the first lesson.
 				</p>
-				<button class="main-btn">Get started</button>
+				<dark-button @click.prevent="goToAdmin">Get started</dark-button>
 			</div>
 			<div class="right py-8">
 				<img src="@/assets/images/test.svg" alt="">
@@ -20,7 +20,11 @@
 </template>
 
 <script setup lang="ts">
-
+import { useRouter } from 'vue-router'
+const router = useRouter();
+function goToAdmin() {
+	router.push('/admin')
+}
 </script>
 
 <style scoped lang="scss">
@@ -55,12 +59,8 @@
 		margin-bottom: 20px;
 	}
 
-	.main-btn {
+	.dark-btn {
 		margin-top: 25px;
-		padding: 20px 60px;
-		border-radius: 15px;
-		background-color: #263238;
-		color: #FFF;
 		font-size: 36px;
 		font-style: normal;
 		font-weight: 400;

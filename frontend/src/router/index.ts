@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from "@/views/HomeView.vue"
 import CreateQuizView from "@/views/CreateQuizView.vue"
+import AdminView from "@/views/AdminView.vue"
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -11,9 +12,15 @@ const router = createRouter({
       component: HomeView
     },
 	 {
+      path: '/admin',
+      name: 'admin',
+		meta: { layout: "dashboard" },
+      component: AdminView
+    },
+	 {
       path: '/createquiz',
       name: 'create-quiz',
-		meta: { layout: "main" },
+		meta: { layout: "createQuiz" },
       component: CreateQuizView
     },
   ]

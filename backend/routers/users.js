@@ -68,4 +68,26 @@ router.post("/", async (req, res, next) => {
    }
 });
 
+router.post("/register", async (req, res, next) => {
+   try {
+      let user = new User({
+         firstname: req.body.firstname,
+         lastname: req.body.lastname,
+         email: req.body.email,
+         phone: req.body.phone,
+         password: req.body.password,
+         role: req.body.role,
+         image: req.body.image,
+      });
+      user = await user.save();
+
+      if (!user) {
+         return res.status(404).send("the user cannot be created");
+      }
+
+      res.status(200).send(user);
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+});
 module.exports = router;

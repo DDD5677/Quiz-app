@@ -5,13 +5,18 @@
 				<form action="">
 					<div class="icon"><i class="fa-regular fa-user"></i></div>
 					<h1 class="title">Create account</h1>
-					<main-input type="text" placeholder="Name" />
-					<main-input type="text" placeholder="Surname" />
-					<main-input type="text" placeholder="Email" />
-					<main-input type="text" placeholder="Phone" />
-					<main-input type="text" placeholder="Password" />
-					<main-input type="text" placeholder="Confirm password" />
-					<dark-button>Sign In</dark-button>
+					<main-input type="text" placeholder="Name" v-model="firstname" />
+					<main-input type="text" placeholder="Lastname" v-model="lastname" />
+					<main-input type="text" placeholder="Email" v-model="email" />
+					<main-input type="text" placeholder="Phone" v-model="phone" />
+					<select name="" id="" class="user-role" v-model="role">
+						<option value="" selected disabled hidden>Who are you?</option>
+						<option value="student">Student</option>
+						<option value="teacher">Teacher</option>
+					</select>
+					<main-input type="text" placeholder="Password" v-model="password" />
+					<main-input type="text" placeholder="Confirm password" v-model="confirmPassword" />
+					<dark-button @click.prevent="SignUpHandler">Sign In</dark-button>
 				</form>
 			</div>
 		</div>
@@ -19,9 +24,32 @@
 </template>
 
 <script setup lang="ts">
-import type { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/authStore'
+const authStore = useAuthStore()
 
+const firstname = ref('')
+const lastname = ref('')
+const phone = ref('')
+const email = ref('')
+const role = ref('')
+const password = ref('')
+const confirmPassword = ref('')
 
+function SignUpHandler() {
+	const data = {
+		firstname: firstname.value,
+		lastname: lastname.value,
+		email: email.value,
+		password: password.value,
+		phone: phone.value,
+		role: role.value,
+	}
+	console.log(data)
+	authStore.register(data).then((res) => {
+		console.log(res)
+	})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -64,6 +92,15 @@ import type { RouterLink } from 'vue-router';
 			margin-bottom: 10px;
 			background-color: #f2f2f2;
 			padding: 10px 15px;
+		}
+
+		.user-role {
+			width: 100%;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #8F95A5;
+
+			background-color: #f2f2f2;
 		}
 
 		.dark-btn {

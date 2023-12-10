@@ -1,8 +1,10 @@
 <template>
-	<input class="main-input">
+	<input class="main-input" :value="modelValue"
+		@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)">
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ modelValue: string | number }>()
 </script>
 
 <style lang="scss" scoped>

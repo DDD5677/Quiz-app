@@ -7,6 +7,7 @@
 import mainLayout from "@/layouts/mainLayout.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue"
 import createQuizLayout from "@/layouts/createQuizLayout.vue"
+import SignInLayout from "@/layouts/SignInLayout.vue";
 import { RouterView } from 'vue-router'
 import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
@@ -14,7 +15,8 @@ export default defineComponent({
 	components: {
 		mainLayout,
 		dashboardLayout,
-		createQuizLayout
+		createQuizLayout,
+		SignInLayout
 	},
 	setup() {
 		const route = useRoute()

@@ -3,7 +3,7 @@
 		<div class="container">
 			<nav class="navbar py-2 flex justify-between items-center">
 				<div class="brand">
-					<a href="">Easy<span>Quiz</span></a>
+					<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
 					<button @click.prevent="navbarStore.showNavbarHandler(true)" class="nav-btn"></button>
 				</div>
 				<div v-if="navbarStore.showNavbar || !navbarStore.mobile" class="nav flex">
@@ -21,7 +21,9 @@
 							<RouterLink :to="{ name: 'create-quiz' }" class="item-link">Create Quiz</RouterLink>
 						</li>
 					</ul>
-					<a class="login-btn bg-transparent border-2 border-black rounded-lg cursor-pointer px-8 py-2">Log In</a>
+					<RouterLink :to="{ name: 'login' }"
+						class="login-btn bg-transparent border-2 border-black rounded-lg cursor-pointer px-8 py-2">Log In
+					</RouterLink>
 				</div>
 			</nav>
 

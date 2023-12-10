@@ -14,13 +14,18 @@
 					<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
 				</div>
 				<div class="quiz-answers">
-					<AnswerEditor :index="'answer1'" @answer="answerHandler($event, 'answer1')" />
-					<AnswerEditor :index="'answer2'" @answer="answerHandler($event, 'answer2')" />
-					<AnswerEditor :index="'answer3'" @answer="answerHandler($event, 'answer3')" />
-					<AnswerEditor :index="'answer4'" @answer="answerHandler($event, 'answer4')" />
-					<AnswerEditor :index="'answer5'" @answer="answerHandler($event, 'answer5')" />
+					<AnswerEditor v-if="showAnswers.showAnswer1" :index="'answer1'" @answer="answerHandler($event, 'answer1')"
+						@removeAnswer="removeAnswerHandler($event, 'showAnswer1')" :valueEditor="answers.answer1" />
+					<AnswerEditor v-if="showAnswers.showAnswer2" :index="'answer2'" @answer="answerHandler($event, 'answer2')"
+						@removeAnswer="removeAnswerHandler($event, 'showAnswer2')" :valueEditor="answers.answer2" />
+					<AnswerEditor v-if="showAnswers.showAnswer3" :index="'answer3'" @answer="answerHandler($event, 'answer3')"
+						@removeAnswer="removeAnswerHandler($event, 'showAnswer3')" :valueEditor="answers.answer3" />
+					<AnswerEditor v-if="showAnswers.showAnswer4" :index="'answer4'" @answer="answerHandler($event, 'answer4')"
+						@removeAnswer="removeAnswerHandler($event, 'showAnswer4')" :valueEditor="answers.answer4" />
+					<AnswerEditor v-if="showAnswers.showAnswer5" :index="'answer5'" @answer="answerHandler($event, 'answer5')"
+						@removeAnswer="removeAnswerHandler($event, 'showAnswer5')" :valueEditor="answers.answer5" />
 				</div>
-				<dark-button>Variant qo'shish</dark-button>
+				<dark-button :disabled="activeAnswers === 5" @click.prevent="addAnswer">Variant qo'shish</dark-button>
 			</form>
 		</div>
 	</div>
@@ -32,27 +37,57 @@ import AnswerEditor from '@/components/UI/answerEditor.vue'
 import { onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
-import type { Answers } from '@/types/createQuizType';
+import type { ShowAnswers, Answers } from '@/types/createQuizType';
 const createQuizStore = useCreateQuizStore();
+//question
+const questionElem = ref<HTMLElement | null>(null)
+const question = ref('');
 
-const answers: Answers = {
+function toggleQuestionEditor(v: boolean) {
+	createQuizStore.toggleEditors(v, 'question')
+}
+//answers
+const answers = ref<Answers>({
 	answer1: '',
 	answer2: '',
 	answer3: '',
 	answer4: '',
 	answer5: ''
-}
-const questionElem = ref<HTMLElement | null>(null)
-const question = ref('');
-function toggleQuestionEditor(v: boolean) {
-	createQuizStore.toggleEditors(v, 'question')
-}
-
+})
+const showAnswers = ref<ShowAnswers>({
+	showAnswer1: true,
+	showAnswer2: true,
+	showAnswer3: true,
+	showAnswer4: true,
+	showAnswer5: false,
+})
+const activeAnswers = ref(4);
 
 function answerHandler(a: string, title: keyof Answers) {
-	answers[title] = a;
+	answers.value[title] = a;
+}
+function removeAnswerHandler(show: boolean, title: keyof ShowAnswers) {
+	if (activeAnswers.value > 2) {
+		showAnswers.value[title] = show
+		activeAnswers.value -= 1
+	} else {
+		alert('Savol kamida ikkita variantdan tashkil topishi kerak ')
+	}
+}
+function addAnswer() {
+	const keys = Object.keys(showAnswers.value) as Array<keyof typeof showAnswers.value>;
+	if (activeAnswers.value < 5) {
+		for (const key of keys) {
+			if (!showAnswers.value[key]) {
+				showAnswers.value[key] = true
+				activeAnswers.value += 1
+				break
+			}
+		}
+	}
 }
 
+//rendering Latex string
 function renderMath(editor: HTMLElement | null, word: string) {
 
 	if (editor) {
@@ -77,9 +112,9 @@ function renderMath(editor: HTMLElement | null, word: string) {
 watch(question, () => {
 	renderMath(questionElem.value, question.value)
 })
-// onMounted(() => {
-// 	renderMath(questionElem.value, question.value)
-// })
+onMounted(() => {
+	renderMath(questionElem.value, question.value)
+})
 </script>
 
 <style scoped lang="scss">
@@ -195,7 +230,7 @@ watch(question, () => {
 				display: flex;
 				justify-content: space-between;
 				gap: 10px;
-
+				flex-wrap: wrap;
 			}
 
 			.dark-btn {

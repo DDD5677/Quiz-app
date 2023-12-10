@@ -13,3 +13,10 @@ export interface Answers {
 	answer4: string,
 	answer5: string,
 }
+export interface ShowAnswers {
+	showAnswer1: boolean,
+	showAnswer2: boolean,
+	showAnswer3: boolean,
+	showAnswer4: boolean,
+	showAnswer5: boolean,
+}

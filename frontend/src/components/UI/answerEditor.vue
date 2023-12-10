@@ -2,35 +2,43 @@
 	<div class="answer-wrap">
 		<div class="answer">
 			<div class="answer-nav">
-				<button class="rm-variant"><i class="fa-solid fa-trash"></i></button>
-				<input type="checkbox" class="checkbox">
+				<button @click.prevent="removeEventListener" class="rm-variant"><i class="fa-solid fa-trash"></i></button>
+				<check-box :index="props.index" />
+				<!-- <input type="checkbox" class="checkbox"> -->
 			</div>
 			<div @click="toggleAnswerEditor(true)" class="textarea">
 				<div ref="answerElem"></div>
 			</div>
 		</div>
-		<div v-if="createQuizStore.editors[props.index]" class="text-editor">
+		<div v-if="createQuizStore.editors[index]" class="text-editor">
 			<button @click.prevent="toggleAnswerEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-			<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="answer"
+			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting" v-model="answer"
 				@change="$emit('answer', answer)"></textarea>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../../node_modules/katex/dist/contrib/auto-render';
 import { useCreateQuizStore } from '@/stores/createQuizStore';
 import type { Editors } from '@/types/createQuizType';
 const createQuizStore = useCreateQuizStore();
+const emit = defineEmits(['removeAnswer', 'answer'])
 
-const props = defineProps<{ index: keyof Editors }>()
+
+const props = defineProps<{ index: keyof Editors, valueEditor: string }>()
 const answerElem = ref<HTMLElement | null>(null)
 const answer = ref('')
 
 function toggleAnswerEditor(v: boolean) {
 	createQuizStore.toggleEditors(v, props.index)
+}
+function removeEventListener() {
+	emit('removeAnswer', false)
+	answer.value = ''
+	emit('answer', '')
 }
 
 function renderMath(editor: HTMLElement | null, word: string) {
@@ -48,6 +56,10 @@ function renderMath(editor: HTMLElement | null, word: string) {
 	}
 }
 watch(answer, () => {
+	renderMath(answerElem.value, answer.value)
+})
+onMounted(() => {
+	answer.value = props.valueEditor
 	renderMath(answerElem.value, answer.value)
 })
 </script>
@@ -95,6 +107,7 @@ watch(answer, () => {
 		overflow: auto;
 		width: 100%;
 		height: 150px;
+		padding: 5px;
 		overflow-wrap: break-word;
 		cursor: text;
 	}
@@ -106,7 +119,7 @@ watch(answer, () => {
 		display: inline-block;
 
 		&:checked {
-			background-color: #263238;
+			color: #263238;
 		}
 	}
 }
@@ -148,4 +161,5 @@ watch(answer, () => {
 		z-index: 2;
 	}
 }
-</style>@/types/createQuizType
+</style>
+

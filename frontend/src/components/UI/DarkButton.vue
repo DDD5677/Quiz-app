@@ -15,9 +15,15 @@
 	background-color: #263238;
 	color: #FFF;
 	transition: all 0.3s ease;
+	cursor: pointer;
 
 	&:hover {
 		opacity: 0.95;
+	}
+
+	&:disabled {
+		opacity: 0.95;
+		cursor: not-allowed;
 	}
 }
 </style>

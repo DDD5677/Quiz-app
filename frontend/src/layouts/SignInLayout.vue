@@ -1,10 +1,19 @@
 <template>
-	<Navbar />
-	<slot></slot>
+	<section class="signInLayout">
+		<Navbar />
+		<slot></slot>
+	</section>
 </template>
 
 <script setup lang="ts">
 import Navbar from '@/components/Navbar.vue';
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.signInLayout {
+	background-image: url(@/assets/images/signInLayout.jpg);
+	background-size: contain;
+	background-position: center;
+
+}
+</style>

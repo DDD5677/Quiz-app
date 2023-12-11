@@ -3,7 +3,7 @@
 		<div class="container">
 			<nav class="navbar py-2 flex justify-between items-center">
 				<div class="brand">
-					<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
+					<RouterLink :to="{ name: 'home' }" @click="clickBrand">Easy<span>Quiz</span></RouterLink>
 					<button @click.prevent="navbarStore.showNavbarHandler(true)" class="nav-btn"></button>
 				</div>
 				<div v-if="navbarStore.showNavbar || !navbarStore.mobile" class="nav flex">
@@ -17,12 +17,13 @@
 						</li>
 						<li class="item"><a href="#about" class="item-link">About Us</a></li>
 						<li class="item"><a href="#contacts" class="item-link">Contacts</a></li>
-						<li class="item">
-							<RouterLink :to="{ name: 'create-quiz' }" class="item-link">Create Quiz</RouterLink>
+						<li v-if="authStore.isLogged" class="item">
+							<RouterLink :to="{ name: 'admin' }" class="item-link">Dashboard</RouterLink>
 						</li>
 					</ul>
-					<RouterLink :to="{ name: 'login' }"
-						class="login-btn bg-transparent border-2 border-black rounded-lg cursor-pointer px-8 py-2">Log In
+					<RouterLink v-if="!authStore.isLogged" :to="{ name: 'login' }"
+						class="login-btn font-medium bg-transparent border-2 border-black rounded-lg cursor-pointer px-8 py-2">
+						Log In
 					</RouterLink>
 				</div>
 			</nav>
@@ -36,6 +37,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useNavbarStore } from '@/stores/navbarStore'
+import { useAuthStore } from '@/stores/authStore';
+const authStore = useAuthStore()
 const navbarStore = useNavbarStore()
 const windowWith = ref<number>();
 function checkScreen() {
@@ -48,6 +51,13 @@ function checkScreen() {
 	navbarStore.showNavbarHandler(false)
 }
 window.addEventListener('resize', checkScreen);
+
+function clickBrand() {
+	window.scrollTo({
+		top: 0,
+		behavior: "smooth",
+	});
+}
 </script>
 
 <style scoped lang="scss">
@@ -117,6 +127,8 @@ window.addEventListener('resize', checkScreen);
 		.login-btn {
 			margin: 10px 15px 0;
 		}
+
+
 	}
 
 
@@ -170,6 +182,8 @@ window.addEventListener('resize', checkScreen);
 	}
 }
 
+
+
 .item {
 	padding: 5px;
 	margin-right: 15px;
@@ -186,5 +200,7 @@ window.addEventListener('resize', checkScreen);
 			border-color: #000;
 		}
 	}
+
+
 }
 </style>

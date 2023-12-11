@@ -4,7 +4,10 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ modelValue: string | number }>()
+interface Props {
+	modelValue: string | number | null,
+}
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss" scoped>
@@ -12,6 +15,7 @@ input {
 	padding: 10px;
 	border-radius: 5px;
 	border: 1px solid #8F95A5;
+	display: inline-block;
 
 	&::placeholder {
 		color: #8F95A5;

@@ -11,7 +11,7 @@
 					learning tips and free resources
 				</p>
 				<form class="flex justify-between" action="">
-					<main-input type="text" placeholder="Enter Your E-mail" />
+					<main-input type="text" placeholder="Enter Your E-mail" v-model="email" />
 					<dark-button>Subscribe</dark-button>
 				</form>
 			</div>
@@ -21,7 +21,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 
+const email = ref('')
 </script>
 
 <style scoped lang="scss">

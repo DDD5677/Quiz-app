@@ -28,6 +28,11 @@ export const useCreateQuizStore = defineStore('createQuiz', () => {
   function assignCorrectAnswer(answer:keyof Answers|null){
 	correctAnswer.value=answer
   }
+  //
+  const questions = ref<Array<object>>([])
+  function saveQuestion(question:object){
+	questions.value.push(question)
+  }
 
-  return { toggleEditors, editors,correctAnswer,assignCorrectAnswer }
+  return { toggleEditors, editors,correctAnswer,assignCorrectAnswer,questions, saveQuestion }
 })

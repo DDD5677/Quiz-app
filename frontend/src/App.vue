@@ -6,22 +6,32 @@
 <script lang="ts">
 import mainLayout from "@/layouts/mainLayout.vue";
 import dashboardLayout from "@/layouts/dashboardLayout.vue"
-import createQuizLayout from "@/layouts/createQuizLayout.vue"
+import EmptyLayout from "@/layouts/EmptyLayout.vue"
 import SignInLayout from "@/layouts/SignInLayout.vue";
 import { RouterView } from 'vue-router'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from "./stores/authStore";
+import { getItem } from "./helpers/localStorage";
 export default defineComponent({
 	components: {
 		mainLayout,
 		dashboardLayout,
-		createQuizLayout,
+		EmptyLayout,
 		SignInLayout
 	},
 	setup() {
+		const authStore = useAuthStore()
 		const route = useRoute()
 		const layout = computed(() => {
 			return route.meta.layout + 'Layout'
+		})
+
+		const token = getItem('token')
+		onMounted(() => {
+			if (token) {
+				authStore.refresh()
+			}
 		})
 		return {
 			layout

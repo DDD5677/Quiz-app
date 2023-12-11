@@ -5,20 +5,40 @@
 				<button class="sidebar-btn"></button>
 				<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
 			</div>
-			<div class="btns">
-				<i class="btn-icon fa-solid fa-square-plus"></i>
-				<dark-button><i class="fa-regular fa-square-plus"></i> Create Quiz</dark-button>
-			</div>
 			<ul class="menu">
-				<li class="item"><i class="fa-solid fa-book"></i> <span>Library</span></li>
-				<li class="item"><i class="fa-solid fa-people-roof"></i> <span>Classes</span></li>
-				<li class="item"><i class="fa-solid fa-gear"></i> <span>Settings</span></li>
+				<li class="item">
+					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+						<i class="fa-solid fa-square-plus"></i>
+						<span>Create Quiz</span>
+					</RouterLink>
+				</li>
+				<li class="item">
+					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+						<i class="fa-solid fa-book"></i> <span>Library</span>
+					</RouterLink>
+				</li>
+				<li class="item">
+					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+						<i class="fa-solid fa-people-roof"></i> <span>Classes</span>
+					</RouterLink>
+				</li>
+				<li class="item">
+					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+						<i class="fa-solid fa-gear"></i> <span>Settings</span>
+					</RouterLink>
+				</li>
 			</ul>
 		</div>
 		<div class="content">
 			<div class="navbar">
 				<input type="text" placeholder="Search quiz" class="search">
-				<div class="avatar">Decco</div>
+
+				<div v-if="!authStore.isLoading" class="avatar">
+					<a href="" class="avatar-link">
+						<!-- <img src="" alt=""> -->
+						<span>{{ authStore.user.firstname[0] }}</span>
+					</a>
+				</div>
 			</div>
 			<div class="slot">
 				<slot></slot>
@@ -27,16 +47,13 @@
 	</section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import { useAuthStore } from '@/stores/authStore';
+// import { useRouter } from 'vue-router'
+// const router = useRouter();
+const authStore = useAuthStore();
 
-export default defineComponent({
-	setup() {
 
-
-		return {}
-	}
-})
 </script>
 
 <style scoped lang="scss">
@@ -57,6 +74,7 @@ export default defineComponent({
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		padding: 10px 0;
 
 		.sidebar-btn {
 			width: 30px;
@@ -72,30 +90,14 @@ export default defineComponent({
 		}
 	}
 
-	.btns {
-		margin-top: 20px;
-		display: flex;
-		align-items: center;
-
-		.dark-btn {
-			margin-left: 10px;
-		}
-
-		.btn-icon {
-			display: inline-block;
-			padding: 10px;
-			color: #263238;
-			font-size: 20px;
-			width: 40px;
-			display: none;
-		}
-	}
 
 	.menu {
+		margin-top: 20px;
 
-		.item {
+		.item-link {
+			display: inline-block;
+			width: 100%;
 			padding: 5px 10px 5px 0;
-			cursor: pointer;
 			color: #263238;
 			font-size: 20px;
 
@@ -104,7 +106,8 @@ export default defineComponent({
 				width: 40px;
 			}
 
-			&:hover {
+			&:hover,
+			&:focus {
 				background-color: #f2f2f2;
 
 			}
@@ -140,6 +143,22 @@ export default defineComponent({
 
 			&::placeholder {
 				color: #8F95A5;
+			}
+		}
+
+		.avatar {
+			a {
+				border-radius: 50%;
+				border: 2px solid #263238;
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 20px;
+				font-weight: 500;
+				background-color: #263238;
+				color: #fff;
 			}
 		}
 	}

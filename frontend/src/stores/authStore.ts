@@ -2,11 +2,12 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import AuthService from "@/server/auth"
 import type { User } from '@/types/userType';
+import { setItem } from '@/helpers/localStorage';
 
 export const useAuthStore = defineStore('auth', () => {
   const isLoading=ref(true);
-  const user = ref<object|null>(null)
-  const errors = ref<object|null>(null)
+  const user = ref<any|null>(null)
+  const errors = ref<any|null>(null)
   const isLogged = ref(false)
   
 function register(userData:User){
@@ -21,10 +22,48 @@ function register(userData:User){
 		}).catch((error)=>{
 			isLoading.value=false;
 			console.log(error)
-			//errors.value = error.response.data
-			reject(error)
+			errors.value = error.response.data
+			reject(error.response.data)
 		})
 	})
 }
-  return { register,user,isLoading,errors,isLogged }
+function login(userData:object){
+	return new Promise((resolve,reject)=>{
+		isLoading.value=true;
+		user.value=null;
+		errors.value=null;
+		isLogged.value=false;
+		AuthService.login(userData).then((response)=>{
+			setItem("token",response.data.token);
+			isLoading.value=false;
+			user.value=response.data.user;
+			isLogged.value=true;
+			resolve(response.data.user)
+		}).catch((error)=>{
+			isLoading.value=false;
+			errors.value=error.response.data;
+			reject(error.response.data)
+		})
+
+	})
+}
+function refresh(){
+	return new Promise((resolve,reject)=>{
+		isLoading.value=true;
+		user.value=null;
+		errors.value=null;
+		isLogged.value=false;
+		AuthService.refresh().then((response)=>{
+			isLoading.value=false;
+			user.value=response.data.user;
+			isLogged.value=true;
+			resolve(response.data.user)
+		}).catch((error)=>{
+			isLoading.value=false;
+			errors.value=error.response.data;
+			reject(error.response.data)
+		})
+	})
+}
+  return { register,login,refresh,user,isLoading,errors,isLogged }
 })

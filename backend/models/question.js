@@ -24,6 +24,10 @@ const questionSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
+      point: {
+         type: String,
+         required: true,
+      },
       category: {
          type: String,
          required: [true, "Please choose category of question"],

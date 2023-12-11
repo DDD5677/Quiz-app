@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const { isEmail } = require("validator");
 const userSchema = new mongoose.Schema(
    {
@@ -8,7 +9,7 @@ const userSchema = new mongoose.Schema(
       },
       lastname: {
          type: String,
-         default: "",
+         required: [true, "Please enter your lastname"],
       },
       email: {
          type: String,
@@ -37,6 +38,12 @@ const userSchema = new mongoose.Schema(
    },
    { timestamps: true }
 );
+//user before saving
+userSchema.pre("save", async function (next) {
+   const salt = await bcrypt.genSalt();
+   this.password = bcrypt.hashSync(this.password, salt);
+   next();
+});
 
 userSchema.virtual("id").get(function () {
    return this._id.toHexString();

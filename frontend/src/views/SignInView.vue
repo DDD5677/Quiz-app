@@ -5,9 +5,15 @@
 				<form action="">
 					<div class="icon"><i class="fa-regular fa-user"></i></div>
 					<h1 class="title">Sign In</h1>
-					<main-input type="text" placeholder="Email" />
-					<main-input type="text" placeholder="Password" />
-					<dark-button>Sign In</dark-button>
+					<div class="input">
+						<main-input type="text" placeholder="Email" v-model="email" />
+						<span class="error">{{ authStore.errors ? authStore.errors.email : '' }}</span>
+					</div>
+					<div class="input">
+						<main-input type="text" placeholder="Password" v-model="password" />
+						<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
+					</div>
+					<dark-button @click.prevent="loginHandler">Sign In</dark-button>
 					<div class="links">
 						<span>No account? <RouterLink :to="{ name: 'register' }" class="register"> Create here</RouterLink>
 						</span>
@@ -20,7 +26,26 @@
 </template>
 
 <script setup lang="ts">
-import type { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import { useAuthStore } from "@/stores/authStore"
+import { useRouter } from 'vue-router'
+const authStore = useAuthStore()
+const router = useRouter();
+const email = ref('');
+const password = ref('');
+
+function loginHandler() {
+	const data = {
+		email: email.value,
+		password: password.value
+	}
+	console.log(data)
+	authStore.login(data).then((res => {
+		router.push('/admin')
+	})).catch((err) => {
+		console.log(err)
+	})
+}
 
 
 </script>
@@ -29,7 +54,7 @@ import type { RouterLink } from 'vue-router';
 .signinView {
 	padding-top: 100px;
 	min-height: 100vh;
-	background-color: #f2f2f2;
+	backdrop-filter: brightness(80%);
 
 	.wrapper {
 		display: flex;
@@ -38,7 +63,7 @@ import type { RouterLink } from 'vue-router';
 	}
 
 	form {
-		width: 450px;
+		width: 420px;
 		padding: 30px 50px 40px;
 		border-radius: 10px;
 		background-color: #fff;
@@ -60,16 +85,24 @@ import type { RouterLink } from 'vue-router';
 			margin-bottom: 10px;
 		}
 
-		.main-input {
+		.input {
 			width: 100%;
-			margin-bottom: 10px;
-			background-color: #f2f2f2;
-			padding: 10px 15px;
+
+			.main-input {
+				width: 100%;
+				background-color: #f2f2f2;
+				padding: 10px 15px;
+			}
+
+			.error {
+				color: red;
+			}
 		}
 
 		.dark-btn {
 			width: 150px;
-			margin-bottom: 10px;
+			margin: 20px;
+			padding: 10px 16px;
 		}
 
 		.links {

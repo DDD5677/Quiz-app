@@ -14,10 +14,10 @@ const errorHandler = require("./helpers/error-handler");
 const usersRouter = require("./routers/users");
 
 //!Middlewares
-app.use(bodyParser.json());
-app.use(morgan("tiny"));
 app.use(cors());
 app.options("*", cors());
+app.use(bodyParser.json());
+app.use(morgan("tiny"));
 
 //! routers
 app.use(`${api}/users`, usersRouter);

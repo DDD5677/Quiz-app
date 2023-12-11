@@ -34,6 +34,7 @@ const answer = ref('')
 
 function toggleAnswerEditor(v: boolean) {
 	createQuizStore.toggleEditors(v, props.index)
+	window.scrollTo(0, document.body.scrollHeight);
 }
 function removeEventListener() {
 	emit('removeAnswer', false)

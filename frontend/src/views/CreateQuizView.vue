@@ -1,243 +1,122 @@
 <template>
-	<div class="container" :style="true ? 'padding-bottom:30vh' : ''">
-		<div class="question-editor">
-			<form action="">
-				<div class="quiz-text">
-					<div class="textarea-nav">
-						<span class="textarea-title">Savol matni</span>
-						<button class="upload-img"><i class="fa-regular fa-image"></i></button>
-					</div>
-					<div @click="toggleQuestionEditor(true)" class="textarea" ref="questionElem"></div>
+	<section class="create-quiz">
+		<div class="container">
+			<h1 class="title">Create Quiz</h1>
+			<div class="wrapper">
+				<div class="left">
+					<form action="">
+						<div class="input">
+							<span class="subtitle">Title of Quiz</span>
+							<main-input type="text" placeholder="Title" v-model="title" />
+							<span class="error"></span>
+						</div>
+						<div class="input">
+							<span class="subtitle">Time for Quiz (in minutes)</span>
+							<main-input type="number" placeholder="Time" v-model="time" />
+							<span class="error"></span>
+						</div>
+						<div class="input">
+							<span class="subtitle">Grade (in points)</span>
+							<main-input type="number" placeholder="Grade" v-model="point" />
+							<span class="error"></span>
+						</div>
+						<div class="input">
+							<span class="subtitle">Category of Quiz</span>
+							<select name="" id="" class="main-select" v-model="category">
+								<option value="" selected disabled hidden>Which category?</option>
+								<option value="student">Math</option>
+								<option value="teacher">History</option>
+								<option value="teacher">English</option>
+								<option value="teacher">Physics</option>
+							</select>
+							<span class="error"></span>
+						</div>
+						<div class="input">
+							<span class="subtitle">Type of Quiz</span>
+							<select name="" id="" class="main-select" v-model="quizType">
+								<option value="" selected disabled hidden>Which type?</option>
+								<option value="student">Multiple answers</option>
+								<option value="teacher">True False</option>
+							</select>
+							<span class="error"></span>
+						</div>
+
+
+					</form>
 				</div>
-				<div v-if="createQuizStore.editors.question" class="text-editor">
-					<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-					<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
+				<div class="right">
+					<div class="questions"></div>
+					<div class="questions"></div>
+					<div class="questions"></div>
+					<div class="questions"></div>
+					<div class="questions"></div>
+					<dark-button @click.prevent="goToCreateQuestion">Add Question</dark-button>
 				</div>
-				<div class="quiz-answers">
-					<AnswerEditor v-if="showAnswers.showAnswer1" :index="'answer1'" @answer="answerHandler($event, 'answer1')"
-						@removeAnswer="removeAnswerHandler($event, 'showAnswer1')" :valueEditor="answers.answer1" />
-					<AnswerEditor v-if="showAnswers.showAnswer2" :index="'answer2'" @answer="answerHandler($event, 'answer2')"
-						@removeAnswer="removeAnswerHandler($event, 'showAnswer2')" :valueEditor="answers.answer2" />
-					<AnswerEditor v-if="showAnswers.showAnswer3" :index="'answer3'" @answer="answerHandler($event, 'answer3')"
-						@removeAnswer="removeAnswerHandler($event, 'showAnswer3')" :valueEditor="answers.answer3" />
-					<AnswerEditor v-if="showAnswers.showAnswer4" :index="'answer4'" @answer="answerHandler($event, 'answer4')"
-						@removeAnswer="removeAnswerHandler($event, 'showAnswer4')" :valueEditor="answers.answer4" />
-					<AnswerEditor v-if="showAnswers.showAnswer5" :index="'answer5'" @answer="answerHandler($event, 'answer5')"
-						@removeAnswer="removeAnswerHandler($event, 'showAnswer5')" :valueEditor="answers.answer5" />
-				</div>
-				<dark-button :disabled="activeAnswers === 5" @click.prevent="addAnswer">Variant qo'shish</dark-button>
-			</form>
+			</div>
 		</div>
-	</div>
+	</section>
 </template>
 
 <script setup lang="ts">
-import { useCreateQuizStore } from '@/stores/createQuizStore';
-import AnswerEditor from '@/components/UI/answerEditor.vue'
-import { onMounted, ref, watch } from 'vue';
-// @ts-ignore
-import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
-import type { ShowAnswers, Answers } from '@/types/createQuizType';
-const createQuizStore = useCreateQuizStore();
-//question
-const questionElem = ref<HTMLElement | null>(null)
-const question = ref('');
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+const router = useRouter();
+const title = ref('');
+const time = ref(30);
+const point = ref(1);
+const category = ref('');
+const quizType = ref('')
 
-function toggleQuestionEditor(v: boolean) {
-	createQuizStore.toggleEditors(v, 'question')
+function goToCreateQuestion() {
+	router.push('/createquestion')
 }
-//answers
-const answers = ref<Answers>({
-	answer1: '',
-	answer2: '',
-	answer3: '',
-	answer4: '',
-	answer5: ''
-})
-const showAnswers = ref<ShowAnswers>({
-	showAnswer1: true,
-	showAnswer2: true,
-	showAnswer3: true,
-	showAnswer4: true,
-	showAnswer5: false,
-})
-const activeAnswers = ref(4);
-
-function answerHandler(a: string, title: keyof Answers) {
-	answers.value[title] = a;
-}
-function removeAnswerHandler(show: boolean, title: keyof ShowAnswers) {
-	if (activeAnswers.value > 2) {
-		showAnswers.value[title] = show
-		activeAnswers.value -= 1
-	} else {
-		alert('Savol kamida ikkita variantdan tashkil topishi kerak ')
-	}
-}
-function addAnswer() {
-	const keys = Object.keys(showAnswers.value) as Array<keyof typeof showAnswers.value>;
-	if (activeAnswers.value < 5) {
-		for (const key of keys) {
-			if (!showAnswers.value[key]) {
-				showAnswers.value[key] = true
-				activeAnswers.value += 1
-				break
-			}
-		}
-	}
-}
-
-//rendering Latex string
-function renderMath(editor: HTMLElement | null, word: string) {
-
-	if (editor) {
-		editor.textContent = word;
-
-		renderMathInElement(editor, {
-			delimiters: [
-				{ left: '$$', right: '$$', display: true },
-				{ left: '$', right: '$', display: false },
-				{ left: '\\(', right: '\\)', display: false },
-				{ left: '\\[', right: '\\]', display: true }
-			],
-			throwOnError: false
-		})
-	}
-	// katex.render(this.changeText, this.$refs.box, {
-	// 	throwOnError: false,
-	// 	displayMode:this.display
-	// });
-
-}
-watch(question, () => {
-	renderMath(questionElem.value, question.value)
-})
-onMounted(() => {
-	renderMath(questionElem.value, question.value)
-})
 </script>
 
-<style scoped lang="scss">
-.container {
+<style lang="scss" scoped>
+.title {
+	font-size: 25px;
+	margin: 20px 0 10px;
+}
+
+.wrapper {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
+	gap: 20px;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	min-height: 80vh;
 
-	.question-editor {
-		width: 90%;
-		padding: 20px;
-		background-color: #fff;
-		margin-top: 20px;
-		border-radius: 20px;
+	.left {
+		flex: 0 0 40%;
 
-
-
-		form {
-			.text-editor {
-				position: fixed;
-				margin-top: 20px;
-				z-index: 5;
-				bottom: 0;
-				width: 90%;
-				left: 50%;
-				transform: translateX(-50%);
-				border: 2px solid #000;
-				border-radius: 10px;
-
-				textarea {
-					&:focus {
-						outline: none;
-					}
-
-					font-size: 20px;
-					width: 100%;
-					height: 30vh;
-					background-color: #f2f2f2;
-					padding: 20px 10px 10px;
-					border-radius: 10px;
-					resize: none;
-				}
-
-				button {
-					background-color: #fff;
-					position: absolute;
-					right: -10px;
-					top: -10px;
-					width: 25px;
-					height: 25px;
-					font-size: 25px;
-					line-height: 25px;
-					z-index: 2;
-				}
+		.input {
+			.subtitle {
+				font-size: 18px;
+				font-weight: 500;
 			}
 
-			.textarea {
-				font-size: 20px;
-				overflow: auto;
+			.main-select,
+			.main-input {
 				width: 100%;
-				height: 100%;
-				overflow-wrap: break-word;
-				cursor: text;
-			}
-
-			.textarea-nav {
-				position: absolute;
-				left: 0px;
-				top: 0px;
-				border-radius: 10px 10px 0 0;
-				background-color: #f2f2f2;
-				padding: 5px 10px;
-				border-bottom: 3px solid #fff;
-				width: 100%;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-
-				.textarea-title {
-					font-weight: 500;
-					color: #263238;
-				}
-
-				.upload-img {
-					padding: 5px;
-					width: 30px;
-					line-height: 20px;
-					border-radius: 3px;
-					background-color: #fff;
-					transition: all 0.4s ease-in-out;
-
-					&:hover {
-						background-color: #263238;
-						color: white;
-					}
-				}
-			}
-
-
-
-			.quiz-text {
-				background-color: #f2f2f2;
 				padding: 10px;
-				border-radius: 10px;
-				padding-top: 45px;
-				position: relative;
-				width: 100%;
-				height: max(30vh, 250px);
-			}
-
-			.quiz-answers {
-				margin-top: 10px;
-				display: flex;
-				justify-content: space-between;
-				gap: 10px;
-				flex-wrap: wrap;
-			}
-
-			.dark-btn {
-				width: 100%;
-				margin-top: 20px;
+				border-radius: 5px;
+				border: 1px solid #8F95A5;
+				margin-bottom: 20px;
+				background-color: #f2f2f2;
 			}
 		}
 	}
+
+	.right {
+		flex: 1 0 50%;
+
+		.questions {
+			background-color: grey;
+			width: 100%;
+			height: 20px;
+			margin-bottom: 10px;
+		}
+	}
 }
-</style>@/types/createQuizType
+</style>

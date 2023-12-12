@@ -12,7 +12,7 @@ const errorHandler = require("./helpers/error-handler");
 
 //! import routers
 const usersRouter = require("./routers/users");
-
+const quizesRouter = require("./routers/quizes");
 //!Middlewares
 app.use(cors());
 app.options("*", cors());
@@ -21,6 +21,7 @@ app.use(morgan("tiny"));
 
 //! routers
 app.use(`${api}/users`, usersRouter);
+app.use(`${api}/quizes`, quizesRouter);
 
 //! Error Handler
 app.use(errorHandler);

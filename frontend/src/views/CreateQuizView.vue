@@ -24,10 +24,10 @@
 							<span class="subtitle">Category of Quiz</span>
 							<select name="" id="" class="main-select" v-model="category">
 								<option value="" selected disabled hidden>Which category?</option>
-								<option value="student">Math</option>
-								<option value="teacher">History</option>
-								<option value="teacher">English</option>
-								<option value="teacher">Physics</option>
+								<option value="Math">Math</option>
+								<option value="History">History</option>
+								<option value="English">English</option>
+								<option value="Physics">Physics</option>
 							</select>
 							<span class="error"></span>
 						</div>
@@ -35,8 +35,8 @@
 							<span class="subtitle">Type of Quiz</span>
 							<select name="" id="" class="main-select" v-model="quizType">
 								<option value="" selected disabled hidden>Which type?</option>
-								<option value="student">Multiple answers</option>
-								<option value="teacher">True False</option>
+								<option value="Test">Test</option>
+								<option value="true-false">True False</option>
 							</select>
 							<span class="error"></span>
 						</div>
@@ -50,7 +50,7 @@
 					<div class="questions"></div>
 					<div class="questions"></div>
 					<div class="questions"></div>
-					<dark-button @click.prevent="goToCreateQuestion">Add Question</dark-button>
+					<dark-button @click.prevent="createQuizHandler">Add Question</dark-button>
 				</div>
 			</div>
 		</div>
@@ -58,16 +58,30 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 const router = useRouter();
+const authStore = useAuthStore()
 const title = ref('');
 const time = ref(30);
 const point = ref(1);
 const category = ref('');
 const quizType = ref('')
+const image = ref('')
 
-function goToCreateQuestion() {
+
+function createQuizHandler() {
+	const data = {
+		title: title.value,
+		time: time.value,
+		point: point.value,
+		category: category.value,
+		quizType: quizType.value,
+		user: authStore.user.id,
+		image: image.value
+	}
+	console.log(data)
 	router.push('/createquestion')
 }
 </script>

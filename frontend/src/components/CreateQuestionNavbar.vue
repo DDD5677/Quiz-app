@@ -1,7 +1,7 @@
 <template>
 	<div class="navbar">
 		<div class="brand">
-			<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
+			<RouterLink :to="{ name: 'create-quiz' }">Easy<span>Quiz</span></RouterLink>
 		</div>
 		<div class="selects">
 			<select name="" id="" class="quiz-type" v-model="questionType" @change="$emit('questionType', questionType)">

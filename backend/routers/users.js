@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
       if (!users) {
          res.status(404).json({
             success: false,
-            message: "Users is not found!",
+            message: "Users are not found!",
          });
       }
 
@@ -38,15 +38,15 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
    try {
-      let userInfo = {
-         firstname: req.body.firstname,
-         lastname: req.body.lastname,
-         email: req.body.email,
-         phone: req.body.phone,
-         password: req.body.password,
-         role: req.body.role,
-      };
-      console.log(userInfo);
+      // let userInfo = {
+      //    firstname: req.body.firstname,
+      //    lastname: req.body.lastname,
+      //    email: req.body.email,
+      //    phone: req.body.phone,
+      //    password: req.body.password,
+      //    role: req.body.role,
+      // };
+      // console.log(userInfo);
       let user = new User({
          firstname: req.body.firstname,
          lastname: req.body.lastname,

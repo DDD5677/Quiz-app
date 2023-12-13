@@ -6,10 +6,10 @@ const quizSchema = new mongoose.Schema(
          {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Question",
-            required: [
-               true,
-               "There is no question, Please create at least one question",
-            ],
+            // required: [
+            //    true,
+            //    "There is no question, Please create at least one question",
+            // ],
          },
       ],
       title: {

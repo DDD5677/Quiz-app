@@ -2,22 +2,20 @@ const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema(
    {
-      body: {
+      text: {
          type: String,
          required: [true, "Please enter question text"],
       },
-      correct_answer: {
+      correctAnswer: {
          type: String,
          required: [true, "Please choose correct answer"],
       },
-      answers: [
-         {
-            type: String,
-            required: true,
-         },
-      ],
+      answers: {
+         type: Object,
+         required: true,
+      },
       difficulty: {
-         type: Number,
+         type: String,
          required: [true, "Please choose level of difficulty"],
       },
       questionType: {
@@ -25,7 +23,7 @@ const questionSchema = new mongoose.Schema(
          required: true,
       },
       point: {
-         type: String,
+         type: Number,
          required: true,
       },
       category: {

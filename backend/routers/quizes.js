@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Quiz = require("../models/quiz");
+const Question = require("../models/question");
 
 router.get("/", async (req, res, next) => {
    try {
@@ -36,7 +37,8 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
    try {
-      const quiz = new Quiz({
+      console.log(req.body);
+      let quiz = new Quiz({
          title: req.body.title,
          time: req.body.time,
          point: req.body.point,
@@ -44,7 +46,6 @@ router.post("/", async (req, res, next) => {
          quizType: req.body.quizType,
          user: req.body.user,
          image: req.body.image,
-         questions: req.body.questions,
       });
       quiz = await quiz.save();
 
@@ -56,6 +57,7 @@ router.post("/", async (req, res, next) => {
       }
       res.status(200).send(quiz);
    } catch (error) {
+      console.log(error);
       next(error);
    }
 });
@@ -90,18 +92,24 @@ router.put("/:id", async (req, res, next) => {
 
 router.delete("/:id", async (req, res, next) => {
    try {
-      const quiz = await Quiz.findByIdAndRemove(req.params.id);
+      const quiz = await Quiz.findByIdAndDelete(req.params.id);
       if (!quiz) {
          return res.status(500).json({
             success: false,
             message: "The quiz is not found",
          });
       }
-      res.status(200).json({
-         success: true,
-         message: "The quiz was deleted",
+      await quiz.questions.map(async (question) => {
+         console.log(question);
+         await Question.findByIdAndDelete(question);
       });
+      res.status(200).send(quiz);
+      // res.status(200).json({
+      //    success: true,
+      //    message: "The quiz was deleted",
+      // });
    } catch (error) {
+      console.log(error);
       next(error);
    }
 });

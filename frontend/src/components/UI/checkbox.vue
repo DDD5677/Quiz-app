@@ -1,6 +1,6 @@
 <template>
 	<div class="checkbox-wrapper-19">
-		<input :checked="index === createQuizStore.correctAnswer" type="checkbox" :id="index" v-model="checked"
+		<input :checked="index === questionStore.correctAnswer" type="checkbox" :id="index" v-model="checked"
 			@change="correctAnswerHandler(index)" />
 		<label :for="index" class="check-box"></label>
 	</div>
@@ -9,16 +9,16 @@
 <script setup lang="ts">
 import type { Answers } from '@/types/createQuizType';
 import { ref } from 'vue';
-import { useCreateQuizStore } from '@/stores/createQuizStore';
-const createQuizStore = useCreateQuizStore();
+import { useQuestionStore } from '@/stores/questionStore';
+const questionStore = useQuestionStore();
 defineProps<{ index: keyof Answers }>()
 const checked = ref(false)
 function correctAnswerHandler(index: keyof Answers) {
 	if (checked.value) {
-		createQuizStore.assignCorrectAnswer(index)
+		questionStore.assignCorrectAnswer(index)
 		console.log('checkbox', index)
 	} else {
-		createQuizStore.assignCorrectAnswer(null)
+		questionStore.assignCorrectAnswer(null)
 	}
 }
 </script>
@@ -195,4 +195,4 @@ function correctAnswerHandler(index: keyof Answers) {
 	animation: dothatopcheck-19 0.4s ease 0s forwards;
 }
 </style>
- 
+ @/stores/questionStore

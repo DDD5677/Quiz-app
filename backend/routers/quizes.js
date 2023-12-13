@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
    try {
-      const quiz = await Quiz.findById(req.params.id);
+      const quiz = await Quiz.findById(req.params.id).populate("questions");
 
       if (!quiz) {
          res.status(404).json({

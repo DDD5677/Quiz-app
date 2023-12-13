@@ -33,7 +33,7 @@ const router = createRouter({
 			component: SignUpView
 		},
 		{
-			path: '/createquestion',
+			path: '/createquestion/:id',
 			name: 'create-question',
 			meta: { layout: "empty" },
 			component: CreateQuestionView

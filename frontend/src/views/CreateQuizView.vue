@@ -7,22 +7,22 @@
 					<form action="">
 						<div class="input">
 							<span class="subtitle">Title of Quiz</span>
-							<main-input type="text" placeholder="Title" v-model="title" />
+							<main-input type="text" placeholder="Title" v-model="quiz.title" />
 							<span class="error"></span>
 						</div>
 						<div class="input">
 							<span class="subtitle">Time for Quiz (in minutes)</span>
-							<main-input type="number" placeholder="Time" v-model="time" />
+							<main-input type="number" placeholder="Time" v-model="quiz.time" />
 							<span class="error"></span>
 						</div>
 						<div class="input">
 							<span class="subtitle">Grade (in points)</span>
-							<main-input type="number" placeholder="Grade" v-model="point" />
+							<main-input type="number" placeholder="Grade" v-model="quiz.point" />
 							<span class="error"></span>
 						</div>
 						<div class="input">
 							<span class="subtitle">Category of Quiz</span>
-							<select name="" id="" class="main-select" v-model="category">
+							<select name="" id="" class="main-select" v-model="quiz.category">
 								<option value="" selected disabled hidden>Which category?</option>
 								<option value="Math">Math</option>
 								<option value="History">History</option>
@@ -33,7 +33,7 @@
 						</div>
 						<div class="input">
 							<span class="subtitle">Type of Quiz</span>
-							<select name="" id="" class="main-select" v-model="quizType">
+							<select name="" id="" class="main-select" v-model="quiz.quizType">
 								<option value="" selected disabled hidden>Which type?</option>
 								<option value="Test">Test</option>
 								<option value="true-false">True False</option>
@@ -59,30 +59,35 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore';
-import { ref } from 'vue';
+import { useQuizStore } from '@/stores/quizStore'
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router'
+import type { Quiz } from '@/types/quizType'
 const router = useRouter();
 const authStore = useAuthStore()
-const title = ref('');
-const time = ref(30);
-const point = ref(1);
-const category = ref('');
-const quizType = ref('')
-const image = ref('')
+const quizStore = useQuizStore()
+const quiz = reactive<Quiz>({
+	title: '',
+	time: 30,
+	point: 1,
+	category: '',
+	quizType: '',
+	image: '',
+	user: ""
+})
 
 
 function createQuizHandler() {
 	const data = {
-		title: title.value,
-		time: time.value,
-		point: point.value,
-		category: category.value,
-		quizType: quizType.value,
-		user: authStore.user.id,
-		image: image.value
+		...quiz, user: authStore.user.id
 	}
 	console.log(data)
-	router.push('/createquestion')
+	quizStore.createQuiz(data).then((res: any) => {
+		console.log(res)
+		router.push(`/createquestion/${res.id}`)
+	}).catch((err) => {
+		console.log('error', err)
+	})
 }
 </script>
 

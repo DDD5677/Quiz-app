@@ -10,7 +10,7 @@
 				<div ref="answerElem"></div>
 			</div>
 		</div>
-		<div v-if="createQuizStore.editors[index]" class="text-editor">
+		<div v-if="questionStore.editors[index]" class="text-editor">
 			<button @click.prevent="toggleAnswerEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
 			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting" v-model="answer"
 				@change="$emit('answer', answer)"></textarea>
@@ -22,9 +22,9 @@
 import { onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../../node_modules/katex/dist/contrib/auto-render';
-import { useCreateQuizStore } from '@/stores/createQuizStore';
+import { useQuestionStore } from '@/stores/questionStore';
 import type { Editors } from '@/types/createQuizType';
-const createQuizStore = useCreateQuizStore();
+const questionStore = useQuestionStore();
 const emit = defineEmits(['removeAnswer', 'answer'])
 
 
@@ -33,7 +33,7 @@ const answerElem = ref<HTMLElement | null>(null)
 const answer = ref('')
 
 function toggleAnswerEditor(v: boolean) {
-	createQuizStore.toggleEditors(v, props.index)
+	questionStore.toggleEditors(v, props.index)
 	window.scrollTo(0, document.body.scrollHeight);
 }
 function removeEventListener() {
@@ -164,3 +164,4 @@ onMounted(() => {
 }
 </style>
 
+@/stores/questionStore

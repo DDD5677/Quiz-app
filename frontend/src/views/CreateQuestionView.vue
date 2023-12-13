@@ -1,7 +1,7 @@
 <template>
 	<section class="create-question">
 		<CreateQuestionNavbar @difficulty="difficultyHandler" @category="categoryHandler" @questionType="questionTypeHandler"
-			@point="pointHandler" :saveQuestionHandler="saveQuestionHandler" />
+			@point="pointHandler" :saveQuestionHandler="createQuestionHandler" />
 		<div class="container" :style="editorActive || true ? 'padding-bottom:30vh' : ''">
 			<div class="question-editor">
 				<form action="">
@@ -12,7 +12,7 @@
 						</div>
 						<div @click="toggleQuestionEditor(true)" class="textarea" ref="questionElem"></div>
 					</div>
-					<div v-if="createQuizStore.editors.question" class="text-editor">
+					<div v-if="questionStore.editors.question" class="text-editor">
 						<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
 						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
 					</div>
@@ -42,15 +42,20 @@
 
 <script setup lang="ts">
 import CreateQuestionNavbar from '@/components/CreateQuestionNavbar.vue';
-import { useCreateQuizStore } from '@/stores/createQuizStore';
+import { useQuestionStore } from '@/stores/questionStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useQuizStore } from '@/stores/quizStore'
 import AnswerEditor from '@/components/UI/answerEditor.vue'
 import { computed, onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 import type { ShowAnswers, Answers } from '@/types/createQuizType';
-const createQuizStore = useCreateQuizStore();
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter();
+const route = useRoute();
+const questionStore = useQuestionStore();
 const authStore = useAuthStore()
+const quizStore = useQuizStore()
 //difficulty question
 const difficulty = ref('low')
 function difficultyHandler(item: string) {
@@ -79,10 +84,10 @@ const questionElem = ref<HTMLElement | null>(null)
 const question = ref('');
 
 function toggleQuestionEditor(v: boolean) {
-	createQuizStore.toggleEditors(v, 'question')
+	questionStore.toggleEditors(v, 'question')
 }
 const editorActive = computed(() => {
-	for (const [key, value] of Object.entries(createQuizStore.editors)) {
+	for (const [key, value] of Object.entries(questionStore.editors)) {
 		if (value) {
 			return true
 		}
@@ -160,20 +165,30 @@ onMounted(() => {
 })
 
 //create Question
-function saveQuestionHandler() {
+const quizId = route.params.id as string
+function createQuestionHandler() {
 	const data = {
-		body: question.value,
-		correct_answer: createQuizStore.correctAnswer,
+		text: question.value,
+		correctAnswer: questionStore.correctAnswer,
 		answers: answers.value,
 		difficulty: difficulty.value,
 		point: point.value,
 		questionType: questionType.value,
 		category: category.value,
 		user: authStore.user.id,
-		image: image.value
+		image: image.value,
+		quizId: quizId
 	}
-	createQuizStore.saveQuestion(data)
+	questionStore.createQuestion(data).then((res) => {
+		console.log(res)
+	}).catch((err) => {
+		console.log(err)
+	})
 }
+onMounted(() => {
+	console.log(quizId)
+	quizStore.getQuizById(quizId)
+})
 </script>
 
 <style scoped lang="scss">
@@ -299,4 +314,4 @@ function saveQuestionHandler() {
 		}
 	}
 }
-</style>@/types/createQuizType
+</style>@/types/createQuizType@/stores/questionStore

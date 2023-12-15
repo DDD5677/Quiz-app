@@ -1,6 +1,12 @@
 <template>
 	<section class="quiz_detail">
 		<div class="container">
+			<div class="btns">
+				<dark-button @click.prevent="addQuestionHandler"><i class="fa-solid fa-plus"></i> <span>Add
+						Question</span></dark-button>
+				<dark-button @click.prevent="addQuestionHandler"><i class="fa-regular fa-share-from-square"></i>
+					<span>Share</span></dark-button>
+			</div>
 			<div v-if="!quizStore.isLoading" class="wrapper">
 				<h1 class="title">Quiz Detail</h1>
 				<form action="" @submit.prevent="updateQuizHandler">
@@ -16,7 +22,7 @@
 					</div>
 					<div class="input">
 						<span class="subtitle">Grade (in points)</span>
-						<main-input required type="number" placeholder="Grade" v-model="quiz.point" />
+						<main-input required type="number" placeholder="Grade" step=".1" v-model="quiz.point" />
 						<span class="error"></span>
 					</div>
 					<div class="input">
@@ -48,7 +54,6 @@
 						:index="index + 1" />
 					<div v-else class="empty">No questions</div>
 				</div>
-				<dark-button @click.prevent="addQuestionHandler">Add Question</dark-button>
 			</div>
 			<Loader v-else />
 		</div>
@@ -74,17 +79,6 @@ const quiz = reactive<Quiz>({
 	image: '',
 	user: ""
 })
-
-const updateQuizHandler = () => {
-	console.log(quiz)
-}
-
-const addQuestionHandler = () => {
-	router.push(`/createquestion/${quizId}`)
-}
-
-
-
 const assignQuizInfo = (data: any) => {
 	quiz.title = data.title
 	quiz.time = data.time
@@ -93,13 +87,32 @@ const assignQuizInfo = (data: any) => {
 	quiz.quizType = data.quizType
 	quiz.image = data.image
 }
-
-
-onMounted(() => {
-	quizStore.getQuizById(quizId).then((res) => {
+const updateQuizHandler = () => {
+	const data = {
+		...quiz,
+		quizId: quizId
+	}
+	quizStore.updateQuiz(data).then((res) => {
 		assignQuizInfo(res)
 	})
+}
+
+const addQuestionHandler = () => {
+	router.push(`/createquestion/${quizId}`)
+}
+
+
+
+
+quizStore.getQuizById(quizId).then((res) => {
+	assignQuizInfo(res)
 })
+
+// onMounted(() => {
+// 	quizStore.getQuizById(quizId).then((res) => {
+// 		assignQuizInfo(res)
+// 	})
+// })
 </script>
 
 <style lang="scss" scoped>
@@ -111,8 +124,28 @@ onMounted(() => {
 .quiz_detail {
 	min-height: 100vh;
 
-	.wrapper {
+	.btns {
+		display: flex;
+		justify-content: flex-end;
+		gap: 20px;
 		margin-top: 20px;
+
+		.dark-btn {
+			background-color: #fff;
+			color: #263238;
+			border-width: 2px;
+			font-weight: 500;
+
+			&:hover {
+				background-color: #263238;
+				color: #fff;
+				opacity: 1;
+			}
+		}
+	}
+
+	.wrapper {
+		margin-top: 10px;
 		border-radius: 10px;
 		padding: 20px;
 		background-color: #fff;

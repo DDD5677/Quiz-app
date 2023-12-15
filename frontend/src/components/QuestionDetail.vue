@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUpdated, ref } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 

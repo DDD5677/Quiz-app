@@ -20,6 +20,9 @@ const QuizService = {
 	},
 	deleteQuiz(id:string){
 		return axios.delete(`/quizes/${id}`)
+	},
+	updateQuiz(quiz:any){
+		return axios.put(`/quizes/${quiz.quizId}`,quiz)
 	}
 }
 

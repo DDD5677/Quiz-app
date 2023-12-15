@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Quiz = require("../models/quiz");
 const Question = require("../models/question");
+const mongoose = require("mongoose");
 
 router.get("/", async (req, res, next) => {
    try {
@@ -127,16 +128,17 @@ router.put("/:id", async (req, res, next) => {
          category: req.body.category,
          quizType: req.body.quizType,
       };
-
+      console.log(updateBlock);
       const quiz = await Quiz.findByIdAndUpdate(req.params.id, updateBlock, {
          new: true,
-      });
+      }).populate("questions");
       if (!quiz) {
          return res.status(500).json({
             success: false,
             message: "The quiz is not updated",
          });
       }
+      console.log(quiz);
       res.status(200).send(quiz);
    } catch (error) {
       next(error);

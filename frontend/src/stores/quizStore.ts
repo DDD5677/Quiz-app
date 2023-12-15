@@ -42,8 +42,8 @@ export const useQuizStore = defineStore('quiz',()=>{
 			quiz.value=null;
 			errors.value=null;
 			QuizService.getQuizById(id).then((response)=>{
-				isLoading.value=false;
 				quiz.value=response.data;
+				isLoading.value=false;
 				resolve(response.data)
 			}).catch((error)=>{
 				isLoading.value=false;
@@ -72,6 +72,24 @@ export const useQuizStore = defineStore('quiz',()=>{
 		})
 	}
 
+	const updateQuiz = (data:any)=>{
+		return new Promise((resolve,reject)=>{
+			isLoading.value=true;
+			quiz.value = null;
+			errors.value = null;
+			QuizService.updateQuiz(data).then((response)=>{
+				isLoading.value=false;
+				quiz.value=response.data;
+				resolve(response.data);
+			}).catch((error)=>{
+				isLoading.value=false;
+				console.log(error)
+				errors.value = error.response.data
+				reject(error.response.data)
+			})
+		})
+	}
+
 	const deleteQuiz =(id:string)=>{
 		return new Promise((resolve,reject)=>{
 			isLoading.value=true;
@@ -87,5 +105,5 @@ export const useQuizStore = defineStore('quiz',()=>{
 		})
 	}
 
-	return {getQuiz,createQuiz,getQuizById,deleteQuiz,assignQuiz,isLoading,quiz,errors,page,quizList,limit,pageSize}
+	return {getQuiz,createQuiz,updateQuiz,getQuizById,deleteQuiz,assignQuiz,isLoading,quiz,errors,page,quizList,limit,pageSize}
 })

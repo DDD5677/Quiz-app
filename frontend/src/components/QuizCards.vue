@@ -52,7 +52,8 @@ const quizDetailHnadler = () => {
 <style lang="scss" scoped>
 .quiz_card {
 	background-color: #f2f2f2;
-
+	display: flex;
+	flex-direction: column;
 	border-radius: 10px;
 
 	.img_box {
@@ -73,10 +74,15 @@ const quizDetailHnadler = () => {
 
 	.body {
 		padding: 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		flex-grow: 1;
 
 		.quiz_title {
 			font-size: 16px;
 			text-transform: capitalize;
+
 		}
 
 		.btns {

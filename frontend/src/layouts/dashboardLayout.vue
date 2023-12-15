@@ -13,7 +13,8 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'library', query: { user: authStore.user.id } }"
+						class="item-link">
 						<i class="fa-solid fa-book"></i> <span>Library</span>
 					</RouterLink>
 				</li>
@@ -118,7 +119,7 @@ const authStore = useAuthStore();
 .content {
 	padding-left: 200px;
 	padding-top: 50px;
-	height: 100vh;
+	min-height: 100vh;
 	background-color: #f2f2f2;
 
 	.navbar {

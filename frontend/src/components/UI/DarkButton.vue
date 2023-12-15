@@ -16,6 +16,7 @@
 	color: #FFF;
 	transition: all 0.3s ease;
 	cursor: pointer;
+	border: 1px solid #263238;
 
 	&:hover {
 		opacity: 0.95;

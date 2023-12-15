@@ -5,6 +5,8 @@ import CreateQuizView from "@/views/CreateQuizView.vue"
 import SignInView from '@/views/SignInView.vue'
 import AdminView from "@/views/AdminView.vue"
 import SignUpView from '@/views/SignUpView.vue'
+import QuizDetailView from '@/views/QuizDetailView.vue'
+import LibraryView from '@/views/LibraryView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -43,6 +45,18 @@ const router = createRouter({
 			name: 'create-quiz',
 			meta: { layout: "dashboard" },
 			component: CreateQuizView
+		},
+		{
+			path: '/quiz/:id',
+			name: 'quiz-detail',
+			meta: { layout: "dashboard" },
+			component: QuizDetailView
+		},
+		{
+			path: '/library',
+			name: 'library',
+			meta: { layout: "dashboard" },
+			component: LibraryView
 		},
 	]
 })

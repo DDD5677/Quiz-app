@@ -180,7 +180,7 @@ function createQuestionHandler() {
 		quizId: quizId
 	}
 	questionStore.createQuestion(data).then((res) => {
-		console.log(res)
+		router.push(`/quiz/${quizId}`)
 	}).catch((err) => {
 		console.log(err)
 	})

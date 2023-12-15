@@ -5,15 +5,68 @@ const Question = require("../models/question");
 
 router.get("/", async (req, res, next) => {
    try {
-      const quizes = await Quiz.find();
-      if (!quizes) {
+      let filter = {};
+      let page = 1;
+      let limit = 6;
+      let totalQuizes = 0;
+      let pageSize = 1;
+
+      if (req.query.page) {
+         page = +req.query.page;
+      }
+      if (req.query.limit) {
+         limit = +req.query.limit;
+      }
+      //Building filter object
+      if (req.query.user) {
+         filter["user"] = req.query.user;
+      }
+      if (req.query.search) {
+         filter = {
+            ...filter,
+            name: { $regex: req.query.search, $options: "i" },
+         };
+      }
+
+      totalQuizes = await Quiz.countDocuments(filter).exec();
+      if (!totalQuizes) {
+         return res.status(200).json({
+            quizList: [],
+            pagination: {
+               pageSize: 1,
+               limit: limit,
+               page: page,
+            },
+         });
+      }
+      pageSize = Math.ceil(totalQuizes / limit);
+      if (page > pageSize) {
+         return res.status(404).json({
+            success: false,
+            message: "Page is not found!",
+         });
+      }
+
+      const quizList = await Quiz.find(filter)
+         .sort(req.query.sort)
+         .skip((page - 1) * limit)
+         .limit(limit);
+
+      if (!quizList) {
          res.status(404).json({
             success: false,
             message: "Quizes are not found",
          });
       }
 
-      res.status(200).send(quizes);
+      res.status(200).send({
+         quizList: quizList,
+         pagination: {
+            pageSize: pageSize,
+            limit: limit,
+            page: page,
+         },
+      });
    } catch (error) {
       next(error);
    }

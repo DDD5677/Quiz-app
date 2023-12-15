@@ -1,6 +1,6 @@
 <template>
-	<div class="question_detail">
-		<div class="question">{{ index }}. Savol</div>
+	<div class="question_detail" ref="questionElem">
+		<div class="question">{{ index }}. {{ question.text }}</div>
 		<div class="options">
 			<div v-for="(option, index) in options" :key="index" class="option" :class="{ 'correct': option.correct }">
 				<span class="dot"></span>
@@ -11,7 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+// @ts-ignore
+import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 
 const props = defineProps({
 	question: {
@@ -24,7 +26,7 @@ const props = defineProps({
 		required: true
 	}
 })
-
+const questionElem = ref<HTMLElement | null>(null)
 const options = computed(() => {
 	const opt = []
 	for (const option in props.question.answers) {
@@ -43,8 +45,20 @@ const options = computed(() => {
 			}
 		}
 	}
-	console.log(opt)
 	return opt
+})
+
+
+onMounted(() => {
+	renderMathInElement(questionElem.value, {
+		delimiters: [
+			{ left: '$$', right: '$$', display: true },
+			{ left: '$', right: '$', display: false },
+			{ left: '\\(', right: '\\)', display: false },
+			{ left: '\\[', right: '\\]', display: true }
+		],
+		throwOnError: false
+	})
 })
 </script>
 
@@ -68,7 +82,7 @@ const options = computed(() => {
 
 		.option {
 			display: flex;
-			flex: 1 0 48%;
+			flex: 1 0 40%;
 			position: relative;
 			padding-left: 15px;
 			align-items: center;

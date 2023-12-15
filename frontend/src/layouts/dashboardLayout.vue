@@ -1,37 +1,49 @@
 <template>
 	<section class="dashboarad">
 		<div class="sidebar">
-			<div class="brand">
-				<button class="sidebar-btn"></button>
-				<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
-			</div>
 			<ul class="menu">
 				<li class="item">
 					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
 						<i class="fa-solid fa-square-plus"></i>
-						<span>Create Quiz</span>
+						<Transition>
+							<span v-if="!navbarStore.mobile">Create Quiz</span>
+						</Transition>
 					</RouterLink>
 				</li>
 				<li class="item">
 					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'library', query: { user: authStore.user.id } }"
 						class="item-link">
-						<i class="fa-solid fa-book"></i> <span>Library</span>
+						<i class="fa-solid fa-book"></i>
+						<Transition>
+							<span v-if="!navbarStore.mobile">Library</span>
+						</Transition>
 					</RouterLink>
 				</li>
 				<li class="item">
 					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
-						<i class="fa-solid fa-people-roof"></i> <span>Classes</span>
+						<i class="fa-solid fa-people-roof"></i>
+						<Transition>
+							<span v-if="!navbarStore.mobile">Classes</span>
+						</Transition>
 					</RouterLink>
 				</li>
 				<li class="item">
 					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
-						<i class="fa-solid fa-gear"></i> <span>Settings</span>
+						<i class="fa-solid fa-gear"></i>
+						<Transition>
+							<span v-if="!navbarStore.mobile">Settings</span>
+						</Transition>
 					</RouterLink>
 				</li>
 			</ul>
 		</div>
-		<div class="content">
+		<div class="content" :style="!navbarStore.mobile ? 'padding-left:180px' : ''">
 			<div class="navbar">
+				<div class="brand">
+					<button @click.prevent="sidebarToggle" class="sidebar-btn"
+						:class="{ 'mobile': navbarStore.mobile }"></button>
+					<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
+				</div>
 				<input type="text" placeholder="Search quiz" class="search">
 
 				<div v-if="!authStore.isLoading" class="avatar">
@@ -50,61 +62,73 @@
 
 <script lang="ts" setup>
 import { useAuthStore } from '@/stores/authStore';
-// import { useRouter } from 'vue-router'
-// const router = useRouter();
+import { useNavbarStore } from '@/stores/navbarStore';
+import { ref } from 'vue';
 const authStore = useAuthStore();
+const navbarStore = useNavbarStore();
+const windowWith = ref<number>();
+function checkScreen() {
+	windowWith.value = window.innerWidth;
+	if (+windowWith.value <= 820) {
+		navbarStore.assignMobile(true)
+		return
+	}
+	navbarStore.assignMobile(false)
+	navbarStore.showNavbarHandler(false)
+}
+window.addEventListener('resize', checkScreen);
 
-
+const sidebarToggle = () => {
+	navbarStore.assignMobile(!navbarStore.mobile)
+}
 </script>
 
 <style scoped lang="scss">
+.v-enter-active {
+	transition: all 0.5s ease-in;
+
+}
+
+.v-leave-active {
+	transition: all 0.3s ease-in;
+}
+
+.v-enter-from,
+.v-leave-to {
+	opacity: 0;
+}
+
 .sidebar {
 	position: fixed;
 	left: 0;
 	top: 0;
 	height: 100vh;
-	width: 200px;
 	box-shadow: 0 2px 4px #00000014;
 	background-color: #fff;
-	z-index: 6;
+	z-index: 4;
 
-	.brand {
-		font-family: 'Henny Penny', serif;
-		font-size: 28px;
-		margin: 0 10px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 10px 0;
 
-		.sidebar-btn {
-			width: 30px;
-			height: 30px;
-			background-image: url(@/assets/images/nav-btn.svg);
-			background-repeat: no-repeat;
-			background-position: center;
-			background-size: contain;
-		}
-
-		span {
-			color: #8F95A5;
-		}
-	}
 
 
 	.menu {
-		margin-top: 20px;
+		margin-top: 50px;
 
 		.item-link {
 			display: inline-block;
 			width: 100%;
-			padding: 5px 10px 5px 0;
 			color: #263238;
 			font-size: 20px;
 
+			span {
+				display: inline-block;
+				padding: 5px 10px 5px 0;
+				width: 130px;
+			}
+
 			i {
 				padding: 10px;
-				width: 40px;
+				width: 45px;
+				text-align: center;
 			}
 
 			&:hover,
@@ -117,10 +141,11 @@ const authStore = useAuthStore();
 }
 
 .content {
-	padding-left: 200px;
+	padding-left: 45px;
 	padding-top: 50px;
 	min-height: 100vh;
 	background-color: #f2f2f2;
+	transition: padding 0.6s ease-in-out;
 
 	.navbar {
 		background-color: #fff;
@@ -128,13 +153,45 @@ const authStore = useAuthStore();
 		gap: 20px;
 		justify-content: space-between;
 		align-items: center;
-		padding: 10px 5px 10px 205px;
+		padding: 10px 5px;
 		position: fixed;
 		width: 100%;
 		left: 0;
 		top: 0;
 		height: 50px;
 		z-index: 5;
+		-webkit-box-shadow: -1px 14px 11px -11px rgba(38, 50, 56, 0.18);
+		-moz-box-shadow: -1px 14px 11px -11px rgba(38, 50, 56, 0.18);
+		box-shadow: -1px 14px 11px -11px rgba(38, 50, 56, 0.18);
+
+		.brand {
+			font-family: 'Henny Penny', serif;
+			font-size: 28px;
+			margin: 0 5px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px 0;
+			gap: 20px;
+
+			.sidebar-btn {
+				width: 30px;
+				height: 30px;
+				background-image: url(@/assets/images/nav-btn.svg);
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: contain;
+				transition: all 0.4s ease-in;
+
+				&.mobile {
+					transform: rotateY(180deg)
+				}
+			}
+
+			span {
+				color: #8F95A5;
+			}
+		}
 
 		.search {
 			border-radius: 5px;

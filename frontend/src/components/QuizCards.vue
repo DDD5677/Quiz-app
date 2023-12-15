@@ -41,6 +41,10 @@ const deleteQuizHandler = (id: string) => {
 }
 const quizDetailHnadler = () => {
 	router.push(`/quiz/${props.quiz.id}`)
+	window.scrollTo({
+		top: 0,
+		behavior: "smooth",
+	});
 }
 
 </script>

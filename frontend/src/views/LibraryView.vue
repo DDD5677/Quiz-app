@@ -6,6 +6,7 @@
 				<div v-if="!quizStore.isLoading" class="cards">
 					<QuizCards v-for="quiz in quizStore.quizList" :key="quiz.id" :quiz="quiz" />
 				</div>
+				<Loader v-else />
 			</div>
 		</div>
 
@@ -34,6 +35,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .library {
+	padding: 20px 0;
+
 	.title {
 		font-size: 25px;
 		margin-bottom: 10px;
@@ -41,7 +44,6 @@ onMounted(() => {
 	}
 
 	.wrapper {
-		margin: 20px 0;
 		background-color: #fff;
 		border-radius: 10px;
 		padding: 20px;

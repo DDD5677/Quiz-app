@@ -50,6 +50,7 @@
 				</div>
 				<dark-button @click.prevent="addQuestionHandler">Add Question</dark-button>
 			</div>
+			<Loader v-else />
 		</div>
 	</section>
 </template>

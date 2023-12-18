@@ -2,10 +2,10 @@
 	<section class="quiz_detail">
 		<div class="container">
 			<div class="btns">
-				<dark-button @click.prevent="addQuestionHandler"><i class="fa-solid fa-plus"></i> <span>Add
-						Question</span></dark-button>
-				<dark-button @click.prevent="addQuestionHandler"><i class="fa-regular fa-share-from-square"></i>
-					<span>Share</span></dark-button>
+				<light-button @click.prevent="addQuestionHandler"><i class="fa-solid fa-plus"></i> <span>Add
+						Question</span></light-button>
+				<light-button @click.prevent="addQuestionHandler"><i class="fa-regular fa-share-from-square"></i>
+					<span>Share</span></light-button>
 			</div>
 			<div v-if="!quizStore.isLoading" class="wrapper">
 				<h1 class="title">Quiz Detail</h1>
@@ -62,6 +62,7 @@
 
 <script setup lang="ts">
 import QuestionDetail from '@/components/QuestionDetail.vue';
+import { useQuestionStore } from '@/stores/questionStore';
 import { useQuizStore } from '@/stores/quizStore';
 import type { Quiz } from '@/types/quizType';
 import { onMounted, reactive } from 'vue';
@@ -69,6 +70,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
 const quizStore = useQuizStore()
+const questionStore = useQuestionStore()
 const quizId = route.params.id as string
 const quiz = reactive<Quiz>({
 	title: '',
@@ -99,6 +101,7 @@ const updateQuizHandler = () => {
 
 const addQuestionHandler = () => {
 	router.push(`/createquestion/${quizId}`)
+	questionStore.assignCorrectAnswer(null)
 }
 
 
@@ -129,19 +132,6 @@ quizStore.getQuizById(quizId).then((res) => {
 		justify-content: flex-end;
 		gap: 20px;
 		margin-top: 20px;
-
-		.dark-btn {
-			background-color: #fff;
-			color: #263238;
-			border-width: 2px;
-			font-weight: 500;
-
-			&:hover {
-				background-color: #263238;
-				color: #fff;
-				opacity: 1;
-			}
-		}
 	}
 
 	.wrapper {

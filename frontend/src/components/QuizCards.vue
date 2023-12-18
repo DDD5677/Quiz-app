@@ -10,10 +10,10 @@
 		<div class="body">
 			<span class="quiz_title">{{ quiz.title }}</span>
 			<div class="btns">
-				<dark-button @click.prevent="quizDetailHnadler" class="detail-btn"><i class="fa-solid fa-pencil"></i>
-					Detail</dark-button>
-				<dark-button @click.prevent="deleteQuizHandler(quiz.id)" class="delete-btn"><i class="fa-solid fa-trash"></i>
-					Delete</dark-button>
+				<light-button @click.prevent="quizDetailHnadler" class="detail-btn"><i class="fa-solid fa-pencil"></i>
+					Detail</light-button>
+				<light-button @click.prevent="deleteQuizHandler(quiz.id)" class="delete-btn"><i class="fa-solid fa-trash"></i>
+					Delete</light-button>
 			</div>
 		</div>
 	</div>
@@ -91,29 +91,13 @@ const quizDetailHnadler = () => {
 			margin-top: 20px;
 			font-size: 12px;
 
-			.detail-btn {
-				background-color: white;
-				border-width: 2px;
-				color: #263238;
-				font-weight: 500;
-
-				&:hover {
-					background-color: #263238;
-					color: #fff;
-					opacity: 1;
-				}
-			}
-
 			.delete-btn {
-				background-color: white;
-				border: 2px solid #d40700;
+				border-color: #d40700;
 				color: #d40700;
-				font-weight: 500;
 
 				&:hover {
 					background-color: #d40700;
-					color: #fff;
-					opacity: 1;
+					color: #fff
 				}
 			}
 		}

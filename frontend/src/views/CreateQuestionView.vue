@@ -1,7 +1,33 @@
 <template>
 	<section class="create-question">
-		<CreateQuestionNavbar @difficulty="difficultyHandler" @category="categoryHandler" @questionType="questionTypeHandler"
-			@point="pointHandler" :saveQuestionHandler="createQuestionHandler" />
+		<div class="navbar">
+			<div class="brand">
+				<RouterLink :to="{ name: 'create-quiz' }">Easy<span>Quiz</span></RouterLink>
+			</div>
+			<div class="selects">
+				<select name="" id="" class="quiz-type" v-model="questionType">
+					<option value="" selected disabled hidden>Savol turi</option>
+					<option value="test">Test</option>
+					<option value="fill-in">Bo'sh joyni to'ldirish</option>
+				</select>
+				<main-input type="number" placeholder="Grade (in points)" v-model="point" />
+				<select name="" id="" v-model="category">
+					<option value="" selected disabled hidden>Savol qaysi fandan</option>
+					<option value="math">Matematika</option>
+					<option value="english">Ingliz tili</option>
+					<option value="history">Tarix</option>
+					<option value="physics">Fizika</option>
+				</select>
+				<select name="" id="" v-model="difficulty">
+					<option value="" selected disabled hidden>Qiyinlik darajasi</option>
+					<option value="low">Onson</option>
+					<option value="medium">O'rtacha</option>
+					<option value="hard">Qiyin</option>
+					<option value="expert">Juda qiyin</option>
+				</select>
+			</div>
+			<dark-button @click.prevent="createQuestionHandler">Save question</dark-button>
+		</div>
 		<div class="container" :style="editorActive || true ? 'padding-bottom:30vh' : ''">
 			<div class="question-editor">
 				<form action="">
@@ -16,7 +42,7 @@
 						<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
 						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
 					</div>
-					<div class="quiz-answers">
+					<div class="quiz-answers" :key="answerKey">
 						<AnswerEditor v-if="showAnswers.showAnswer1" :index="'answer1'"
 							@answer="answerHandler($event, 'answer1')" @removeAnswer="removeAnswerHandler($event, 'showAnswer1')"
 							:valueEditor="answers.answer1" />
@@ -46,7 +72,7 @@ import { useQuestionStore } from '@/stores/questionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useQuizStore } from '@/stores/quizStore'
 import AnswerEditor from '@/components/UI/answerEditor.vue'
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 import type { ShowAnswers, Answers } from '@/types/createQuizType';
@@ -56,26 +82,17 @@ const route = useRoute();
 const questionStore = useQuestionStore();
 const authStore = useAuthStore()
 const quizStore = useQuizStore()
+
+const answerKey = ref(0)
+
 //difficulty question
 const difficulty = ref('low')
-function difficultyHandler(item: string) {
-	difficulty.value = item
-}
 //category of question
 const category = ref('')
-function categoryHandler(item: string) {
-	category.value = item
-}
 //point for question
 const point = ref<number | null>(null)
-function pointHandler(item: number) {
-	point.value = item
-}
 //Type of question
 const questionType = ref('')
-function questionTypeHandler(item: string) {
-	questionType.value = item
-}
 //image of question
 const image = ref<any>(null)
 
@@ -134,6 +151,28 @@ function addAnswer() {
 		}
 	}
 }
+//assign question data according to question query
+
+const assignQuestionData = (quiz: any, id: string) => {
+	quiz.questions.forEach((item: any) => {
+		if (item.id === id) {
+			difficulty.value = item.difficulty;
+			point.value = item.point;
+			answers.value = item.answers;
+			question.value = item.text;
+			questionStore.assignCorrectAnswer(item.correctAnswer)
+			activeAnswers.value = 0
+			for (const key in item.answers) {
+				if (item.answers[key]) {
+					activeAnswers.value++
+				}
+			}
+			answerKey.value += 1
+		}
+	})
+
+}
+
 
 //rendering Latex string
 function renderMath(editor: HTMLElement | null, word: string) {
@@ -186,12 +225,54 @@ function createQuestionHandler() {
 	})
 }
 onMounted(() => {
-	console.log(quizId)
-	quizStore.getQuizById(quizId)
+	quizStore.getQuizById(quizId).then((res: any) => {
+		const questionId = route.query.question as string
+		if (questionId) {
+			assignQuestionData(res, questionId)
+
+		}
+	})
 })
 </script>
 
 <style scoped lang="scss">
+.navbar {
+	width: 100%;
+	background-color: #fff;
+	display: flex;
+	padding: 10px;
+	align-items: center;
+	justify-content: space-between;
+
+	.brand {
+		font-family: 'Henny Penny', serif;
+		font-size: 28px;
+		margin: 0 10px;
+
+		span {
+			color: #8F95A5;
+		}
+	}
+
+	.selects {
+		display: flex;
+		gap: 10px;
+
+		select,
+		.main-input {
+			padding: 5px;
+			border: 2px solid #000;
+			border-radius: 5px;
+			background-color: #f2f2f2;
+		}
+
+		.main-input {
+			width: 80px;
+		}
+	}
+
+}
+
 .container {
 	display: flex;
 	align-items: center;

@@ -4,12 +4,14 @@ import { createPinia } from 'pinia'
 import App from '@/App.vue'
 import router from './router'
 import DarkButton from './components/UI/DarkButton.vue'
+import LightButton from './components/UI/LightButton.vue'
 import Checkbox from './components/UI/checkbox.vue'
 import MainInput from './components/UI/MainInput.vue'
 import Loader from './components/UI/Loader.vue'
 
 const app = createApp(App)
 app.component('dark-button', DarkButton);
+app.component('light-button', LightButton);
 app.component('check-box', Checkbox);
 app.component('main-input', MainInput);
 app.component('Loader', Loader);

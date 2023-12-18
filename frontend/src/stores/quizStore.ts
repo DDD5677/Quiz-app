@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import QuizService from '@/server/quiz'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Quiz } from '@/types/quizType';
 
 export const useQuizStore = defineStore('quiz',()=>{
@@ -105,5 +105,19 @@ export const useQuizStore = defineStore('quiz',()=>{
 		})
 	}
 
-	return {getQuiz,createQuiz,updateQuiz,getQuizById,deleteQuiz,assignQuiz,isLoading,quiz,errors,page,quizList,limit,pageSize}
+	return {
+		getQuiz,
+		createQuiz,
+		updateQuiz,
+		getQuizById,
+		deleteQuiz,
+		assignQuiz,
+		isLoading,
+		quiz,
+		errors,
+		page,
+		quizList,
+		limit,
+		pageSize
+	}
 })

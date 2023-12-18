@@ -8,15 +8,18 @@
 
 <script setup lang="ts">
 import type { Answers } from '@/types/createQuizType';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useQuestionStore } from '@/stores/questionStore';
 const questionStore = useQuestionStore();
-defineProps<{ index: keyof Answers }>()
+const props = defineProps<{ index: keyof Answers }>()
 const checked = ref(false)
+if (props.index === questionStore.correctAnswer) {
+	checked.value = true
+}
+
 function correctAnswerHandler(index: keyof Answers) {
 	if (checked.value) {
 		questionStore.assignCorrectAnswer(index)
-		console.log('checkbox', index)
 	} else {
 		questionStore.assignCorrectAnswer(null)
 	}

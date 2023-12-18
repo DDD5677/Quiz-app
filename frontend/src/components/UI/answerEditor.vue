@@ -13,7 +13,7 @@
 		<div v-if="questionStore.editors[index]" class="text-editor">
 			<button @click.prevent="toggleAnswerEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
 			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting" v-model="answer"
-				@change="$emit('answer', answer)"></textarea>
+				@input="$emit('answer', answer)"></textarea>
 		</div>
 	</div>
 </template>
@@ -26,11 +26,11 @@ import { useQuestionStore } from '@/stores/questionStore';
 import type { Editors } from '@/types/createQuizType';
 const questionStore = useQuestionStore();
 const emit = defineEmits(['removeAnswer', 'answer'])
+interface Props { index: keyof Editors, valueEditor: string }
 
-
-const props = defineProps<{ index: keyof Editors, valueEditor: string }>()
+const props = defineProps<Props>()
 const answerElem = ref<HTMLElement | null>(null)
-const answer = ref('')
+const answer = ref(props.valueEditor)
 
 function toggleAnswerEditor(v: boolean) {
 	questionStore.toggleEditors(v, props.index)

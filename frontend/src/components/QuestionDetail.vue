@@ -1,10 +1,20 @@
 <template>
 	<div class="question_detail" ref="questionElem">
-		<div class="question">{{ index }}. {{ question.text }}</div>
-		<div class="options">
-			<div v-for="(option, index) in options" :key="index" class="option" :class="{ 'correct': option.correct }">
-				<span class="dot"></span>
-				<span>{{ option.value }}</span>
+		<div class="nav">
+			<span class="number">Question {{ index }}</span>
+			<div class="btns">
+				<light-button @click.prevent="updateQuestionHandler(question.id)"><i
+						class="fa-solid fa-pencil"></i></light-button>
+				<light-button><i class="fa-solid fa-trash"></i></light-button>
+			</div>
+		</div>
+		<div class="body">
+			<div class="question">{{ question.text }}</div>
+			<div class="options">
+				<div v-for="(option, index) in options" :key="index" class="option" :class="{ 'correct': option.correct }">
+					<span class="dot"></span>
+					<span>{{ option.value }}</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -12,9 +22,13 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUpdated, ref } from 'vue';
+import { useQuizStore } from '@/stores/quizStore';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
-
+import { useRoute, useRouter } from 'vue-router';
+const quizStore = useQuizStore()
+const router = useRouter()
+const route = useRoute()
 const props = defineProps({
 	question: {
 		type: Object,
@@ -47,7 +61,13 @@ const options = computed(() => {
 	}
 	return opt
 })
-
+const updateQuestionHandler = (id: string) => {
+	router.push({ path: `/createQuestion/${route.params.id}`, query: { question: id } })
+	window.scrollTo({
+		top: 0,
+		behavior: 'smooth'
+	})
+}
 
 onMounted(() => {
 	renderMathInElement(questionElem.value, {
@@ -64,15 +84,41 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .question_detail {
-	padding: 10px;
-	border-radius: 10px;
-	background-color: #f2f2f2;
+	border-radius: 5px;
 	margin-bottom: 20px;
+	background-color: #fff;
+
+	border: 2px solid #f2f2f2;
+
+	.nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		background-color: #f2f2f2;
+		padding: 5px;
+		border-radius: 5px 5px 0 0;
+
+		.number {
+			font-weight: 500;
+		}
+
+		.light-btn {
+			margin-left: 10px;
+			font-size: 10px;
+		}
+	}
+
+	.body {
+		padding: 10px;
+	}
 
 	.question {
-		font-size: 18px;
+		padding-bottom: 5px;
+		font-size: 16px;
 		font-weight: 500;
 		margin-bottom: 10px;
+		border-bottom: 2px solid #f2f2f2;
 	}
 
 	.options {
@@ -82,7 +128,7 @@ onMounted(() => {
 
 		.option {
 			display: flex;
-			flex: 1 0 40%;
+			flex: 1 0 48%;
 			position: relative;
 			padding-left: 15px;
 			align-items: center;

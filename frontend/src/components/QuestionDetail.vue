@@ -5,7 +5,8 @@
 			<div class="btns">
 				<light-button @click.prevent="updateQuestionHandler(question.id)"><i
 						class="fa-solid fa-pencil"></i></light-button>
-				<light-button><i class="fa-solid fa-trash"></i></light-button>
+				<light-button @click.prevent="deleteQuestionHandler(question.id)"><i
+						class="fa-solid fa-trash"></i></light-button>
 			</div>
 		</div>
 		<div class="body">
@@ -23,12 +24,15 @@
 <script setup lang="ts">
 import { computed, onMounted, onUpdated, ref } from 'vue';
 import { useQuizStore } from '@/stores/quizStore';
+import { useQuestionStore } from '@/stores/questionStore';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 import { useRoute, useRouter } from 'vue-router';
 const quizStore = useQuizStore()
+const questionStore = useQuestionStore()
 const router = useRouter()
 const route = useRoute()
+const quizId = route.params.id as string
 const props = defineProps({
 	question: {
 		type: Object,
@@ -62,13 +66,21 @@ const options = computed(() => {
 	return opt
 })
 const updateQuestionHandler = (id: string) => {
-	router.push({ path: `/createQuestion/${route.params.id}`, query: { question: id } })
+	router.push({ path: `/admin/createQuestion/${route.params.id}`, query: { question: id } })
 	window.scrollTo({
 		top: 0,
 		behavior: 'smooth'
 	})
 }
-
+const deleteQuestionHandler = (id: string) => {
+	const data = {
+		questionId: id,
+		quizId: quizId
+	}
+	questionStore.deleteQuestion(data).then((res) => {
+		quizStore.getQuizById(quizId)
+	})
+}
 onMounted(() => {
 	renderMathInElement(questionElem.value, {
 		delimiters: [

@@ -14,6 +14,7 @@ import Navbar from '@/components/Navbar.vue';
 	background-image: url(@/assets/images/signInLayout.jpg);
 	background-size: contain;
 	background-position: center;
+	min-height: 100vh;
 
 }
 </style>

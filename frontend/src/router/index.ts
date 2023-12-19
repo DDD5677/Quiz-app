@@ -7,6 +7,8 @@ import AdminView from "@/views/AdminView.vue"
 import SignUpView from '@/views/SignUpView.vue'
 import QuizDetailView from '@/views/QuizDetailView.vue'
 import LibraryView from '@/views/LibraryView.vue'
+import QuizesView from '@/views/QuizesView.vue'
+import QuizPlayView from '@/views/QuizPlayView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -35,29 +37,41 @@ const router = createRouter({
 			component: SignUpView
 		},
 		{
-			path: '/createquestion/:id',
+			path: '/admin/createquestion/:id',
 			name: 'create-question',
 			meta: { layout: "empty" },
 			component: CreateQuestionView
 		},
 		{
-			path: '/createquiz',
+			path: '/admin/createquiz',
 			name: 'create-quiz',
 			meta: { layout: "dashboard" },
 			component: CreateQuizView
 		},
 		{
-			path: '/quiz/:id',
+			path: '/admin/quiz/:id',
 			name: 'quiz-detail',
 			meta: { layout: "dashboard" },
 			component: QuizDetailView
 		},
 		{
-			path: '/library',
+			path: '/admin/library',
 			name: 'library',
 			meta: { layout: "dashboard" },
 			component: LibraryView
 		},
+		{
+			path: '/quizes',
+			name: 'quizes',
+			meta: { layout: "SignIn" },
+			component: QuizesView
+		},
+		{
+			path: '/quiz/:id',
+			name: 'quiz',
+			meta: { layout: "empty" },
+			component: QuizPlayView
+		}
 	]
 })
 

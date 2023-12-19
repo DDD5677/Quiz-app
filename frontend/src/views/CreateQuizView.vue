@@ -73,7 +73,7 @@ function createQuizHandler() {
 	console.log(data)
 	quizStore.createQuiz(data).then((res: any) => {
 		console.log(res)
-		router.push(`/createquestion/${res.id}`)
+		router.push(`/admin/createquestion/${res.id}`)
 	}).catch((err) => {
 		console.log('error', err)
 	})

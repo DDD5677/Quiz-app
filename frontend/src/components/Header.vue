@@ -9,7 +9,7 @@
 					each student, you will be able to make your
 					first sketch after the first lesson.
 				</p>
-				<dark-button @click.prevent="goToAdmin">Get started</dark-button>
+				<dark-button @click.prevent="goToQuizes">Get started</dark-button>
 			</div>
 			<div class="right py-8">
 				<img src="@/assets/images/test.svg" alt="">
@@ -22,8 +22,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter();
-function goToAdmin() {
-	router.push('/admin')
+function goToQuizes() {
+	router.push({ path: '/quizes', query: { page: 1, limit: 10 } })
 }
 </script>
 

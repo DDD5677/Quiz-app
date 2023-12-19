@@ -8,6 +8,7 @@ const QuizService = {
 				limit:payload.limit,
 				sort:payload.sort,
 				search:payload.search,
+				category:payload.category,
 				user:payload.user
 			}
 		})

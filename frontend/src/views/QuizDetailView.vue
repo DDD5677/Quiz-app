@@ -100,7 +100,7 @@ const updateQuizHandler = () => {
 }
 
 const addQuestionHandler = () => {
-	router.push(`/createquestion/${quizId}`)
+	router.push(`/admin/createquestion/${quizId}`)
 	questionStore.assignCorrectAnswer(null)
 }
 

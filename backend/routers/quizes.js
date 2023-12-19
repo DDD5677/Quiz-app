@@ -25,8 +25,11 @@ router.get("/", async (req, res, next) => {
       if (req.query.search) {
          filter = {
             ...filter,
-            name: { $regex: req.query.search, $options: "i" },
+            title: { $regex: req.query.search, $options: "i" },
          };
+      }
+      if (req.query.category) {
+         filter["category"] = req.query.category;
       }
 
       totalQuizes = await Quiz.countDocuments(filter).exec();
@@ -75,7 +78,10 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
    try {
-      const quiz = await Quiz.findById(req.params.id).populate("questions");
+      const quiz = await Quiz.findById(req.params.id).populate({
+         path: "questions",
+         select: "-correctAnswer",
+      });
 
       if (!quiz) {
          res.status(404).json({

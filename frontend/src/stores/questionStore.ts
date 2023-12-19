@@ -42,7 +42,7 @@ export const useQuestionStore = defineStore('question', () => {
 			errors.value = null;
 			QuestionService.postQuestion(data).then((response)=>{
 				isLoading.value=false;
-				quizStore.assignQuiz(response.data);
+				//quizStore.assignQuiz(response.data);
 				resolve(response.data);
 			}).catch((error)=>{
 				isLoading.value=false;
@@ -53,5 +53,37 @@ export const useQuestionStore = defineStore('question', () => {
 		})
 	}
 
-  return { toggleEditors, editors,correctAnswer,assignCorrectAnswer,createQuestion }
+	const deleteQuestion = (data:object)=>{
+		return new Promise((resolve,reject)=>{
+			isLoading.value=true;
+			errors.value = null;
+			QuestionService.deleteQuestion(data).then((response)=>{
+				isLoading.value=false;
+				resolve(response.data);
+			}).catch((error)=>{
+				isLoading.value=false;
+				console.log(error)
+				errors.value = error.response.data
+				reject(error.response.data)
+			})
+		})
+	}
+	const getQuestionById = (id:string)=>{
+		return new Promise((resolve,reject)=>{
+			isLoading.value=true;
+			question.value=null;
+			errors.value=null;
+			QuestionService.getQuestionById(id).then((response)=>{
+				question.value = response.data;
+				correctAnswer.value = response.data.correctAnswer
+				isLoading.value = false;
+				resolve(response.data)
+			}).catch((error)=>{
+				isLoading.value=false;
+				errors.value=error.response.data;
+				reject(error.response.data)
+			})
+		})
+	}
+  return {getQuestionById,deleteQuestion, toggleEditors, editors,correctAnswer,question,assignCorrectAnswer,createQuestion }
 })

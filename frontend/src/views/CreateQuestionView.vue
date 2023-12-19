@@ -43,19 +43,19 @@
 						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
 					</div>
 					<div class="quiz-answers" :key="answerKey">
-						<AnswerEditor v-if="showAnswers.showAnswer1" :index="'answer1'"
+						<AnswerEditor v-if="showAnswers.showAnswer1 || answers.answer1" :index="'answer1'"
 							@answer="answerHandler($event, 'answer1')" @removeAnswer="removeAnswerHandler($event, 'showAnswer1')"
 							:valueEditor="answers.answer1" />
-						<AnswerEditor v-if="showAnswers.showAnswer2" :index="'answer2'"
+						<AnswerEditor v-if="showAnswers.showAnswer2 || answers.answer2" :index="'answer2'"
 							@answer="answerHandler($event, 'answer2')" @removeAnswer="removeAnswerHandler($event, 'showAnswer2')"
 							:valueEditor="answers.answer2" />
-						<AnswerEditor v-if="showAnswers.showAnswer3" :index="'answer3'"
+						<AnswerEditor v-if="showAnswers.showAnswer3 || answers.answer3" :index="'answer3'"
 							@answer="answerHandler($event, 'answer3')" @removeAnswer="removeAnswerHandler($event, 'showAnswer3')"
 							:valueEditor="answers.answer3" />
-						<AnswerEditor v-if="showAnswers.showAnswer4" :index="'answer4'"
+						<AnswerEditor v-if="showAnswers.showAnswer4 || answers.answer4" :index="'answer4'"
 							@answer="answerHandler($event, 'answer4')" @removeAnswer="removeAnswerHandler($event, 'showAnswer4')"
 							:valueEditor="answers.answer4" />
-						<AnswerEditor v-if="showAnswers.showAnswer5" :index="'answer5'"
+						<AnswerEditor v-if="showAnswers.showAnswer5 || answers.answer5" :index="'answer5'"
 							@answer="answerHandler($event, 'answer5')" @removeAnswer="removeAnswerHandler($event, 'showAnswer5')"
 							:valueEditor="answers.answer5" />
 					</div>
@@ -122,11 +122,11 @@ const answers = ref<Answers>({
 const showAnswers = ref<ShowAnswers>({
 	showAnswer1: true,
 	showAnswer2: true,
-	showAnswer3: true,
-	showAnswer4: true,
+	showAnswer3: false,
+	showAnswer4: false,
 	showAnswer5: false,
 })
-const activeAnswers = ref(4);
+const activeAnswers = ref(2);
 
 function answerHandler(a: string, title: keyof Answers) {
 	answers.value[title] = a;
@@ -153,24 +153,18 @@ function addAnswer() {
 }
 //assign question data according to question query
 
-const assignQuestionData = (quiz: any, id: string) => {
-	quiz.questions.forEach((item: any) => {
-		if (item.id === id) {
-			difficulty.value = item.difficulty;
-			point.value = item.point;
-			answers.value = item.answers;
-			question.value = item.text;
-			questionStore.assignCorrectAnswer(item.correctAnswer)
-			activeAnswers.value = 0
-			for (const key in item.answers) {
-				if (item.answers[key]) {
-					activeAnswers.value++
-				}
-			}
-			answerKey.value += 1
+const assignQuestionData = () => {
+	difficulty.value = questionStore.question.difficulty;
+	point.value = questionStore.question.point;
+	answers.value = questionStore.question.answers;
+	question.value = questionStore.question.text;
+	activeAnswers.value = 0
+	for (const key in questionStore.question.answers) {
+		if (questionStore.question.answers[key]) {
+			activeAnswers.value++
 		}
-	})
-
+	}
+	answerKey.value += 1
 }
 
 
@@ -216,22 +210,25 @@ function createQuestionHandler() {
 		category: category.value,
 		user: authStore.user.id,
 		image: image.value,
-		quizId: quizId
+		quizId: quizId,
+		questionId: route.query.question
 	}
 	questionStore.createQuestion(data).then((res) => {
-		router.push(`/quiz/${quizId}`)
+		router.push(`/admin/quiz/${quizId}`)
 	}).catch((err) => {
 		console.log(err)
 	})
 }
 onMounted(() => {
-	quizStore.getQuizById(quizId).then((res: any) => {
-		const questionId = route.query.question as string
-		if (questionId) {
-			assignQuestionData(res, questionId)
-
-		}
-	})
+	const questionId = route.query.question as string
+	if (questionId) {
+		questionStore.getQuestionById(questionId).then((res) => {
+			console.log(res)
+			assignQuestionData()
+		})
+	} else {
+		quizStore.getQuizById(quizId)
+	}
 })
 </script>
 

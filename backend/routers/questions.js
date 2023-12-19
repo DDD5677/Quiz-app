@@ -38,7 +38,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
    try {
-      let question = new Question({
+      let questionData = {
          text: req.body.text,
          correctAnswer: req.body.correctAnswer,
          answers: req.body.answers,
@@ -48,29 +48,83 @@ router.post("/", async (req, res, next) => {
          category: req.body.category,
          image: req.body.image,
          user: req.body.user,
-      });
+      };
+      let question;
 
-      question = await question.save();
+      if (req.body.questionId) {
+         //update existed question
+         console.log(req.body.questionId);
+         question = await Question.findByIdAndUpdate(
+            req.body.questionId,
+            questionData,
+            { new: true }
+         );
+         if (!question) {
+            return res.status(500).json({
+               success: false,
+               message: "The question is not updated",
+            });
+         }
+      } else {
+         //create new question
+         question = new Question({ ...questionData });
+         question = await question.save();
+
+         if (!question) {
+            return res.status(500).json({
+               success: false,
+               message: "The question is not created",
+            });
+         }
+
+         const quiz = await Quiz.findByIdAndUpdate(
+            req.body.quizId,
+            { $push: { questions: question._id } },
+            { new: true }
+         ).populate("questions");
+         if (!quiz) {
+            return res.status(500).json({
+               success: false,
+               message: "The question is not added to quiz",
+            });
+         }
+      }
+      res.status(200).send({
+         success: true,
+         message: "Question is created or updated successfully",
+      });
+   } catch (error) {
+      console.log(error);
+      next(error);
+   }
+});
+
+router.delete("/", async (req, res, next) => {
+   try {
+      console.log(req.query);
+      const question = await Question.findByIdAndDelete(req.query.questionId);
       if (!question) {
          return res.status(500).json({
             success: false,
-            message: "The question is not created",
+            message: "The question is not found",
          });
       }
       const quiz = await Quiz.findByIdAndUpdate(
-         req.body.quizId,
-         { $push: { questions: question._id } },
+         req.query.quizId,
+         { $pull: { questions: req.query.questionId } },
          { new: true }
-      ).populate("questions");
+      );
       if (!quiz) {
          return res.status(500).json({
             success: false,
-            message: "The question is not added to quiz",
+            message: "The quiz is not found",
          });
       }
-      res.status(200).send(quiz);
+      res.status(200).send({
+         success: true,
+         message: "Question is deleted successfully",
+      });
    } catch (error) {
-      console.log(error);
       next(error);
    }
 });

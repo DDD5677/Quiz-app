@@ -52,7 +52,22 @@ export const useQuizStore = defineStore('quiz',()=>{
 			})
 		})
 	}
-
+	const getQuizByIdForAdmin = (id:string)=>{
+		return new Promise((resolve,reject)=>{
+			isLoading.value=true;
+			quiz.value=null;
+			errors.value=null;
+			QuizService.getQuizByIdForAdmin(id).then((response)=>{
+				quiz.value=response.data;
+				isLoading.value=false;
+				resolve(response.data)
+			}).catch((error)=>{
+				isLoading.value=false;
+				errors.value=error.response.data;
+				reject(error.response.data)
+			})
+		})
+	}
 
 	const createQuiz = (data:Quiz)=>{
 		return new Promise((resolve,reject)=>{
@@ -110,8 +125,9 @@ export const useQuizStore = defineStore('quiz',()=>{
 		createQuiz,
 		updateQuiz,
 		getQuizById,
+		getQuizByIdForAdmin,
 		deleteQuiz,
-		assignQuiz,
+		//assignQuiz,
 		isLoading,
 		quiz,
 		errors,

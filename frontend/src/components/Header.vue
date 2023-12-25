@@ -1,5 +1,5 @@
 <template>
-	<section class="pt-16" id="home">
+	<section id="home">
 		<div class="container sm:flex justify-between items-center">
 			<div class="left py-8">
 				<h2 class="title">EasyQuiz Makes It Very Easy </h2>
@@ -23,7 +23,7 @@
 import { useRouter } from 'vue-router'
 const router = useRouter();
 function goToQuizes() {
-	router.push({ path: '/quizes', query: { page: 1, limit: 10 } })
+	router.push({ path: '/quizes', replace: true, query: { page: 1, limit: 10 } })
 }
 </script>
 

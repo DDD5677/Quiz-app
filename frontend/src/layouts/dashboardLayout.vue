@@ -54,6 +54,7 @@
 				</div>
 			</div>
 			<div class="slot">
+				<InfoActiveAction v-if="actionStore.activeAction" />
 				<slot></slot>
 			</div>
 		</div>
@@ -61,11 +62,14 @@
 </template>
 
 <script lang="ts" setup>
+import InfoActiveAction from '@/components/InfoActiveAction.vue';
+import { useActionStore } from '@/stores/actionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavbarStore } from '@/stores/navbarStore';
 import { ref } from 'vue';
 const authStore = useAuthStore();
 const navbarStore = useNavbarStore();
+const actionStore = useActionStore()
 const windowWith = ref<number>();
 function checkScreen() {
 	windowWith.value = window.innerWidth;
@@ -98,6 +102,10 @@ const sidebarToggle = () => {
 	opacity: 0;
 }
 
+.active_action {
+	margin-top: 20px;
+}
+
 .sidebar {
 	position: fixed;
 	left: 0;
@@ -106,9 +114,6 @@ const sidebarToggle = () => {
 	box-shadow: 0 2px 4px #00000014;
 	background-color: #fff;
 	z-index: 4;
-
-
-
 
 	.menu {
 		margin-top: 50px;

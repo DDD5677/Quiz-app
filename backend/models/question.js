@@ -7,7 +7,7 @@ const questionSchema = new mongoose.Schema(
          required: [true, "Please enter question text"],
       },
       correctAnswer: {
-         type: String,
+         type: Number,
          required: [true, "Please choose correct answer"],
       },
       answers: {

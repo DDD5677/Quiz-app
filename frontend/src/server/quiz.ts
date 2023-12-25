@@ -16,6 +16,9 @@ const QuizService = {
 	getQuizById(id:string){
 		return axios.get(`/quizes/${id}`)
 	},
+	getQuizByIdForAdmin(id:string){
+		return axios.get(`/quizes/admin/${id}`)
+	},
 	postQuiz(quiz:object){
 		return axios.post('/quizes',quiz)
 	},

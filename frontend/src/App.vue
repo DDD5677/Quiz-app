@@ -13,15 +13,19 @@ import { computed, defineComponent, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from "./stores/authStore";
 import { getItem } from "./helpers/localStorage";
+import { useActionStore } from "./stores/actionStore";
+import InfoActiveAction from "./components/InfoActiveAction.vue"
 export default defineComponent({
 	components: {
 		mainLayout,
 		dashboardLayout,
 		EmptyLayout,
-		SignInLayout
+		SignInLayout,
+		InfoActiveAction
 	},
 	setup() {
 		const authStore = useAuthStore()
+		const actionStore = useActionStore()
 		const route = useRoute()
 		const layout = computed(() => {
 			return route.meta.layout + 'Layout'
@@ -30,7 +34,13 @@ export default defineComponent({
 		const token = getItem('token')
 		onMounted(() => {
 			if (token) {
-				authStore.refresh()
+				authStore.refresh().then((user: any) => {
+					actionStore.getActiveAction(user.id).then((res) => {
+						console.log(res)
+					}).catch((err) => {
+						console.log(err)
+					})
+				})
 			}
 		})
 		return {

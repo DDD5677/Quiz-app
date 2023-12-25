@@ -24,10 +24,11 @@ export const useQuestionStore = defineStore('question', () => {
 			}
 		})
 	}
+	type MyRange = 0|1|2|3|4
   //checkboxes choose correct Answer
-  const correctAnswer = ref<keyof Answers|null>(null)
+  const correctAnswer = ref<MyRange|null>(null)
 
-  function assignCorrectAnswer(answer:keyof Answers|null){
+  function assignCorrectAnswer(answer:MyRange|null){
 	correctAnswer.value=answer
   }
   //create Question

@@ -94,7 +94,23 @@ router.get("/:id", async (req, res, next) => {
       next(error);
    }
 });
+router.get("/admin/:id", async (req, res, next) => {
+   try {
+      const quiz = await Quiz.findById(req.params.id).populate({
+         path: "questions",
+      });
 
+      if (!quiz) {
+         res.status(404).json({
+            success: false,
+            message: "The quiz with given ID was not found",
+         });
+      }
+      res.status(200).send(quiz);
+   } catch (error) {
+      next(error);
+   }
+});
 router.post("/", async (req, res, next) => {
    try {
       console.log(req.body);

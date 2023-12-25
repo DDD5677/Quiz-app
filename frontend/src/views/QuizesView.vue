@@ -1,5 +1,6 @@
 <template>
 	<section class="quizes">
+		<InfoActiveAction v-if="actionStore.activeAction" />
 		<div class="container">
 			<div class="wrapper">
 				<h1 class="title">Quizes</h1>
@@ -44,7 +45,6 @@
 								<td class="about">{{ quiz.category }}</td>
 								<td class="about">{{ quiz.questions.length }}</td>
 							</tr>
-
 						</tbody>
 					</table>
 				</div>
@@ -56,11 +56,14 @@
 </template>
 
 <script setup lang="ts">
+import InfoActiveAction from "@/components/InfoActiveAction.vue";
 import Pagination from "@/components/Pagination.vue"
+import { useActionStore } from "@/stores/actionStore";
 import { useQuizStore } from '@/stores/quizStore';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const quizStore = useQuizStore()
+const actionStore = useActionStore()
 const route = useRoute()
 const router = useRouter()
 const category = ref('')
@@ -68,7 +71,11 @@ const search = ref('')
 const difficulty = ref('')
 
 const goToQuizPlay = (id: string) => {
-	router.push(`/quiz/${id}`)
+	if (!actionStore.activeAction) {
+		router.push({ path: `/quiz/${id}` })
+	} else {
+		alert('Sizda tugatilmagan test mavjud. Yangi testni boshlash uchun oldin yakunlang!')
+	}
 }
 
 const getData = (page: number, limit: number) => {
@@ -79,7 +86,7 @@ const getData = (page: number, limit: number) => {
 		category: category.value
 	}
 	quizStore.getQuiz(queries)
-	router.push({ path: '/quizes', query: queries })
+	router.push({ path: '/quizes', replace: true, query: queries })
 }
 watch(search, () => {
 	if (route.query.page && route.query.limit) {
@@ -102,16 +109,14 @@ onMounted(() => {
 		getData(+route.query.page, +route.query.limit)
 	} else {
 		getData(1, 10)
-
 	}
 })
 </script>
 
 <style lang="scss" scoped>
 .quizes {
-	padding-top: 100px;
-	backdrop-filter: brightness(80%);
-	min-height: 100vh;
+	padding-bottom: 200px;
+
 
 	.wrapper {
 		padding: 20px;
@@ -196,10 +201,10 @@ onMounted(() => {
 
 						.img_box {
 							width: 100px;
-							border-radius: 10px;
-							overflow: hidden;
+							padding: 5px;
 
 							img {
+								border-radius: 10px;
 								width: 100%;
 								height: 100%;
 							}

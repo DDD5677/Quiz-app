@@ -52,9 +52,7 @@ function loginHandler() {
 
 <style lang="scss" scoped>
 .signinView {
-	padding-top: 100px;
-	min-height: 100vh;
-	backdrop-filter: brightness(80%);
+
 
 	.wrapper {
 		display: flex;

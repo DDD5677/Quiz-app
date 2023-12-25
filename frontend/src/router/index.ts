@@ -9,6 +9,7 @@ import QuizDetailView from '@/views/QuizDetailView.vue'
 import LibraryView from '@/views/LibraryView.vue'
 import QuizesView from '@/views/QuizesView.vue'
 import QuizPlayView from '@/views/QuizPlayView.vue'
+import StartQuizView from '@/views/StartQuizView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -68,6 +69,12 @@ const router = createRouter({
 		},
 		{
 			path: '/quiz/:id',
+			name: 'quiz-start',
+			meta: { layout: "SignIn" },
+			component: StartQuizView
+		},
+		{
+			path: '/quiz/start/:id',
 			name: 'quiz',
 			meta: { layout: "empty" },
 			component: QuizPlayView

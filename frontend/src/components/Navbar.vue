@@ -17,7 +17,7 @@
 						</li>
 						<li class="item"><a href="#about" class="item-link">About Us</a></li>
 						<li class="item"><a href="#contacts" class="item-link">Contacts</a></li>
-						<li v-if="authStore.isLogged" class="item">
+						<li v-if="authStore.isLogged && authStore.user.role === 'teacher'" class="item">
 							<RouterLink :to="{ name: 'admin' }" class="item-link">Dashboard</RouterLink>
 						</li>
 					</ul>
@@ -122,16 +122,10 @@ function clickBrand() {
 			}
 		}
 
-
-
 		.login-btn {
 			margin: 10px 15px 0;
 		}
-
-
 	}
-
-
 }
 
 .brand,
@@ -141,7 +135,6 @@ function clickBrand() {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
 
 	span {
 		color: #8F95A5;
@@ -182,8 +175,6 @@ function clickBrand() {
 	}
 }
 
-
-
 .item {
 	padding: 5px;
 	margin-right: 15px;
@@ -200,7 +191,5 @@ function clickBrand() {
 			border-color: #000;
 		}
 	}
-
-
 }
 </style>

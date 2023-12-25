@@ -82,9 +82,6 @@ function SignUpHandler() {
 
 <style lang="scss" scoped>
 .signinView {
-	padding-top: 100px;
-	min-height: 100vh;
-	backdrop-filter: brightness(80%);
 	//background-color: #f2f2f2;
 
 	.wrapper {

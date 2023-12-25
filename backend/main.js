@@ -14,6 +14,7 @@ const errorHandler = require("./helpers/error-handler");
 const usersRouter = require("./routers/users");
 const quizesRouter = require("./routers/quizes");
 const questionsRouter = require("./routers/questions");
+const actionsRouter = require("./routers/actions");
 //!Middlewares
 app.use(cors());
 app.options("*", cors());
@@ -24,6 +25,7 @@ app.use(morgan("tiny"));
 app.use(`${api}/users`, usersRouter);
 app.use(`${api}/quizes`, quizesRouter);
 app.use(`${api}/questions`, questionsRouter);
+app.use(`${api}/actions`, actionsRouter);
 
 //! Error Handler
 app.use(errorHandler);

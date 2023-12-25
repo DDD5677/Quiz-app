@@ -12,9 +12,10 @@
 		<div class="body">
 			<div class="question">{{ question.text }}</div>
 			<div class="options">
-				<div v-for="(option, index) in options" :key="index" class="option" :class="{ 'correct': option.correct }">
+				<div v-for="(option, index) in options" :key="index" class="option"
+					:class="{ 'correct': index === +question.correctAnswer }">
 					<span class="dot"></span>
-					<span>{{ option.value }}</span>
+					<span>{{ option }}</span>
 				</div>
 			</div>
 		</div>
@@ -50,18 +51,9 @@ const options = computed(() => {
 	for (const option in props.question.answers) {
 		const value = props.question.answers[option]
 		if (value !== '') {
-			if (props.question.correctAnswer === option) {
-				opt.push({
-					value: value,
-					correct: true
-				})
-			} else {
-				opt.push({
-					value: value,
-					correct: false
-				})
-			}
+			opt.push(value)
 		}
+
 	}
 	return opt
 })

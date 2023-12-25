@@ -1,7 +1,9 @@
 <template>
 	<section class="signInLayout">
 		<Navbar />
-		<slot></slot>
+		<div class="bg">
+			<slot></slot>
+		</div>
 	</section>
 </template>
 
@@ -16,5 +18,10 @@ import Navbar from '@/components/Navbar.vue';
 	background-position: center;
 	min-height: 100vh;
 
+	.bg {
+		padding-top: 100px;
+		min-height: 100vh;
+		backdrop-filter: brightness(80%);
+	}
 }
 </style>

@@ -104,18 +104,10 @@ const addQuestionHandler = () => {
 	questionStore.assignCorrectAnswer(null)
 }
 
-
-
-
-quizStore.getQuizById(quizId).then((res) => {
+//get quiz for admin
+quizStore.getQuizByIdForAdmin(quizId).then((res) => {
 	assignQuizInfo(res)
 })
-
-// onMounted(() => {
-// 	quizStore.getQuizById(quizId).then((res) => {
-// 		assignQuizInfo(res)
-// 	})
-// })
 </script>
 
 <style lang="scss" scoped>

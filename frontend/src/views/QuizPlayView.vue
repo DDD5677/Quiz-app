@@ -1,22 +1,132 @@
 <template>
 	<section class="quiz_play">
+		<div v-if="!actionStore.isLoading && !actionStore.finished" class="timer">
+			<span>Time</span>
+			<CountDown :time="+actionStore.time" />
+		</div>
 		<div class="container">
 			<div class="wrapper">
-				<h1>Quiz</h1>
+				<div v-if="!actionStore.isLoading && actionStore.finished" class="result">
+					<h2 class="title">Result</h2>
+					<div class="correct_answers">
+						<span>Correct answers</span>
+						<span>{{ actionStore.action.correctAnswers }}/{{ actionStore.action.quiz.questions.length }}</span>
+					</div>
+					<div class="score">
+						<span>Total point</span>
+						<span>{{ actionStore.action.score }} ball</span>
+					</div>
+				</div>
+				<div v-if="!actionStore.isLoading" class="menu">
+					<h2 class="title">{{ actionStore.action.quiz.title }}</h2>
+					<Question v-for="(question, index) in actionStore.action.quiz.questions" :key="index" :question="question"
+						:index="index" :choosed="actionStore.chooses ? actionStore.chooses[question.id] : undefined" />
+					<div v-if="!actionStore.action.finished" class="finish">
+						<dark-button @click.prevent="finishHandler">Yakunlash</dark-button>
+					</div>
+				</div>
+				<loader v-if="actionStore.isLoading" />
 			</div>
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-import { useQuizStore } from '@/stores/quizStore';
-import { useRoute } from 'vue-router';
-const quizStore = useQuizStore()
+import CountDown from "@/components/CountDown.vue";
+import Question from '@/components/Question.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useActionStore } from "@/stores/actionStore";
+const actionStore = useActionStore()
 const route = useRoute()
-const quizId = route.params.id as string
-quizStore.getQuizById(quizId).then((res) => {
-	console.log(res)
-})
+const router = useRouter()
+
+//get action
+const actionId = route.params.id as string
+actionStore.getActionById(actionId)
+
+//finish action
+const finishHandler = () => {
+	const data = {
+		actionId: route.params.id,
+		chooses: actionStore.activeAction.chooses
+	}
+	actionStore.finishAction(data)
+}
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.quiz_play {
+	padding-top: 80px;
+
+	.timer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: #263238;
+		position: fixed;
+		color: #fff;
+		padding: 20px;
+		width: 100%;
+		top: 0;
+		z-index: 999;
+
+		.countdown {
+			color: #000;
+			font-size: 25px;
+			gap: 10px;
+
+			span {
+				color: #fff;
+			}
+		}
+
+		span {
+			font-size: 25px;
+		}
+	}
+
+	.result {
+		padding: 0px 0 30px;
+		font-size: 25px;
+
+		div {
+			display: flex;
+			justify-content: space-between;
+			padding: 10px 30px;
+		}
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+	}
+
+	.wrapper {
+		border-radius: 10px;
+		width: 80%;
+		padding: 30px 0 0;
+		background-color: #fff;
+		margin-bottom: 30px;
+
+		.menu {
+			.finish {
+				padding: 20px 30px;
+				display: flex;
+				justify-content: flex-end;
+
+				.dark-btn {
+					font-size: 24px;
+				}
+			}
+		}
+
+		.title {
+			text-align: center;
+			font-size: 28px;
+			font-weight: 500;
+			text-transform: capitalize;
+			border-bottom: 5px solid #f2f2f2;
+		}
+	}
+}
+</style>

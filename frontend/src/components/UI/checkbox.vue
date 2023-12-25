@@ -1,25 +1,42 @@
 <template>
 	<div class="checkbox-wrapper-19">
-		<input :checked="index === questionStore.correctAnswer" type="checkbox" :id="index" v-model="checked"
-			@change="correctAnswerHandler(index)" />
+		<input :checked="correctAnswerTip === questionStore.correctAnswer" type="checkbox" :id="index" v-model="checked"
+			@change="correctAnswerHandler()" />
 		<label :for="index" class="check-box"></label>
 	</div>
 </template>
 
 <script setup lang="ts">
 import type { Answers } from '@/types/createQuizType';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useQuestionStore } from '@/stores/questionStore';
 const questionStore = useQuestionStore();
 const props = defineProps<{ index: keyof Answers }>()
 const checked = ref(false)
-if (props.index === questionStore.correctAnswer) {
-	checked.value = true
-}
 
-function correctAnswerHandler(index: keyof Answers) {
+const correctAnswerTip = computed(() => {
+	switch (props.index) {
+		case 'answer1':
+			return 0;
+		case 'answer2':
+			return 1;
+		case 'answer3':
+			return 2
+		case 'answer4':
+			return 3
+		default:
+			return 4
+	}
+})
+// if (correctAnswerTip === questionStore.correctAnswer) {
+// 	checked.value = true
+// }
+function correctAnswerHandler() {
 	if (checked.value) {
-		questionStore.assignCorrectAnswer(index)
+
+		questionStore.assignCorrectAnswer(correctAnswerTip.value)
+
+
 	} else {
 		questionStore.assignCorrectAnswer(null)
 	}

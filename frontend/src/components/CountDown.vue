@@ -31,10 +31,13 @@ if (!actionStore.finished) {
 				seconds.value = Math.floor(launchTime / 1000)
 				minutes.value = Math.floor(launchTime / (60 * 1000))
 				hours.value = Math.floor(launchTime / (60 * 60 * 1000))
-			} else {
+			} else if (!actionStore.finished) {
 				clearInterval(countDown)
 				const data = {
 					actionId: actionStore.activeAction.id,
+					firstname: actionStore.action.firstname,
+					lastname: actionStore.action.lastname,
+					quiz: actionStore.action.quiz.title,
 					chooses: actionStore.chooses
 				}
 				actionStore.finishAction(data).then((res: any) => {

@@ -4,6 +4,7 @@ const Action = require("../models/action");
 const Quiz = require("../models/quiz");
 const Question = require("../models/question");
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 router.get("/", async (req, res, next) => {
    try {
@@ -171,6 +172,17 @@ router.put("/finish/:id", async (req, res, next) => {
          updateBlock.score = score;
       }
       console.log(updateBlock);
+      //------------------
+      const TOKEN = process.env.TOKEN;
+      const CHAT_ID = process.env.CHAT_ID;
+      const data = {
+         chat_id: CHAT_ID,
+         text: `${req.body.lastname} ${req.body.firstname}\n ${req.body.quiz} testidan ${updateBlock.correctAnswers} ta savolga tog'ri javob berib, ${updateBlock.score}ball to'pladi`,
+      };
+      console.log(TOKEN, CHAT_ID);
+      const TELEGRAM_URL = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+      await axios.post(TELEGRAM_URL, data);
+      //--------------------
       const action = await Action.findByIdAndUpdate(
          req.params.id,
          updateBlock,

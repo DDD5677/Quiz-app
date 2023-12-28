@@ -1,6 +1,6 @@
 <template>
 	<section class="quiz_play">
-		<div v-if="!actionStore.isLoading && !actionStore.finished" class="timer">
+		<div v-if="!actionStore.isLoading && !actionStore.isLoadingActive && !actionStore.finished" class="timer">
 			<span>Time</span>
 			<CountDown :time="+actionStore.time" />
 		</div>
@@ -17,15 +17,16 @@
 						<span>{{ actionStore.action.score }} ball</span>
 					</div>
 				</div>
-				<div v-if="!actionStore.isLoading" class="menu">
+				<div v-if="!actionStore.isLoading && !actionStore.isLoadingActive" class=" menu">
 					<h2 class="title">{{ actionStore.action.quiz.title }}</h2>
-					<Question v-for="(question, index) in actionStore.action.quiz.questions" :key="index" :question="question"
-						:index="index" :choosed="actionStore.chooses ? actionStore.chooses[question.id] : undefined" />
+					<Question v-for="( question, index ) in  actionStore.action.quiz.questions " :key="index"
+						:question="question" :index="index"
+						:choosed="actionStore.chooses ? actionStore.chooses[question.id] : undefined" />
 					<div v-if="!actionStore.action.finished" class="finish">
 						<dark-button @click.prevent="finishHandler">Yakunlash</dark-button>
 					</div>
 				</div>
-				<loader v-if="actionStore.isLoading" />
+				<loader v-else />
 			</div>
 		</div>
 	</section>
@@ -36,6 +37,7 @@ import CountDown from "@/components/CountDown.vue";
 import Question from '@/components/Question.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useActionStore } from "@/stores/actionStore";
+import { onMounted } from "vue";
 const actionStore = useActionStore()
 const route = useRoute()
 const router = useRouter()
@@ -48,6 +50,9 @@ actionStore.getActionById(actionId)
 const finishHandler = () => {
 	const data = {
 		actionId: route.params.id,
+		firstname: actionStore.action.firstname,
+		lastname: actionStore.action.lastname,
+		quiz: actionStore.action.quiz.title,
 		chooses: actionStore.activeAction.chooses
 	}
 	actionStore.finishAction(data)

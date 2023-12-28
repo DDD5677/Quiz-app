@@ -10,9 +10,9 @@
 					Discover your current English level by taking our free online English test.Sign up to our newsletter for
 					learning tips and free resources
 				</p>
-				<form class="flex justify-between" action="">
+				<form @click.prevent="sendMessageHandler" class="flex justify-between" action="">
 					<main-input type="text" placeholder="Enter Your E-mail" v-model="email" />
-					<dark-button>Subscribe</dark-button>
+					<dark-button :disabled="telegramStore.isLoading">Subscribe</dark-button>
 				</form>
 			</div>
 		</div>
@@ -22,8 +22,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import { useTelegramStore } from '../stores/telegramStore'
+const telegramStore = useTelegramStore()
 const email = ref('')
+
+const sendMessageHandler = () => {
+	const data = {
+		chat_id: 'customChatId',
+		text: email.value
+	}
+	console.log(data, 'data sended successfully')
+	// telegramStore.sendMessage(data).then((res) => {
+	// 	email.value = ''
+	// })
+}
 </script>
 
 <style scoped lang="scss">

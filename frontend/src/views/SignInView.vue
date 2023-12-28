@@ -6,7 +6,7 @@
 					<div class="icon"><i class="fa-regular fa-user"></i></div>
 					<h1 class="title">Sign In</h1>
 					<div class="input">
-						<main-input type="text" placeholder="Email" v-model="email" />
+						<main-input type="email" placeholder="Email" v-model="email" />
 						<span class="error">{{ authStore.errors ? authStore.errors.email : '' }}</span>
 					</div>
 					<div class="input">

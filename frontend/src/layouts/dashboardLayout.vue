@@ -28,7 +28,7 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+					<RouterLink :to="{ name: 'settings' }" class="item-link">
 						<i class="fa-solid fa-gear"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Settings</span>

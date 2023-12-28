@@ -10,6 +10,7 @@ import LibraryView from '@/views/LibraryView.vue'
 import QuizesView from '@/views/QuizesView.vue'
 import QuizPlayView from '@/views/QuizPlayView.vue'
 import StartQuizView from '@/views/StartQuizView.vue'
+import SettingsView from '@/views/SettingsView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -60,6 +61,12 @@ const router = createRouter({
 			name: 'library',
 			meta: { layout: "dashboard" },
 			component: LibraryView
+		},
+		{
+			path: '/admin/settings',
+			name: 'settings',
+			meta: { layout: "dashboard" },
+			component: SettingsView
 		},
 		{
 			path: '/quizes',

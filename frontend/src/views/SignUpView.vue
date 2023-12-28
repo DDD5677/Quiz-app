@@ -16,7 +16,7 @@
 								<span class="error">{{ authStore.errors ? authStore.errors.lastname : '' }}</span>
 							</div>
 							<div class="input">
-								<main-input type="text" placeholder="Email" v-model="email" />
+								<main-input type="email" placeholder="Email" v-model="email" />
 								<span class="error">{{ authStore.errors ? authStore.errors.email : '' }}</span>
 							</div>
 							<div class="input">

@@ -47,10 +47,10 @@
 				<input type="text" placeholder="Search quiz" class="search">
 
 				<div v-if="!authStore.isLoading" class="avatar">
-					<a href="" class="avatar-link">
-						<!-- <img src="" alt=""> -->
-						<span>{{ authStore.user.firstname[0] }}</span>
+					<a v-if="authStore.user.image" href="authStore.user.image" class="avatar-link">
+						<img :src="authStore.user.image" alt="">
 					</a>
+					<span v-else>{{ authStore.user.firstname[0] }}</span>
 				</div>
 			</div>
 			<div class="slot">
@@ -210,18 +210,27 @@ const sidebarToggle = () => {
 		}
 
 		.avatar {
-			a {
-				border-radius: 50%;
-				border: 2px solid #263238;
-				width: 40px;
-				height: 40px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 20px;
-				font-weight: 500;
-				background-color: #263238;
-				color: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			overflow: hidden;
+			font-size: 20px;
+			font-weight: 500;
+			background-color: #263238;
+			color: #fff;
+			border-radius: 50%;
+
+			.avatar-link {
+				height: 100%;
+				width: 100%;
+
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+				}
 			}
 		}
 	}

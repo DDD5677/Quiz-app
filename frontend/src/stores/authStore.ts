@@ -65,5 +65,22 @@ function refresh(){
 		})
 	})
 }
-  return { register,login,refresh,user,isLoading,errors,isLogged }
+
+const updateUser=(data:any)=>{
+	return new Promise((resolve,reject)=>{
+		isLoading.value=true;
+		errors.value=null;
+		AuthService.updateUser(data).then((response)=>{
+			isLoading.value=false;
+			user.value=response.data.user;
+			resolve(response.data.user)
+		}).catch((error)=>{
+			isLoading.value=false;
+			errors.value=error.response.data;
+			reject(error.response.data)
+		})
+	})
+
+}
+  return { register,login,refresh,updateUser,user,isLoading,errors,isLogged }
 })

@@ -20,7 +20,7 @@ app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
-
+app.use("/public", express.static(__dirname + "/public"));
 //! routers
 app.use(`${api}/users`, usersRouter);
 app.use(`${api}/quizes`, quizesRouter);

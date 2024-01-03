@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const { upload } = require("../helpers/upload");
 router.get("/", async (req, res, next) => {
    try {
       const users = await User.find();
@@ -159,5 +161,100 @@ router.get("/user/refresh", async (req, res, next) => {
       next(error);
    }
 });
+
+router.put(
+   "/:id",
+   upload("public/avatars").single("avatar"),
+   async (req, res, next) => {
+      try {
+         const userExist = await User.findById(req.params.id);
+         if (!userExist) {
+            return res.status(400).send({
+               success: false,
+               message:
+                  "The user cannot ne updated because user with given ID is not found",
+            });
+         }
+         console.log(req.body);
+         let newPassword;
+         let basePath;
+         let fileName;
+         let updateBlock = {};
+         if (req.body.firstname) {
+            updateBlock.firstname = req.body.firstname;
+         }
+         if (req.body.lastname) {
+            updateBlock.lastname = req.body.lastname;
+         }
+         if (req.body.email) {
+            updateBlock.email = req.body.email;
+         }
+         if (req.body.phone) {
+            updateBlock.phone = req.body.phone;
+         }
+         const file = req.file;
+         if (file) {
+            console.log("userExist", userExist);
+            if (userExist.image) {
+               const img = userExist.image.split("/");
+               img.splice(0, 3);
+               const result = path.join(__dirname, "../", ...img);
+               console.log("result", result);
+               if (fs.existsSync(result)) {
+                  fs.unlinkSync(result);
+               }
+            }
+            basePath = `${req.protocol}://${req.get("host")}/public/avatars/`;
+            fileName = req.file.filename;
+            updateBlock["image"] = `${basePath}${fileName}`;
+         }
+         if (req.body.password) {
+            if (bcrypt.compareSync(req.body.password, userExist.password)) {
+               if (req.body.newPassword) {
+                  if (req.body.newPassword.length < 6) {
+                     return res.status(400).json({
+                        password:
+                           "the password length must be at least 6 characters!",
+                     });
+                  } else {
+                     newPassword = req.body.newPassword;
+                  }
+               } else {
+                  return res.status(400).json({
+                     password:
+                        "the password length must be at least 6 characters!",
+                  });
+               }
+            } else {
+               return res.status(400).json({
+                  password: "the password is wrong!",
+               });
+            }
+            updateBlock.newPassword = newPassword;
+         }
+
+         const user = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            updateBlock,
+            {
+               new: true,
+               runValidators: true,
+            }
+         ).select("-password");
+
+         if (!user) {
+            return res.status(400).send({
+               success: false,
+               message: "the user is not updated!",
+            });
+         }
+
+         res.status(200).send({ user });
+      } catch (error) {
+         console.log(error);
+         next(error);
+      }
+   }
+);
 
 module.exports = router;

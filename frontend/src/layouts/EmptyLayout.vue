@@ -1,5 +1,5 @@
 <template>
-	<section class="empty">
+	<section class="empty" :class="{ 'dark': navbarStore.darkTheme }">
 		<!-- <div class="commands-bar">
 			<div class="commands">
 				<button><i class="fa-solid fa-font"></i></button>
@@ -13,18 +13,24 @@
 				<button class="equation"><img src="@/assets/images/function.svg" alt=""><span>Formula qo'shish</span></button>
 			</div>
 		</div> -->
-		<slot></slot>
+		<div class="content bg-stone-100 dark:bg-slate-700">
+			<slot></slot>
+		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
+import { useNavbarStore } from '@/stores/navbarStore';
 
+
+const navbarStore = useNavbarStore();
 </script>
 
 <style lang="scss" scoped>
 .empty {
-	background-color: #f2f2f2;
-	min-height: 100vh;
+	.content {
+		min-height: 100vh;
+	}
 
 
 	// .commands-bar {

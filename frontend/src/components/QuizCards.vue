@@ -1,19 +1,18 @@
 <template>
-	<div class="quiz_card">
+	<div class="quiz_card bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-100">
 		<div class="img_box">
 			<a href="">
-				<img
-					src="https://images.unsplash.com/photo-1702561474123-7dfd6cb260c4?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-					alt="">
+				<img :src="quiz.image" alt="">
 			</a>
 		</div>
 		<div class="body">
 			<span class="quiz_title">{{ quiz.title }}</span>
 			<div class="btns">
-				<light-button @click.prevent="quizDetailHnadler" class="detail-btn"><i class="fa-solid fa-pencil"></i>
+				<light-button @click.prevent="quizDetailHnadler"><i class="fa-solid fa-pencil"></i>
 					Detail</light-button>
-				<light-button @click.prevent="deleteQuizHandler(quiz.id)" class="delete-btn"><i class="fa-solid fa-trash"></i>
-					Delete</light-button>
+				<delete-button @click.prevent="deleteQuizHandler(quiz.id)">
+					<i class="fa-solid fa-trash"></i>
+					Delete</delete-button>
 			</div>
 		</div>
 	</div>
@@ -51,7 +50,6 @@ const quizDetailHnadler = () => {
 
 <style lang="scss" scoped>
 .quiz_card {
-	background-color: #f2f2f2;
 	display: flex;
 	flex-direction: column;
 	border-radius: 10px;
@@ -59,6 +57,9 @@ const quizDetailHnadler = () => {
 	.img_box {
 		border-radius: 10px 10px 0 0;
 		overflow: hidden;
+		background: url(../assets/images/card__bg.svg);
+		background-repeat: no-repeat;
+		background-position: center;
 
 		img {
 			width: 100%;
@@ -90,16 +91,6 @@ const quizDetailHnadler = () => {
 			justify-content: space-between;
 			margin-top: 20px;
 			font-size: 12px;
-
-			.delete-btn {
-				border-color: #d40700;
-				color: #d40700;
-
-				&:hover {
-					background-color: #d40700;
-					color: #fff
-				}
-			}
 		}
 	}
 }

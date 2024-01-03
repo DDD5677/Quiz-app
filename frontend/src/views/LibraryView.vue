@@ -1,8 +1,8 @@
 <template>
 	<section class="library">
 		<div class="container">
-			<div class="wrapper">
-				<h1 class="title">Library</h1>
+			<div class="wrapper bg-white dark:bg-slate-800">
+				<h1 class="title dark:text-stone-100">Library</h1>
 				<div v-if="!quizStore.isLoading" class="cards">
 					<QuizCards v-for="quiz in quizStore.quizList" :key="quiz.id" :quiz="quiz" />
 				</div>
@@ -44,7 +44,6 @@ onMounted(() => {
 	}
 
 	.wrapper {
-		background-color: #fff;
 		border-radius: 10px;
 		padding: 20px;
 

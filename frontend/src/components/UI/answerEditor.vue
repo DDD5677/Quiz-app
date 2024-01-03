@@ -1,18 +1,20 @@
 <template>
 	<div class="answer-wrap">
-		<div class="answer">
-			<div class="answer-nav">
-				<button @click.prevent="removeEventListener" class="rm-variant"><i class="fa-solid fa-trash"></i></button>
+		<div class="answer bg-stone-100 dark:bg-slate-700">
+			<div class="answer-nav border-b-4 border-b-white dark:border-b-slate-800">
+				<button @click.prevent="removeEventListener"
+					class="rm-variant bg-white dark:bg-slate-800 text-slate-900 dark:text-stone-200 hover:bg-red-800 dark:hover:bg-red-800 hover:text-stone-200"><i
+						class="fa-solid fa-trash"></i></button>
 				<check-box :index="props.index" />
-				<!-- <input type="checkbox" class="checkbox"> -->
 			</div>
-			<div @click="toggleAnswerEditor(true)" class="textarea">
+			<div @click="toggleAnswerEditor(true)" class="textarea text-slate-900 dark:text-stone-200">
 				<div ref="answerElem"></div>
 			</div>
 		</div>
-		<div v-if="questionStore.editors[index]" class="text-editor">
+		<div v-if="questionStore.editors[index]" class="text-editor ">
 			<button @click.prevent="toggleAnswerEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting" v-model="answer"
+			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting"
+				class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200" v-model="answer"
 				@input="$emit('answer', answer)"></textarea>
 		</div>
 	</div>
@@ -71,8 +73,6 @@ onMounted(() => {
 }
 
 .answer {
-
-	background-color: #f2f2f2;
 	border-radius: 10px;
 
 	.answer-nav {
@@ -81,7 +81,6 @@ onMounted(() => {
 		align-items: center;
 		justify-content: space-between;
 		padding: 5px 10px;
-		border-bottom: 3px solid #fff;
 
 		.rm-variant {
 			//padding: 5px;
@@ -90,13 +89,7 @@ onMounted(() => {
 			height: 25px;
 			line-height: 15px;
 			border-radius: 3px;
-			background-color: #fff;
 			transition: all 0.4s ease-in-out;
-
-			&:hover {
-				background-color: #263238;
-				color: white;
-			}
 		}
 	}
 
@@ -135,6 +128,7 @@ onMounted(() => {
 	transform: translateX(-50%);
 	border: 2px solid #000;
 	border-radius: 10px;
+	height: 30vh;
 
 	textarea {
 		&:focus {
@@ -142,21 +136,24 @@ onMounted(() => {
 		}
 
 		font-size: 20px;
+		height: 100%;
 		width: 100%;
-		height: 30vh;
-		background-color: #f2f2f2;
 		padding: 20px 10px 10px;
 		border-radius: 10px;
 		resize: none;
 	}
 
 	button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 5px;
 		background-color: #fff;
 		position: absolute;
 		right: -10px;
 		top: -10px;
-		width: 25px;
-		height: 25px;
+		width: 20px;
+		height: 20px;
 		font-size: 25px;
 		line-height: 25px;
 		z-index: 2;

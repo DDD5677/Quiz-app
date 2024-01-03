@@ -1,9 +1,10 @@
 <template>
-	<section class="dashboarad">
-		<div class="sidebar">
-			<ul class="menu">
+	<section class="dashboarad" :class="{ 'dark': navbarStore.darkTheme }">
+		<div class="sidebar bg-white dark:bg-slate-900">
+			<ul class="menu text-slate-900 dark:text-stone-100">
 				<li class="item">
-					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+					<RouterLink :to="{ name: 'create-quiz' }"
+						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-square-plus"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Create Quiz</span>
@@ -12,7 +13,7 @@
 				</li>
 				<li class="item">
 					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'library', query: { user: authStore.user.id } }"
-						class="item-link">
+						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-book"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Library</span>
@@ -20,7 +21,8 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink :to="{ name: 'create-quiz' }" class="item-link">
+					<RouterLink :to="{ name: 'create-quiz' }"
+						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-people-roof"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Classes</span>
@@ -28,7 +30,8 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink :to="{ name: 'settings' }" class="item-link">
+					<RouterLink :to="{ name: 'settings' }"
+						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-gear"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Settings</span>
@@ -37,16 +40,23 @@
 				</li>
 			</ul>
 		</div>
-		<div class="content" :style="!navbarStore.mobile ? 'padding-left:180px' : ''">
-			<div class="navbar">
+		<div class="content bg-stone-100 dark:bg-slate-700" :style="!navbarStore.mobile ? 'padding-left:180px' : ''">
+			<div class="navbar bg-white dark:bg-slate-900">
 				<div class="brand">
 					<button @click.prevent="sidebarToggle" class="sidebar-btn"
 						:class="{ 'mobile': navbarStore.mobile }"></button>
-					<RouterLink :to="{ name: 'home' }">Easy<span>Quiz</span></RouterLink>
+					<RouterLink class="text-black dark:text-stone-100" :to="{ name: 'home' }">Easy<span
+							class="text-slate-400">Quiz</span>
+					</RouterLink>
 				</div>
-				<input type="text" placeholder="Search quiz" class="search">
-
-				<div v-if="!authStore.isLoading" class="avatar">
+				<input type="text" placeholder="Search quiz" class="search bg-stone-100 dark:bg-slate-700 dark:text-stone-100">
+				<div class="theme">
+					<light-button v-if="!navbarStore.darkTheme" @click.prevent="navbarStore.assignDarkTheme(true)"
+						class="dark_theme"><i class="fa-solid fa-moon"></i></light-button>
+					<light-button v-else @click.prevent="navbarStore.assignDarkTheme(false)"
+						class="light_theme dark:hover:bg-slate-600"><i class="fa-solid fa-sun"></i></light-button>
+				</div>
+				<div v-if="!authStore.isLoading" class="avatar bg-slate-800 text-white dark:bg-slate-600">
 					<a v-if="authStore.user.image" href="authStore.user.image" class="avatar-link">
 						<img :src="authStore.user.image" alt="">
 					</a>
@@ -112,7 +122,6 @@ const sidebarToggle = () => {
 	top: 0;
 	height: 100vh;
 	box-shadow: 0 2px 4px #00000014;
-	background-color: #fff;
 	z-index: 4;
 
 	.menu {
@@ -121,7 +130,6 @@ const sidebarToggle = () => {
 		.item-link {
 			display: inline-block;
 			width: 100%;
-			color: #263238;
 			font-size: 20px;
 
 			span {
@@ -136,11 +144,7 @@ const sidebarToggle = () => {
 				text-align: center;
 			}
 
-			&:hover,
-			&:focus {
-				background-color: #f2f2f2;
 
-			}
 		}
 	}
 }
@@ -149,11 +153,9 @@ const sidebarToggle = () => {
 	padding-left: 45px;
 	padding-top: 50px;
 	min-height: 100vh;
-	background-color: #f2f2f2;
 	transition: padding 0.6s ease-in-out;
 
 	.navbar {
-		background-color: #fff;
 		display: flex;
 		gap: 20px;
 		justify-content: space-between;
@@ -193,19 +195,27 @@ const sidebarToggle = () => {
 				}
 			}
 
-			span {
-				color: #8F95A5;
-			}
 		}
 
 		.search {
 			border-radius: 5px;
 			flex-grow: 1;
-			background-color: #f2f2f2;
 			padding: 5px 10px;
 
 			&::placeholder {
 				color: #8F95A5;
+			}
+		}
+
+		.theme {
+			button {
+				border-radius: 50%;
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 20px;
 			}
 		}
 
@@ -218,8 +228,6 @@ const sidebarToggle = () => {
 			overflow: hidden;
 			font-size: 20px;
 			font-weight: 500;
-			background-color: #263238;
-			color: #fff;
 			border-radius: 50%;
 
 			.avatar-link {

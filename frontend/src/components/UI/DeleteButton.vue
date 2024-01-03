@@ -1,6 +1,6 @@
 <template>
 	<button
-		class="light-btn bg-stone-100 dark:bg-slate-800 text-slate-900 dark:text-slate-300 border border-slate-900 dark:border-slate-900  hover:bg-slate-800 dark:hover:bg-slate-900 hover:text-stone-100">
+		class="delete-btn bg-stone-100 dark:bg-slate-800 text-red-800 dark:text-red-600 border border-red-800 dark:border-red-900  hover:bg-red-800 dark:hover:bg-red-800 hover:text-stone-100 dark:hover:text-stone-100">
 		<slot></slot>
 	</button>
 </template>
@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss" scoped>
-.light-btn {
+.delete-btn {
 	font-weight: 500;
 	padding: 0.4em 1em;
 	border-radius: 0.3em;

@@ -1,11 +1,11 @@
 <template>
-	<div class="upload_img">
+	<div class="upload_img bg-slate-950/30 dark:bg-slate-950/50">
 		<div class="box">
-			<div class="wrapper" :class="{ 'active_nav': !navbarStore.mobile }">
+			<div class="wrapper bg-white dark:bg-slate-700" :class="{ 'active_nav': !navbarStore.mobile }">
 				<button @click.prevent="$emit('close', false)" class="close_btn"><i
 						class="fa-solid fa-square-xmark"></i></button>
 				<form @submit.prevent="submitHandler" action="" enctype="multipart/form-data">
-					<label class="title">
+					<label class="title bg-stone-100 dark:bg-slate-500">
 						<i class="fa-regular fa-image"></i>
 						<span>Choose Image</span>
 						<input type="file" @input="changeImage" />
@@ -94,7 +94,6 @@ const submitHandler = async () => {
 	top: 0;
 	left: 0;
 	position: fixed;
-	background-color: #11111135;
 	width: 100%;
 	height: 100vh;
 
@@ -107,7 +106,6 @@ const submitHandler = async () => {
 		padding: 50px 40px 30px;
 		border-radius: 10px;
 		width: 400px;
-		background-color: #fff;
 		position: relative;
 		transition: all 0.3s ease-in;
 
@@ -132,7 +130,6 @@ const submitHandler = async () => {
 
 		label {
 			display: block;
-			background-color: #f2f2f2;
 			padding: 10px 20px;
 			border-radius: 10px;
 			border: 2px solid #263238;

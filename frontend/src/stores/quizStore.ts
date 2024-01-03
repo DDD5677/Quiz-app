@@ -105,6 +105,23 @@ export const useQuizStore = defineStore('quiz',()=>{
 		})
 	}
 
+	const updateQuizImage = (data:any)=>{
+		return new Promise((resolve,reject)=>{
+			isLoading.value=true;
+			errors.value = null;
+			QuizService.updateQuizImage(data).then((response)=>{
+				isLoading.value=false;
+				quiz.value=response.data;
+				resolve(response.data);
+			}).catch((error)=>{
+				isLoading.value=false;
+				console.log(error)
+				errors.value = error.response.data
+				reject(error.response.data)
+			})
+		})
+	}
+
 	const deleteQuiz =(id:string)=>{
 		return new Promise((resolve,reject)=>{
 			isLoading.value=true;
@@ -124,6 +141,7 @@ export const useQuizStore = defineStore('quiz',()=>{
 		getQuiz,
 		createQuiz,
 		updateQuiz,
+		updateQuizImage,
 		getQuizById,
 		getQuizByIdForAdmin,
 		deleteQuiz,

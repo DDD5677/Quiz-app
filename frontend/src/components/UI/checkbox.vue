@@ -174,7 +174,7 @@ function correctAnswerHandler() {
 .checkbox-wrapper-19 .check-box::before {
 	top: calc(var(--checkbox-height) * .72);
 	left: calc(var(--checkbox-height) * .41);
-	box-shadow: 0 0 0 calc(var(--checkbox-height) * .05) var(--background-color);
+	/* box-shadow: 0 0 0 calc(var(--checkbox-height) * .05) var(--background-color); */
 	-moz-transform: rotate(-135deg);
 	-ms-transform: rotate(-135deg);
 	-o-transform: rotate(-135deg);

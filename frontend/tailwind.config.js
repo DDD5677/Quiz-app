@@ -23,6 +23,7 @@ module.exports = {
     },
     extend: {}
   },
+  darkMode: 'class',
   corePlugins: {
     // ...
     container: false

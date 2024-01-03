@@ -1,16 +1,17 @@
 <template>
-	<div class="question_detail" ref="questionElem">
-		<div class="nav">
+	<div class="question_detail bg-white border-2 border-stone-100 dark:border-slate-700 dark:bg-slate-800 "
+		ref="questionElem">
+		<div class="nav bg-stone-100 dark:bg-slate-700">
 			<span class="number">Question {{ index }}</span>
 			<div class="btns">
 				<light-button @click.prevent="updateQuestionHandler(question.id)"><i
 						class="fa-solid fa-pencil"></i></light-button>
-				<light-button @click.prevent="deleteQuestionHandler(question.id)"><i
-						class="fa-solid fa-trash"></i></light-button>
+				<delete-button @click.prevent="deleteQuestionHandler(question.id)"><i
+						class="fa-solid fa-trash"></i></delete-button>
 			</div>
 		</div>
 		<div class="body">
-			<div class="question">{{ question.text }}</div>
+			<div class="question border-b-2 border-b-stone-100 dark:border-b-slate-700">{{ question.text }}</div>
 			<div class="options">
 				<div v-for="(option, index) in options" :key="index" class="option"
 					:class="{ 'correct': index === +question.correctAnswer }">
@@ -88,18 +89,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .question_detail {
-	border-radius: 5px;
+	border-radius: 8px;
 	margin-bottom: 20px;
-	background-color: #fff;
-
-	border: 2px solid #f2f2f2;
 
 	.nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
-		background-color: #f2f2f2;
 		padding: 5px;
 		border-radius: 5px 5px 0 0;
 
@@ -107,7 +103,8 @@ onMounted(() => {
 			font-weight: 500;
 		}
 
-		.light-btn {
+		.light-btn,
+		.delete-btn {
 			margin-left: 10px;
 			font-size: 10px;
 		}
@@ -122,7 +119,6 @@ onMounted(() => {
 		font-size: 16px;
 		font-weight: 500;
 		margin-bottom: 10px;
-		border-bottom: 2px solid #f2f2f2;
 	}
 
 	.options {

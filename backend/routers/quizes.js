@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 const Quiz = require("../models/quiz");
 const Question = require("../models/question");
 const mongoose = require("mongoose");
+const { upload } = require("../helpers/upload");
 
 router.get("/", async (req, res, next) => {
    try {
@@ -166,6 +169,64 @@ router.put("/:id", async (req, res, next) => {
       next(error);
    }
 });
+router.put(
+   "/image/:id",
+   upload("public/quizimg").single("image"),
+   async (req, res, next) => {
+      try {
+         console.log(req.params.id);
+         const quizExist = await Quiz.findById(req.params.id);
+         if (!quizExist) {
+            return res.status(400).send({
+               success: false,
+               message:
+                  "The quiz cannot ne updated because quiz with given ID is not found",
+            });
+         }
+         const file = req.file;
+         console.log(req.body, file);
+         if (!file) {
+            return res.status(400).send({
+               success: false,
+               message: "No file",
+            });
+         }
+         console.log(quizExist);
+         if (quizExist.image) {
+            const img = quizExist.image.split("/");
+            img.splice(0, 3);
+            const result = path.join(__dirname, "../", ...img);
+            console.log("result", result);
+            if (fs.existsSync(result)) {
+               fs.unlinkSync(result);
+            }
+         }
+         const basePath = `${req.protocol}://${req.get(
+            "host"
+         )}/public/quizimg/`;
+         const fileName = req.file.filename;
+         const quiz = await Quiz.findByIdAndUpdate(
+            req.params.id,
+            {
+               image: `${basePath}${fileName}`,
+            },
+            {
+               new: true,
+            }
+         ).populate("questions");
+         if (!quiz) {
+            return res.status(500).json({
+               success: false,
+               message: "The quiz is not updated",
+            });
+         }
+         console.log(quiz);
+         res.status(200).send(quiz);
+      } catch (error) {
+         next(error);
+      }
+   }
+);
 
 router.delete("/:id", async (req, res, next) => {
    try {

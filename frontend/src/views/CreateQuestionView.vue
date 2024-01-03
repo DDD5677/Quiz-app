@@ -1,24 +1,32 @@
 <template>
 	<section class="create-question">
-		<div class="navbar">
+		<div class="navbar bg-white dark:bg-slate-800">
 			<div class="brand">
-				<RouterLink :to="{ name: 'create-quiz' }">Easy<span>Quiz</span></RouterLink>
+				<RouterLink class="text-black dark:text-stone-100" :to="{ name: 'create-quiz' }">Easy<span
+						class="text-slate-400">Quiz</span>
+				</RouterLink>
 			</div>
 			<div class="selects">
-				<select name="" id="" class="quiz-type" v-model="questionType">
+				<select name="" id=""
+					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+					v-model="questionType">
 					<option value="" selected disabled hidden>Savol turi</option>
 					<option value="test">Test</option>
 					<option value="fill-in">Bo'sh joyni to'ldirish</option>
 				</select>
 				<main-input type="number" placeholder="Grade (in points)" v-model="point" />
-				<select name="" id="" v-model="category">
+				<select name="" id=""
+					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+					v-model="category">
 					<option value="" selected disabled hidden>Savol qaysi fandan</option>
 					<option value="math">Matematika</option>
 					<option value="english">Ingliz tili</option>
 					<option value="history">Tarix</option>
 					<option value="physics">Fizika</option>
 				</select>
-				<select name="" id="" v-model="difficulty">
+				<select name="" id=""
+					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+					v-model="difficulty">
 					<option value="" selected disabled hidden>Qiyinlik darajasi</option>
 					<option value="low">Onson</option>
 					<option value="medium">O'rtacha</option>
@@ -29,18 +37,23 @@
 			<dark-button @click.prevent="createQuestionHandler">Save question</dark-button>
 		</div>
 		<div class="container" :style="editorActive || true ? 'padding-bottom:30vh' : ''">
-			<div class="question-editor">
+			<div class="question-editor bg-white dark:bg-slate-800">
 				<form action="">
-					<div class="quiz-text">
-						<div class="textarea-nav">
-							<span class="textarea-title">Savol matni</span>
-							<button class="upload-img"><i class="fa-regular fa-image"></i></button>
+					<div class="quiz-text bg-stone-100 dark:bg-slate-700">
+						<div class="textarea-nav border-b-4 border-b-white dark:border-b-slate-800">
+							<span class="textarea-title text-slate-900 dark:text-stone-200">Savol matni</span>
+							<button
+								class="upload-img bg-white dark:bg-slate-800 text-slate-900 dark:text-stone-200 hover:text-stone-100 hover:bg-slate-900 dark:hover:bg-slate-900"><i
+									class="fa-regular fa-image"></i></button>
 						</div>
-						<div @click="toggleQuestionEditor(true)" class="textarea" ref="questionElem"></div>
+						<div @click="toggleQuestionEditor(true)" class="textarea text-slate-900 dark:text-stone-200"
+							ref="questionElem"></div>
 					</div>
 					<div v-if="questionStore.editors.question" class="text-editor">
 						<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni" v-model="question"></textarea>
+						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni"
+							class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200"
+							v-model="question"></textarea>
 					</div>
 					<div class="quiz-answers" :key="answerKey">
 						<AnswerEditor v-if="showAnswers.showAnswer1 || answers.answer1" :index="'answer1'"
@@ -235,7 +248,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .navbar {
 	width: 100%;
-	background-color: #fff;
 	display: flex;
 	padding: 10px;
 	align-items: center;
@@ -245,22 +257,21 @@ onMounted(() => {
 		font-family: 'Henny Penny', serif;
 		font-size: 28px;
 		margin: 0 10px;
-
-		span {
-			color: #8F95A5;
-		}
 	}
 
 	.selects {
 		display: flex;
 		gap: 10px;
 
+		select {
+			border: 1px solid;
+			outline: none;
+		}
+
 		select,
 		.main-input {
 			padding: 5px;
-			border: 2px solid #000;
 			border-radius: 5px;
-			background-color: #f2f2f2;
 		}
 
 		.main-input {
@@ -278,7 +289,6 @@ onMounted(() => {
 	.question-editor {
 		width: 90%;
 		padding: 20px;
-		background-color: #fff;
 		margin-top: 20px;
 		border-radius: 20px;
 
@@ -295,6 +305,7 @@ onMounted(() => {
 				transform: translateX(-50%);
 				border: 2px solid #000;
 				border-radius: 10px;
+				height: 30vh;
 
 				textarea {
 					&:focus {
@@ -302,9 +313,8 @@ onMounted(() => {
 					}
 
 					font-size: 20px;
+					height: 100%;
 					width: 100%;
-					height: 30vh;
-					background-color: #f2f2f2;
 					padding: 20px 10px 10px;
 					border-radius: 10px;
 					resize: none;
@@ -315,9 +325,13 @@ onMounted(() => {
 					position: absolute;
 					right: -10px;
 					top: -10px;
-					width: 25px;
-					height: 25px;
+					width: 20px;
+					height: 20px;
 					font-size: 25px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border-radius: 5px;
 					line-height: 25px;
 					z-index: 2;
 				}
@@ -337,9 +351,7 @@ onMounted(() => {
 				left: 0px;
 				top: 0px;
 				border-radius: 10px 10px 0 0;
-				background-color: #f2f2f2;
 				padding: 5px 10px;
-				border-bottom: 3px solid #fff;
 				width: 100%;
 				display: flex;
 				justify-content: space-between;
@@ -347,7 +359,6 @@ onMounted(() => {
 
 				.textarea-title {
 					font-weight: 500;
-					color: #263238;
 				}
 
 				.upload-img {
@@ -355,20 +366,13 @@ onMounted(() => {
 					width: 30px;
 					line-height: 20px;
 					border-radius: 3px;
-					background-color: #fff;
 					transition: all 0.4s ease-in-out;
-
-					&:hover {
-						background-color: #263238;
-						color: white;
-					}
 				}
 			}
 
 
 
 			.quiz-text {
-				background-color: #f2f2f2;
 				padding: 10px;
 				border-radius: 10px;
 				padding-top: 45px;

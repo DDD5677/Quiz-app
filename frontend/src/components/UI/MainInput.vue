@@ -1,6 +1,7 @@
 <template>
-	<input class="main-input" :value="modelValue"
-		@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)">
+	<input
+		class="main-input bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+		:value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)">
 </template>
 
 <script setup lang="ts">
@@ -14,11 +15,15 @@ const props = defineProps<Props>()
 input {
 	padding: 10px;
 	border-radius: 5px;
-	border: 1px solid #8F95A5;
+	border: 1px solid;
 	display: inline-block;
 
+	&:focus {
+		outline: none;
+	}
+
 	&::placeholder {
-		color: #8F95A5;
+		//color: #8F95A5;
 		font-family: Poppins;
 		font-size: 16px;
 		font-style: normal;

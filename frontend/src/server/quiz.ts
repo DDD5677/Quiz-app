@@ -27,6 +27,11 @@ const QuizService = {
 	},
 	updateQuiz(quiz:any){
 		return axios.put(`/quizes/${quiz.quizId}`,quiz)
+	},
+	updateQuizImage(quiz:any){
+		let formData = new FormData();
+		if(quiz.image) formData.append("image", quiz.image);
+		return axios.put(`/quizes/image/${quiz.id}`,formData)
 	}
 }
 

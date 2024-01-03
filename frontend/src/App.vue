@@ -15,6 +15,7 @@ import { useAuthStore } from "./stores/authStore";
 import { getItem } from "./helpers/localStorage";
 import { useActionStore } from "./stores/actionStore";
 import InfoActiveAction from "./components/InfoActiveAction.vue"
+import { useNavbarStore } from "./stores/navbarStore";
 export default defineComponent({
 	components: {
 		mainLayout,
@@ -26,11 +27,12 @@ export default defineComponent({
 	setup() {
 		const authStore = useAuthStore()
 		const actionStore = useActionStore()
+		const navbarStore = useNavbarStore()
 		const route = useRoute()
 		const layout = computed(() => {
 			return route.meta.layout + 'Layout'
 		})
-
+		const darkTheme = getItem('darkTheme')
 		const token = getItem('token')
 		onMounted(() => {
 			if (token) {
@@ -41,6 +43,9 @@ export default defineComponent({
 						console.log(err)
 					})
 				})
+			}
+			if (darkTheme !== undefined) {
+				navbarStore.assignDarkTheme(darkTheme)
 			}
 		})
 		return {

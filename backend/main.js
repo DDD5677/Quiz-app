@@ -9,6 +9,7 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const api = process.env.API_URL;
 const errorHandler = require("./helpers/error-handler");
+const { authJwt } = require("./helpers/jwt");
 
 //! import routers
 const usersRouter = require("./routers/users");
@@ -20,6 +21,7 @@ app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
+app.use(authJwt());
 app.use("/public", express.static(__dirname + "/public"));
 //! routers
 app.use(`${api}/users`, usersRouter);

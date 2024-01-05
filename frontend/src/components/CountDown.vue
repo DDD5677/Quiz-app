@@ -60,7 +60,7 @@ onMounted(() => {
 	align-items: center;
 
 	div {
-		padding: 10px 15px;
+		padding: 5px 15px;
 		background-color: #fff;
 		border-radius: 5px;
 	}

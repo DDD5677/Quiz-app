@@ -8,7 +8,7 @@
 		<div class="body">
 			<span class="quiz_title">{{ quiz.title }}</span>
 			<div class="btns">
-				<light-button @click.prevent="quizDetailHnadler"><i class="fa-solid fa-pencil"></i>
+				<light-button @click.prevent="quizDetailHandler"><i class="fa-solid fa-pencil"></i>
 					Detail</light-button>
 				<delete-button @click.prevent="deleteQuizHandler(quiz.id)">
 					<i class="fa-solid fa-trash"></i>
@@ -38,7 +38,7 @@ const deleteQuizHandler = (id: string) => {
 		quizStore.getQuiz({ page: 1, limit: 10, user: route.query.user })
 	})
 }
-const quizDetailHnadler = () => {
+const quizDetailHandler = () => {
 	router.push(`/admin/quiz/${props.quiz.id}`)
 	window.scrollTo({
 		top: 0,

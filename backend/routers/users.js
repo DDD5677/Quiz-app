@@ -6,6 +6,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { upload } = require("../helpers/upload");
+
 router.get("/", async (req, res, next) => {
    try {
       const users = await User.find();
@@ -40,15 +41,6 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
    try {
-      // let userInfo = {
-      //    firstname: req.body.firstname,
-      //    lastname: req.body.lastname,
-      //    email: req.body.email,
-      //    phone: req.body.phone,
-      //    password: req.body.password,
-      //    role: req.body.role,
-      // };
-      // console.log(userInfo);
       let user = new User({
          firstname: req.body.firstname,
          lastname: req.body.lastname,
@@ -65,7 +57,6 @@ router.post("/", async (req, res, next) => {
 
       res.status(200).send(user);
    } catch (error) {
-      console.log(error);
       next(error);
    }
 });
@@ -132,13 +123,11 @@ router.get("/user/refresh", async (req, res, next) => {
       let token;
       let currentUser;
       const secret = process.env.secret;
-      console.log(token, secret);
       if (
          req.headers["authorization"] &&
          req.headers["authorization"].split(" ")[0] === "Bearer"
       ) {
          token = req.headers["authorization"].split(" ")[1];
-         console.log(token);
       } else {
          console.log("token is not found");
       }
@@ -146,7 +135,6 @@ router.get("/user/refresh", async (req, res, next) => {
          if (err) {
             console.log("Error: ", err);
          }
-         console.log("currentUser", decoded);
          currentUser = decoded;
       });
       const user = await User.findById(currentUser.userId).select("-password");
@@ -175,7 +163,6 @@ router.put(
                   "The user cannot ne updated because user with given ID is not found",
             });
          }
-         console.log(req.body);
          let newPassword;
          let basePath;
          let fileName;
@@ -194,12 +181,10 @@ router.put(
          }
          const file = req.file;
          if (file) {
-            console.log("userExist", userExist);
             if (userExist.image) {
                const img = userExist.image.split("/");
                img.splice(0, 3);
                const result = path.join(__dirname, "../", ...img);
-               console.log("result", result);
                if (fs.existsSync(result)) {
                   fs.unlinkSync(result);
                }
@@ -251,7 +236,6 @@ router.put(
 
          res.status(200).send({ user });
       } catch (error) {
-         console.log(error);
          next(error);
       }
    }

@@ -7,7 +7,7 @@
 						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-square-plus"></i>
 						<Transition>
-							<span v-if="!navbarStore.mobile">Create Quiz</span>
+							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Create Quiz</span>
 						</Transition>
 					</RouterLink>
 				</li>
@@ -16,7 +16,7 @@
 						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-book"></i>
 						<Transition>
-							<span v-if="!navbarStore.mobile">Library</span>
+							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Library</span>
 						</Transition>
 					</RouterLink>
 				</li>
@@ -25,7 +25,7 @@
 						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-people-roof"></i>
 						<Transition>
-							<span v-if="!navbarStore.mobile">Classes</span>
+							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Classes</span>
 						</Transition>
 					</RouterLink>
 				</li>
@@ -34,28 +34,24 @@
 						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-gear"></i>
 						<Transition>
-							<span v-if="!navbarStore.mobile">Settings</span>
+							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Settings</span>
 						</Transition>
 					</RouterLink>
 				</li>
 			</ul>
 		</div>
-		<div class="content bg-stone-100 dark:bg-slate-700" :style="!navbarStore.mobile ? 'padding-left:180px' : ''">
+		<div class="content bg-stone-100 dark:bg-slate-700"
+			:style="!navbarStore.mobile && !navbarStore.showNavbar ? 'padding-left:180px' : ''">
 			<div class="navbar bg-white dark:bg-slate-900">
 				<div class="brand">
-					<button @click.prevent="sidebarToggle" class="sidebar-btn"
-						:class="{ 'mobile': navbarStore.mobile }"></button>
+					<button v-if="!navbarStore.mobile" @click.prevent="sidebarToggle" class="sidebar-btn"
+						:class="{ 'mobile': navbarStore.showNavbar }"></button>
 					<RouterLink class="text-black dark:text-stone-100" :to="{ name: 'home' }">Easy<span
 							class="text-slate-400">Quiz</span>
 					</RouterLink>
 				</div>
 				<input type="text" placeholder="Search quiz" class="search bg-stone-100 dark:bg-slate-700 dark:text-stone-100">
-				<div class="theme">
-					<light-button v-if="!navbarStore.darkTheme" @click.prevent="navbarStore.assignDarkTheme(true)"
-						class="dark_theme"><i class="fa-solid fa-moon"></i></light-button>
-					<light-button v-else @click.prevent="navbarStore.assignDarkTheme(false)" class="light_theme"><i
-							class="fa-solid fa-sun"></i></light-button>
-				</div>
+				<ToggleTheme />
 				<div v-if="!authStore.isLoading" @click="toggleDropdown"
 					class="avatar bg-slate-800 text-white dark:bg-slate-600">
 					<span v-if="authStore.user.image" class="avatar-link">
@@ -79,6 +75,7 @@
 </template>
 
 <script lang="ts" setup>
+import ToggleTheme from '@/components/UI/ToggleTheme.vue';
 import InfoActiveAction from '@/components/InfoActiveAction.vue';
 import { useActionStore } from '@/stores/actionStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -112,7 +109,7 @@ function checkScreen() {
 window.addEventListener('resize', checkScreen);
 
 const sidebarToggle = () => {
-	navbarStore.assignMobile(!navbarStore.mobile)
+	navbarStore.showNavbarHandler(!navbarStore.showNavbar)
 }
 
 </script>
@@ -240,23 +237,23 @@ const sidebarToggle = () => {
 			}
 		}
 
-		.theme {
-			.light_theme {
-				&:hover {
-					background-color: rgb(2 6 23);
-				}
-			}
+		// .theme {
+		// 	.light_theme {
+		// 		&:hover {
+		// 			background-color: rgb(2 6 23);
+		// 		}
+		// 	}
 
-			button {
-				border-radius: 50%;
-				width: 40px;
-				height: 40px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 20px;
-			}
-		}
+		// 	button {
+		// 		border-radius: 50%;
+		// 		width: 40px;
+		// 		height: 40px;
+		// 		display: flex;
+		// 		align-items: center;
+		// 		justify-content: center;
+		// 		font-size: 20px;
+		// 	}
+		// }
 
 		.avatar {
 			display: flex;

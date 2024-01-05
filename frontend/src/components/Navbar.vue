@@ -13,10 +13,13 @@
 					</div>
 					<ul class="menu flex font-medium">
 						<li class="item">
-							<RouterLink :to="{ name: 'home' }" class="item-link">Home</RouterLink>
+							<RouterLink :to="{ name: 'home' }" @click="clickBrand" class="item-link">Home</RouterLink>
 						</li>
 						<li class="item"><a href="#about" class="item-link">About Us</a></li>
 						<li class="item"><a href="#contacts" class="item-link">Contacts</a></li>
+						<li v-if="authStore.isLogged && authStore.user.role === 'student'" @click="logoutAdmin" class="item">
+							<span class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+						</li>
 						<li v-if="authStore.isLogged && authStore.user.role === 'teacher'" class="item">
 							<RouterLink :to="{ name: 'admin' }" class="item-link">Dashboard</RouterLink>
 						</li>
@@ -38,6 +41,8 @@
 import { ref } from 'vue';
 import { useNavbarStore } from '@/stores/navbarStore'
 import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const authStore = useAuthStore()
 const navbarStore = useNavbarStore()
 const windowWith = ref<number>();
@@ -57,6 +62,10 @@ function clickBrand() {
 		top: 0,
 		behavior: "smooth",
 	});
+}
+const logoutAdmin = () => {
+	router.replace('/')
+	authStore.logout();
 }
 </script>
 
@@ -122,6 +131,7 @@ function clickBrand() {
 			}
 		}
 
+
 		.login-btn {
 			margin: 10px 15px 0;
 		}
@@ -172,6 +182,27 @@ function clickBrand() {
 	&:hover {
 		background-color: #263238;
 		color: #fff;
+	}
+}
+
+.logout-btn {
+	width: 100%;
+	height: 100%;
+	padding: 5px 10px 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	border-bottom: 2px solid #fff;
+	border-top: 2px solid #fff;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #fff;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+
+	&:hover {
+		border-color: #000;
 	}
 }
 

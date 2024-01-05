@@ -41,7 +41,7 @@ function loginHandler() {
 	}
 	console.log(data)
 	authStore.login(data).then((res => {
-		router.push('/admin')
+		router.replace('/')
 	})).catch((err) => {
 		console.log(err)
 	})

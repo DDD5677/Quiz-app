@@ -1,11 +1,12 @@
 <template>
 	<section class="quiz_play">
-		<div v-if="!actionStore.isLoading && !actionStore.isLoadingActive && !actionStore.finished" class="timer">
-			<span>Time</span>
-			<CountDown :time="+actionStore.time" />
+		<div class="timer bg-slate-900">
+			<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive && !actionStore.finished"
+				:time="+actionStore.time" />
+			<ToggleTheme />
 		</div>
 		<div class="container">
-			<div class="wrapper">
+			<div class="wrapper bg-white dark:bg-slate-800 text-slate-950 dark:text-stone-200">
 				<div v-if="!actionStore.isLoading && actionStore.finished" class="result">
 					<h2 class="title">Result</h2>
 					<div class="correct_answers">
@@ -38,6 +39,7 @@ import Question from '@/components/Question.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useActionStore } from "@/stores/actionStore";
 import { onMounted } from "vue";
+import ToggleTheme from "@/components/UI/ToggleTheme.vue";
 const actionStore = useActionStore()
 const route = useRoute()
 const router = useRouter()
@@ -67,10 +69,9 @@ const finishHandler = () => {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		background-color: #263238;
 		position: fixed;
 		color: #fff;
-		padding: 20px;
+		padding: 15px;
 		width: 100%;
 		top: 0;
 		z-index: 999;
@@ -83,10 +84,6 @@ const finishHandler = () => {
 			span {
 				color: #fff;
 			}
-		}
-
-		span {
-			font-size: 25px;
 		}
 	}
 
@@ -109,8 +106,7 @@ const finishHandler = () => {
 	.wrapper {
 		border-radius: 10px;
 		width: 80%;
-		padding: 30px 0 0;
-		background-color: #fff;
+		padding: 20px 0 0;
 		margin-bottom: 30px;
 
 		.menu {

@@ -6,7 +6,7 @@
 				<form v-if="!authStore.isLoading" action="" @submit.prevent="updateSettingsHandler">
 					<div class="avatar input">
 						<div class="img_box bg-slate-900">
-							<span class="img_link" v-if="!authStore.user.image">
+							<span class="img_link" v-if="authStore.user.image">
 								<a :href="authStore.user.image" target="_blank"><img :src="authStore.user.image" alt=""></a>
 								<span class="img_camera  dark:text-slate-800" @click="toggleShowUpload(true)"><i
 										class="fa-solid fa-camera"></i></span>

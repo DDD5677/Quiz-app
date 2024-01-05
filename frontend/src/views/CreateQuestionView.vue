@@ -1,6 +1,6 @@
 <template>
 	<section class="create-question">
-		<div class="navbar bg-white dark:bg-slate-800">
+		<div class="navbar bg-white dark:bg-slate-900">
 			<div class="brand">
 				<RouterLink class="text-black dark:text-stone-100" :to="{ name: 'create-quiz' }">Easy<span
 						class="text-slate-400">Quiz</span>
@@ -9,7 +9,7 @@
 			<form @submit.prevent="createQuestionHandler" action="" enctype="multipart/form-data" class="flex gap-2">
 				<div class="selects">
 					<select required name="" id=""
-						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						v-model="questionType">
 						<option value="" selected disabled hidden>Savol turi</option>
 						<option value="test">Test</option>
@@ -17,7 +17,7 @@
 					</select>
 					<main-input required type="number" placeholder="Grade (in points)" v-model="point" />
 					<select required name="" id=""
-						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						v-model="category">
 						<option value="" selected disabled hidden>Savol qaysi fandan</option>
 						<option value="math">Matematika</option>
@@ -26,7 +26,7 @@
 						<option value="physics">Fizika</option>
 					</select>
 					<select required name="" id=""
-						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						v-model="difficulty">
 						<option value="" selected disabled hidden>Qiyinlik darajasi</option>
 						<option value="low">Onson</option>
@@ -35,6 +35,7 @@
 						<option value="expert">Juda qiyin</option>
 					</select>
 				</div>
+				<ToggleTheme />
 				<dark-button>Save question</dark-button>
 			</form>
 		</div>
@@ -100,6 +101,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 import type { ShowAnswers, Answers } from '@/types/createQuizType';
 import { useRouter, useRoute } from 'vue-router'
+import ToggleTheme from '@/components/UI/ToggleTheme.vue';
 const router = useRouter();
 const route = useRoute();
 const questionStore = useQuestionStore();
@@ -306,7 +308,7 @@ onMounted(() => {
 		}
 
 		.main-input {
-			width: 80px;
+			width: 60px;
 		}
 	}
 

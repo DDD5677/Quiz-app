@@ -11,6 +11,7 @@ import QuizesView from '@/views/QuizesView.vue'
 import QuizPlayView from '@/views/QuizPlayView.vue'
 import StartQuizView from '@/views/StartQuizView.vue'
 import SettingsView from '@/views/SettingsView.vue'
+import ErrorView from '@/views/ErrorView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -85,7 +86,13 @@ const router = createRouter({
 			name: 'quiz',
 			meta: { layout: "empty" },
 			component: QuizPlayView
-		}
+		},
+		{
+			path: "/:pathMatch(.*)*",
+			name: "not-found",
+			meta: { layout: "SignIn" },
+			component: ErrorView,
+		},
 	]
 })
 

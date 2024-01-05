@@ -100,7 +100,6 @@ router.post("/", async (req, res, next) => {
 
       res.status(200).send(action);
    } catch (error) {
-      console.log(error);
       next(error);
    }
 });
@@ -125,7 +124,6 @@ router.put("/:id", async (req, res, next) => {
       if (req.body.finished) {
          updateBlock.finished = req.body.finished;
       }
-      console.log(updateBlock);
       const action = await Action.findByIdAndUpdate(
          req.params.id,
          updateBlock,
@@ -149,7 +147,6 @@ router.put("/finish/:id", async (req, res, next) => {
       if (!mongoose.isValidObjectId(req.params.id)) {
          return res.status(400).send("Invalid Quiz ID");
       }
-      console.log(req.body);
       let updateBlock = {
          finished: true,
       };
@@ -157,7 +154,6 @@ router.put("/finish/:id", async (req, res, next) => {
       let score = 0;
       if (req.body.chooses) {
          for (const key in req.body.chooses) {
-            console.log(key);
             const question = await Question.findById(key);
             if (question) {
                if (question.correctAnswer === req.body.chooses[key]) {
@@ -171,15 +167,13 @@ router.put("/finish/:id", async (req, res, next) => {
          updateBlock.correctAnswers = correctAnswers;
          updateBlock.score = score;
       }
-      console.log(updateBlock);
-      //------------------
+      //-------Send result to telegram-----------
       const TOKEN = process.env.TOKEN;
       const CHAT_ID = process.env.CHAT_ID;
       const data = {
          chat_id: CHAT_ID,
          text: `${req.body.lastname} ${req.body.firstname}\n ${req.body.quiz} testidan ${updateBlock.correctAnswers} ta savolga tog'ri javob berib, ${updateBlock.score}ball to'pladi`,
       };
-      console.log(TOKEN, CHAT_ID);
       const TELEGRAM_URL = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
       await axios.post(TELEGRAM_URL, data);
       //--------------------

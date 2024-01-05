@@ -116,7 +116,6 @@ router.get("/admin/:id", async (req, res, next) => {
 });
 router.post("/", async (req, res, next) => {
    try {
-      console.log(req.body);
       let quiz = new Quiz({
          title: req.body.title,
          time: req.body.time,
@@ -136,7 +135,6 @@ router.post("/", async (req, res, next) => {
       }
       res.status(200).send(quiz);
    } catch (error) {
-      console.log(error);
       next(error);
    }
 });
@@ -153,7 +151,6 @@ router.put("/:id", async (req, res, next) => {
          category: req.body.category,
          quizType: req.body.quizType,
       };
-      console.log(updateBlock);
       const quiz = await Quiz.findByIdAndUpdate(req.params.id, updateBlock, {
          new: true,
       }).populate("questions");
@@ -163,7 +160,6 @@ router.put("/:id", async (req, res, next) => {
             message: "The quiz is not updated",
          });
       }
-      console.log(quiz);
       res.status(200).send(quiz);
    } catch (error) {
       next(error);
@@ -174,7 +170,6 @@ router.put(
    upload("public/quizimg").single("image"),
    async (req, res, next) => {
       try {
-         console.log(req.params.id);
          const quizExist = await Quiz.findById(req.params.id);
          if (!quizExist) {
             return res.status(400).send({
@@ -184,27 +179,27 @@ router.put(
             });
          }
          const file = req.file;
-         console.log(req.body, file);
          if (!file) {
             return res.status(400).send({
                success: false,
                message: "No file",
             });
          }
-         console.log(quizExist);
+         //------Delete old image if exist---------
          if (quizExist.image) {
             const img = quizExist.image.split("/");
             img.splice(0, 3);
             const result = path.join(__dirname, "../", ...img);
-            console.log("result", result);
             if (fs.existsSync(result)) {
                fs.unlinkSync(result);
             }
          }
+         //----------------------------------
          const basePath = `${req.protocol}://${req.get(
             "host"
          )}/public/quizimg/`;
          const fileName = req.file.filename;
+
          const quiz = await Quiz.findByIdAndUpdate(
             req.params.id,
             {
@@ -214,13 +209,13 @@ router.put(
                new: true,
             }
          ).populate("questions");
+
          if (!quiz) {
             return res.status(500).json({
                success: false,
                message: "The quiz is not updated",
             });
          }
-         console.log(quiz);
          res.status(200).send(quiz);
       } catch (error) {
          next(error);
@@ -237,17 +232,37 @@ router.delete("/:id", async (req, res, next) => {
             message: "The quiz is not found",
          });
       }
+      //------Delete old image of quiz if exist---------
+      if (quiz.image) {
+         const img = quiz.image.split("/");
+         img.splice(0, 3);
+         const result = path.join(__dirname, "../", ...img);
+         if (fs.existsSync(result)) {
+            fs.unlinkSync(result);
+         }
+      }
+      //----------------------------------
+
+      //---------Delete questions of deleted quiz -----------
       await quiz.questions.map(async (question) => {
-         console.log(question);
-         await Question.findByIdAndDelete(question);
+         const questionDeleted = await Question.findByIdAndDelete(question);
+         //------Delete old image of question if exist---------
+         if (questionDeleted.image) {
+            const img = questionDeleted.image.split("/");
+            img.splice(0, 3);
+            const result = path.join(__dirname, "../", ...img);
+            if (fs.existsSync(result)) {
+               fs.unlinkSync(result);
+            }
+         }
+         //----------------------------------
       });
-      res.status(200).send(quiz);
-      // res.status(200).json({
-      //    success: true,
-      //    message: "The quiz was deleted",
-      // });
+      //res.status(200).send(quiz);
+      res.status(200).json({
+         success: true,
+         message: "The quiz was deleted",
+      });
    } catch (error) {
-      console.log(error);
       next(error);
    }
 });

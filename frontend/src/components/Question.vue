@@ -1,16 +1,19 @@
 <template>
 	<div ref="questionElem">
-		<div class="quiz" :class="{ 'not_choosed': choosed === undefined && actionStore.finished }">
-			<div class="question">
+		<div class="quiz" :class="{ 'bg-red-200 dark:bg-rose-950': choosed === undefined && actionStore.finished }">
+			<div class="question" :class="{ 'min-h-[200px]': question.image }">
+				<img v-if="question.image" :src="question.image" alt="">
 				<span class="number">{{ index + 1 }}.</span>{{ question.text }}
 			</div>
 			<div class="options">
 				<ul v-if="!actionStore.finished">
-					<li v-for="(option, index) in options" :key="index" @click="chooseHandler(index)" class="item"
-						:class="{ 'active': index === active }">{{ latters[index] + ') ' + option }}</li>
+					<li v-for="(option, index) in options" :key="index" @click="chooseHandler(index)"
+						class="item hover:bg-stone-100 dark:hover:bg-slate-700" :class="{ 'active': index === active }">{{
+							latters[index] + ') ' + option
+						}}</li>
 				</ul>
 				<ul v-else>
-					<li v-for="(option, index) in options" :key="index" class="item"
+					<li v-for="(option, index) in options" :key="index" class="item "
 						:class="{ 'correct': index === question.correctAnswer, 'incorrect': index === choosed && choosed !== question.correctAnswer }">
 						{{ latters[index] + ') ' + option }}</li>
 				</ul>
@@ -80,9 +83,18 @@ onMounted(() => {
 		background-color: #FFCCCC;
 	}
 
+
 	.question {
 		padding: 10px 30px;
 		font-size: 22px;
+
+		img {
+			border-radius: 5px;
+			margin: 0 0 10px 10px;
+			height: 180px;
+			float: right;
+			top: 0;
+		}
 
 		.number {
 			font-weight: 700;
@@ -98,24 +110,22 @@ onMounted(() => {
 			cursor: pointer;
 			transition: all 0.4s ease;
 
-			&:hover {
-				background-color: #f2f2f2;
-			}
+
 
 			&.active {
-				background-color: #263238;
+				background-color: rgb(2 6 23);
 				color: #fff;
 
 			}
 
 			&.correct {
-				background-color: #4cbb17;
+				background-color: rgb(34 197 94);
 				color: #fff;
 
 			}
 
 			&.incorrect {
-				background-color: #BA1607;
+				background-color: rgb(185 28 28);
 				color: #fff;
 			}
 		}

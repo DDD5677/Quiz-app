@@ -54,8 +54,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router';
 const authStore = useAuthStore()
-
+const router = useRouter()
 const firstname = ref('')
 const lastname = ref('')
 const phone = ref('')
@@ -73,9 +74,8 @@ function SignUpHandler() {
 		phone: phone.value,
 		role: role.value,
 	}
-	console.log(data)
 	authStore.register(data).then((res) => {
-		console.log(res)
+		router.replace('/login')
 	})
 }
 </script>

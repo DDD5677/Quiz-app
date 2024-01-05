@@ -1,12 +1,13 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
 html {
    scroll-behavior: smooth;
 }
 body {
    font-family: 'Poppins', sans-serif;
-}
-body * {
-   @apply transition-colors duration-100;
 }

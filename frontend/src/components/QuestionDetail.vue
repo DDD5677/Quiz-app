@@ -129,7 +129,7 @@ onMounted(() => {
 		img {
 			border-radius: 5px;
 			margin: 0 10px 0px 0;
-			height: 120px;
+			height: 118px;
 			float: left;
 		}
 	}

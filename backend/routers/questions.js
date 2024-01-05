@@ -125,7 +125,6 @@ router.post(
             message: "Question is created or updated successfully",
          });
       } catch (error) {
-         console.log(error);
          next(error);
       }
    }
@@ -133,7 +132,6 @@ router.post(
 
 router.delete("/", async (req, res, next) => {
    try {
-      console.log(req.query);
       const question = await Question.findByIdAndDelete(req.query.questionId);
       if (!question) {
          return res.status(500).json({

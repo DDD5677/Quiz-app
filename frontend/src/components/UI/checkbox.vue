@@ -28,15 +28,12 @@ const correctAnswerTip = computed(() => {
 			return 4
 	}
 })
-// if (correctAnswerTip === questionStore.correctAnswer) {
-// 	checked.value = true
-// }
+if (correctAnswerTip.value === questionStore.correctAnswer) {
+	checked.value = true
+}
 function correctAnswerHandler() {
 	if (checked.value) {
-
 		questionStore.assignCorrectAnswer(correctAnswerTip.value)
-
-
 	} else {
 		questionStore.assignCorrectAnswer(null)
 	}

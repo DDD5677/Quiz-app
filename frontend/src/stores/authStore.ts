@@ -2,14 +2,21 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import AuthService from "@/server/auth"
 import type { User } from '@/types/userType';
-import { setItem } from '@/helpers/localStorage';
+import { removeItem, setItem } from '@/helpers/localStorage';
 
 export const useAuthStore = defineStore('auth', () => {
   const isLoading=ref(true);
   const user = ref<any|null>(null)
   const errors = ref<any|null>(null)
   const isLogged = ref(false)
-  
+
+
+  const logout=()=>{
+	removeItem('token');
+	isLoading.value=true;
+	user.value=null;
+	isLogged.value = false;
+  }
 function register(userData:User){
 	return new Promise((resolve,reject)=>{
 		isLoading.value=true;
@@ -82,5 +89,5 @@ const updateUser=(data:any)=>{
 	})
 
 }
-  return { register,login,refresh,updateUser,user,isLoading,errors,isLogged }
+  return { register,login,refresh,updateUser,logout,user,isLoading,errors,isLogged }
 })

@@ -4,7 +4,7 @@
 			<ul class="menu text-slate-900 dark:text-stone-100">
 				<li class="item">
 					<RouterLink :to="{ name: 'create-quiz' }"
-						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
+						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-square-plus"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Create Quiz</span>
@@ -12,8 +12,8 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'library', query: { user: authStore.user.id } }"
-						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
+					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'library', query: { user: authStore.user?.id } }"
+						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-book"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Library</span>
@@ -22,7 +22,7 @@
 				</li>
 				<li class="item">
 					<RouterLink :to="{ name: 'create-quiz' }"
-						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
+						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-people-roof"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Classes</span>
@@ -31,7 +31,7 @@
 				</li>
 				<li class="item">
 					<RouterLink :to="{ name: 'settings' }"
-						class="item-link hover:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
+						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
 						<i class="fa-solid fa-gear"></i>
 						<Transition>
 							<span v-if="!navbarStore.mobile">Settings</span>
@@ -53,15 +53,22 @@
 				<div class="theme">
 					<light-button v-if="!navbarStore.darkTheme" @click.prevent="navbarStore.assignDarkTheme(true)"
 						class="dark_theme"><i class="fa-solid fa-moon"></i></light-button>
-					<light-button v-else @click.prevent="navbarStore.assignDarkTheme(false)"
-						class="light_theme dark:hover:bg-slate-600"><i class="fa-solid fa-sun"></i></light-button>
+					<light-button v-else @click.prevent="navbarStore.assignDarkTheme(false)" class="light_theme"><i
+							class="fa-solid fa-sun"></i></light-button>
 				</div>
-				<div v-if="!authStore.isLoading" class="avatar bg-slate-800 text-white dark:bg-slate-600">
-					<a v-if="authStore.user.image" href="authStore.user.image" class="avatar-link">
+				<div v-if="!authStore.isLoading" @click="toggleDropdown"
+					class="avatar bg-slate-800 text-white dark:bg-slate-600">
+					<span v-if="authStore.user.image" class="avatar-link">
 						<img :src="authStore.user.image" alt="">
-					</a>
+					</span>
 					<span v-else>{{ authStore.user.firstname[0] }}</span>
 				</div>
+				<Transition name="fade">
+					<div v-if="dropdown" @click="logoutAdmin"
+						class="dropdown text-slate-950 dark:text-stone-100 bg-stone-100 dark:bg-slate-900">
+						<span class="logout">Log Out <i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+					</div>
+				</Transition>
 			</div>
 			<div class="slot">
 				<InfoActiveAction v-if="actionStore.activeAction" />
@@ -77,10 +84,22 @@ import { useActionStore } from '@/stores/actionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavbarStore } from '@/stores/navbarStore';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const authStore = useAuthStore();
 const navbarStore = useNavbarStore();
 const actionStore = useActionStore()
 const windowWith = ref<number>();
+//logout
+const dropdown = ref(false);
+const toggleDropdown = () => {
+	dropdown.value = !dropdown.value
+}
+const logoutAdmin = () => {
+	router.replace('/')
+	authStore.logout();
+}
+//responsibility
 function checkScreen() {
 	windowWith.value = window.innerWidth;
 	if (+windowWith.value <= 820) {
@@ -95,9 +114,23 @@ window.addEventListener('resize', checkScreen);
 const sidebarToggle = () => {
 	navbarStore.assignMobile(!navbarStore.mobile)
 }
+
 </script>
 
 <style scoped lang="scss">
+//transition of dropdown
+.fade-enter-active,
+.fade-leave-active {
+	transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+	transform: translate(5px, -5px);
+}
+
+//transition of sidebar
 .v-enter-active {
 	transition: all 0.5s ease-in;
 
@@ -208,6 +241,12 @@ const sidebarToggle = () => {
 		}
 
 		.theme {
+			.light_theme {
+				&:hover {
+					background-color: rgb(2 6 23);
+				}
+			}
+
 			button {
 				border-radius: 50%;
 				width: 40px;
@@ -239,6 +278,29 @@ const sidebarToggle = () => {
 					width: 100%;
 					object-fit: cover;
 				}
+			}
+		}
+
+		.dropdown {
+			padding: 10px 15px;
+			border-radius: 5px;
+			cursor: pointer;
+			position: absolute;
+			right: 10px;
+			top: 58px;
+			z-index: 99999;
+			-webkit-box-shadow: -2px 1px 8px 2px rgba(34, 60, 80, 0.2);
+			-moz-box-shadow: -2px 1px 8px 2px rgba(34, 60, 80, 0.2);
+			box-shadow: -2px 1px 8px 2px rgba(34, 60, 80, 0.2);
+
+
+			.logout {
+				font-size: 18px;
+				font-weight: 500;
+			}
+
+			i {
+				margin-left: 10px;
 			}
 		}
 	}

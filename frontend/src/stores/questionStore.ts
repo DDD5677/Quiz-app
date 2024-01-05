@@ -86,5 +86,14 @@ export const useQuestionStore = defineStore('question', () => {
 			})
 		})
 	}
-  return {getQuestionById,deleteQuestion, toggleEditors, editors,correctAnswer,question,assignCorrectAnswer,createQuestion }
+  return {
+		getQuestionById,
+		deleteQuestion, 
+		toggleEditors, 
+		editors,
+		correctAnswer,
+		question,
+		assignCorrectAnswer,
+		createQuestion 
+	}
 })

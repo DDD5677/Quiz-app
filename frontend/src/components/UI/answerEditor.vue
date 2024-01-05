@@ -2,9 +2,8 @@
 	<div class="answer-wrap">
 		<div class="answer bg-stone-100 dark:bg-slate-700">
 			<div class="answer-nav border-b-4 border-b-white dark:border-b-slate-800">
-				<button @click.prevent="removeEventListener"
-					class="rm-variant bg-white dark:bg-slate-800 text-slate-900 dark:text-stone-200 hover:bg-red-800 dark:hover:bg-red-800 hover:text-stone-200"><i
-						class="fa-solid fa-trash"></i></button>
+				<delete-button @click.prevent="removeEventListener" class="rm-variant"><i
+						class="fa-solid fa-trash"></i></delete-button>
 				<check-box :index="props.index" />
 			</div>
 			<div @click="toggleAnswerEditor(true)" class="textarea text-slate-900 dark:text-stone-200">
@@ -83,13 +82,11 @@ onMounted(() => {
 		padding: 5px 10px;
 
 		.rm-variant {
-			//padding: 5px;
+			padding: 0;
 			font-size: 14px;
 			width: 25px;
 			height: 25px;
-			line-height: 15px;
 			border-radius: 3px;
-			transition: all 0.4s ease-in-out;
 		}
 	}
 

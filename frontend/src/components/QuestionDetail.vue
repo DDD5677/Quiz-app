@@ -11,7 +11,12 @@
 			</div>
 		</div>
 		<div class="body">
-			<div class="question border-b-2 border-b-stone-100 dark:border-b-slate-700">{{ question.text }}</div>
+			<div class="flex">
+				<div class="question border-b-2 border-b-stone-100 dark:border-b-slate-700">
+					<img v-if="question.image" :src="question.image" alt="">
+					{{ question.text }}
+				</div>
+			</div>
 			<div class="options">
 				<div v-for="(option, index) in options" :key="index" class="option"
 					:class="{ 'correct': index === +question.correctAnswer }">
@@ -119,6 +124,14 @@ onMounted(() => {
 		font-size: 16px;
 		font-weight: 500;
 		margin-bottom: 10px;
+		flex-grow: 1;
+
+		img {
+			border-radius: 5px;
+			margin: 0 10px 0px 0;
+			height: 120px;
+			float: left;
+		}
 	}
 
 	.options {

@@ -5,14 +5,16 @@
 				<h1 class="title">Settings</h1>
 				<form v-if="!authStore.isLoading" action="" @submit.prevent="updateSettingsHandler">
 					<div class="avatar input">
-						<div class="img_box">
-							<span class="img_link" v-if="authStore.user.image">
+						<div class="img_box bg-slate-900">
+							<span class="img_link" v-if="!authStore.user.image">
 								<a :href="authStore.user.image" target="_blank"><img :src="authStore.user.image" alt=""></a>
-								<span class="img_camera" @click="toggleShowUpload(true)"><i class="fa-solid fa-camera"></i></span>
+								<span class="img_camera  dark:text-slate-800" @click="toggleShowUpload(true)"><i
+										class="fa-solid fa-camera"></i></span>
 							</span>
 							<span v-else class="img_link no_image">
 								<span class="img_name">{{ authStore.user.firstname[0] }}</span>
-								<span class="img_camera" @click="toggleShowUpload(true)"><i class="fa-solid fa-camera"></i></span>
+								<span class="img_camera  dark:text-slate-800" @click="toggleShowUpload(true)"><i
+										class="fa-solid fa-camera"></i></span>
 							</span>
 						</div>
 						<div class="registered">
@@ -170,7 +172,6 @@ onMounted(() => {
 		.img_box {
 			width: 80px;
 			height: 80px;
-			background-color: #263238;
 			border-radius: 50%;
 
 			overflow: hidden;

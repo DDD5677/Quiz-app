@@ -6,48 +6,57 @@
 						class="text-slate-400">Quiz</span>
 				</RouterLink>
 			</div>
-			<div class="selects">
-				<select name="" id=""
-					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-					v-model="questionType">
-					<option value="" selected disabled hidden>Savol turi</option>
-					<option value="test">Test</option>
-					<option value="fill-in">Bo'sh joyni to'ldirish</option>
-				</select>
-				<main-input type="number" placeholder="Grade (in points)" v-model="point" />
-				<select name="" id=""
-					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-					v-model="category">
-					<option value="" selected disabled hidden>Savol qaysi fandan</option>
-					<option value="math">Matematika</option>
-					<option value="english">Ingliz tili</option>
-					<option value="history">Tarix</option>
-					<option value="physics">Fizika</option>
-				</select>
-				<select name="" id=""
-					class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-					v-model="difficulty">
-					<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-					<option value="low">Onson</option>
-					<option value="medium">O'rtacha</option>
-					<option value="hard">Qiyin</option>
-					<option value="expert">Juda qiyin</option>
-				</select>
-			</div>
-			<dark-button @click.prevent="createQuestionHandler">Save question</dark-button>
+			<form @submit.prevent="createQuestionHandler" action="" enctype="multipart/form-data" class="flex gap-2">
+				<div class="selects">
+					<select required name="" id=""
+						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						v-model="questionType">
+						<option value="" selected disabled hidden>Savol turi</option>
+						<option value="test">Test</option>
+						<option value="fill-in">Bo'sh joyni to'ldirish</option>
+					</select>
+					<main-input required type="number" placeholder="Grade (in points)" v-model="point" />
+					<select required name="" id=""
+						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						v-model="category">
+						<option value="" selected disabled hidden>Savol qaysi fandan</option>
+						<option value="math">Matematika</option>
+						<option value="english">Ingliz tili</option>
+						<option value="history">Tarix</option>
+						<option value="physics">Fizika</option>
+					</select>
+					<select required name="" id=""
+						class="quiz-type bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						v-model="difficulty">
+						<option value="" selected disabled hidden>Qiyinlik darajasi</option>
+						<option value="low">Onson</option>
+						<option value="medium">O'rtacha</option>
+						<option value="hard">Qiyin</option>
+						<option value="expert">Juda qiyin</option>
+					</select>
+				</div>
+				<dark-button>Save question</dark-button>
+			</form>
 		</div>
 		<div class="container" :style="editorActive || true ? 'padding-bottom:30vh' : ''">
 			<div class="question-editor bg-white dark:bg-slate-800">
-				<form action="">
+				<div class="question-wrapper">
 					<div class="quiz-text bg-stone-100 dark:bg-slate-700">
 						<div class="textarea-nav border-b-4 border-b-white dark:border-b-slate-800">
 							<span class="textarea-title text-slate-900 dark:text-stone-200">Savol matni</span>
-							<button
-								class="upload-img bg-white dark:bg-slate-800 text-slate-900 dark:text-stone-200 hover:text-stone-100 hover:bg-slate-900 dark:hover:bg-slate-900"><i
-									class="fa-regular fa-image"></i></button>
+							<light-button @click.prevent="toggleShowUpload(true)" class="upload-img">
+								<i class="fa-regular fa-image"></i>
+							</light-button>
 						</div>
-						<div @click="toggleQuestionEditor(true)" class="textarea text-slate-900 dark:text-stone-200"
-							ref="questionElem"></div>
+						<div class="h-full flex justify-between pt-2">
+							<div class="question_img relative">
+								<delete-button v-if="image" class="" @click.prevent="removeImage"><i
+										class="fa-solid fa-xmark"></i></delete-button>
+								<img class="h-full rounded" src="" alt="" ref="target">
+							</div>
+							<div @click="toggleQuestionEditor(true)" class="textarea text-slate-900 dark:text-stone-200"
+								ref="questionElem"></div>
+						</div>
 					</div>
 					<div v-if="questionStore.editors.question" class="text-editor">
 						<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
@@ -73,19 +82,20 @@
 							:valueEditor="answers.answer5" />
 					</div>
 					<dark-button :disabled="activeAnswers === 5" @click.prevent="addAnswer">Variant qo'shish</dark-button>
-				</form>
+				</div>
 			</div>
 		</div>
+		<UploadImage v-if="showUpload" @close="toggleShowUpload" :uploadImage="uploadImage" />
 	</section>
 </template>
 
 <script setup lang="ts">
-import CreateQuestionNavbar from '@/components/CreateQuestionNavbar.vue';
+import UploadImage from '@/components/UI/uploadImage.vue';
 import { useQuestionStore } from '@/stores/questionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useQuizStore } from '@/stores/quizStore'
 import AnswerEditor from '@/components/UI/answerEditor.vue'
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 // @ts-ignore
 import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render';
 import type { ShowAnswers, Answers } from '@/types/createQuizType';
@@ -164,13 +174,39 @@ function addAnswer() {
 		}
 	}
 }
-//assign question data according to question query
+//upload Image
+const showUpload = ref(false)
+const target = ref<HTMLImageElement | null>(null);
+const toggleShowUpload = (show: boolean) => {
+	showUpload.value = show
+}
 
+const showImage = (src: any, target: any) => {
+	const fr = new FileReader();
+	// when image is loaded, set the src of the image where you want to display it
+	fr.onload = function (e) { target.src = this.result; };
+	// fill fr with image data    
+	fr.readAsDataURL(src);
+}
+const removeImage = () => {
+	if (target.value) target.value.src = ''
+	image.value = null
+}
+
+const uploadImage = (img: any) => {
+	image.value = img;
+	showImage(img, target.value)
+}
+//assign question data according to question query
 const assignQuestionData = () => {
 	difficulty.value = questionStore.question.difficulty;
 	point.value = questionStore.question.point;
 	answers.value = questionStore.question.answers;
 	question.value = questionStore.question.text;
+	category.value = questionStore.question.category;
+	questionType.value = questionStore.question.questionType;
+	if (target.value) target.value.src = questionStore.question.image
+	image.value = questionStore.question.image;
 	activeAnswers.value = 0
 	for (const key in questionStore.question.answers) {
 		if (questionStore.question.answers[key]) {
@@ -197,11 +233,6 @@ function renderMath(editor: HTMLElement | null, word: string) {
 			throwOnError: false
 		})
 	}
-	// katex.render(this.changeText, this.$refs.box, {
-	// 	throwOnError: false,
-	// 	displayMode:this.display
-	// });
-
 }
 watch(question, () => {
 	renderMath(questionElem.value, question.value)
@@ -294,7 +325,7 @@ onMounted(() => {
 
 
 
-		form {
+		.question-wrapper {
 			.text-editor {
 				position: fixed;
 				margin-top: 20px;
@@ -337,11 +368,37 @@ onMounted(() => {
 				}
 			}
 
+			.question_img {
+				height: 180px;
+				flex: 0 0 auto;
+
+				img {
+					width: auto;
+					height: 100%;
+				}
+
+				button {
+					padding: 0;
+					position: absolute;
+					top: -10px;
+					right: -10px;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					font-size: 18px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+
+			}
+
 			.textarea {
+				height: 180px;
+				flex-grow: 1;
+				padding: 0 10px;
 				font-size: 20px;
 				overflow: auto;
-				width: 100%;
-				height: 100%;
 				overflow-wrap: break-word;
 				cursor: text;
 			}
@@ -362,11 +419,12 @@ onMounted(() => {
 				}
 
 				.upload-img {
-					padding: 5px;
+					padding: 0px;
 					width: 30px;
-					line-height: 20px;
-					border-radius: 3px;
-					transition: all 0.4s ease-in-out;
+					height: 30px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 				}
 			}
 
@@ -396,4 +454,4 @@ onMounted(() => {
 		}
 	}
 }
-</style>@/types/createQuizType@/stores/questionStore
+</style>

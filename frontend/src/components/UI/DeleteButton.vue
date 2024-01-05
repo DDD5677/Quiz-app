@@ -1,6 +1,6 @@
 <template>
 	<button
-		class="delete-btn bg-stone-100 dark:bg-slate-800 text-red-800 dark:text-red-600 border border-red-800 dark:border-red-900  hover:bg-red-800 dark:hover:bg-red-800 hover:text-stone-100 dark:hover:text-stone-100">
+		class="delete-btn bg-stone-100 hover:bg-red-800 dark:bg-slate-800 dark:hover:bg-red-800 text-red-800 hover:text-stone-100 dark:text-stone-100 border border-red-800 dark:border-slate-800 dark:hover:border-red-800   ">
 		<slot></slot>
 	</button>
 </template>

@@ -36,10 +36,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="quiz in quizStore.quizList" :key="quiz.id" @click.prevent="goToQuizPlay(quiz.id)">
-								<td class="img_box"><img
-										src="https://images.unsplash.com/photo-1702561474123-7dfd6cb260c4?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-										alt=""></td>
+							<tr v-for="quiz in  quizStore.quizList " :key="quiz.id" @click.prevent="goToQuizPlay(quiz.id)">
+								<td>
+									<div class="img_box">
+										<img v-if="quiz.image" :src="quiz.image" alt="" />
+									</div>
+								</td>
 								<td class="quiz_title">{{ quiz.title }}</td>
 								<td class="difficulty">Low</td>
 								<td class="about">{{ quiz.category }}</td>
@@ -73,6 +75,7 @@ const difficulty = ref('')
 const goToQuizPlay = (id: string) => {
 	if (!actionStore.activeAction) {
 		router.push({ path: `/quiz/${id}` })
+		console.log(window.location.origin)
 	} else {
 		alert('Sizda tugatilmagan test mavjud. Yangi testni boshlash uchun oldin yakunlang!')
 	}
@@ -115,7 +118,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .quizes {
-	padding-bottom: 200px;
+	padding-bottom: 50px;
 
 
 	.wrapper {
@@ -201,10 +204,13 @@ onMounted(() => {
 
 						.img_box {
 							width: 100px;
-							padding: 5px;
+							min-height: 50px;
+							margin: 5px;
+							background: url('../assets/images/card__bg.svg') no-repeat center;
+							background-size: contain;
 
 							img {
-								border-radius: 10px;
+								border-radius: 5px;
 								width: 100%;
 								height: 100%;
 							}

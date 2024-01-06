@@ -2,10 +2,12 @@
 	<section class="quiz_detail">
 		<div class="container">
 			<div class="btns">
-				<light-button @click.prevent="addQuestionHandler"><i class="fa-solid fa-plus"></i> <span>Add
-						Question</span></light-button>
-				<light-button @click.prevent="addQuestionHandler"><i class="fa-regular fa-share-from-square"></i>
-					<span>Share</span></light-button>
+				<light-button @click.prevent="addQuestionHandler">
+					<i class="fa-solid fa-plus"></i> <span>Add Question</span>
+				</light-button>
+				<light-button>
+					<a :href="url" target="_blank"><i class="fa-brands fa-telegram"></i> Share</a>
+				</light-button>
 			</div>
 			<div v-if="!quizStore.isLoading" class="wrapper bg-white dark:bg-slate-800 text-black dark:text-stone-200">
 				<h1 class="title">Quiz Detail</h1>
@@ -85,6 +87,8 @@ const router = useRouter()
 const quizStore = useQuizStore()
 const questionStore = useQuestionStore()
 const quizId = route.params.id as string
+const sharedText = 'EasyQuiz online test platformasi'
+const url = `https://telegram.me/share/url?url=${window.location.origin}/quiz/${quizId}&text=${sharedText}`
 const quiz = reactive<Quiz>({
 	title: '',
 	time: 0,

@@ -12,7 +12,7 @@ function errorHandler(err, req, res, next) {
       Object.values(err.errors).forEach(({ properties }) => {
          errors[properties.path] = properties.message;
       });
-      return res.status(401).json(errors);
+      return res.status(400).json(errors);
    }
 
    return res

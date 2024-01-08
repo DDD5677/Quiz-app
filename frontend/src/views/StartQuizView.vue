@@ -10,7 +10,11 @@
 							<span>Savollar soni</span>
 							<span>{{ quizStore.quiz.questions.length }}</span>
 						</div>
-						<div class="point">
+						<div v-if="quizStore.quiz.mixedScore" class="point">
+							<span>Har bir savol uchun</span>
+							<span>qiyinlik darajasiga qarab ball beriladi</span>
+						</div>
+						<div v-else class="point">
 							<span>Har bir savol uchun</span>
 							<span>{{ quizStore.quiz.point }} ball</span>
 						</div>
@@ -47,9 +51,7 @@ const firstname = ref('')
 const lastname = ref('')
 
 const quizId = route.params.id as string
-quizStore.getQuizById(quizId).then((res) => {
-	console.log(res)
-})
+quizStore.getQuizById(quizId)
 
 const startQuizHandler = () => {
 	const data = {

@@ -12,6 +12,10 @@ const quizSchema = new mongoose.Schema(
             // ],
          },
       ],
+      difficulty: {
+         type: Number,
+         default: 0,
+      },
       title: {
          type: String,
          required: [true, "Please enter title"],
@@ -23,6 +27,10 @@ const quizSchema = new mongoose.Schema(
       point: {
          type: Number,
          default: 1,
+      },
+      mixedScore: {
+         type: Boolean,
+         required: [true, "Please choose type of score calculation"],
       },
       category: {
          type: String,

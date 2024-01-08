@@ -17,7 +17,7 @@
 					</div>
 					<div class="input">
 						<span class="subtitle">Grade (in points)</span>
-						<main-input required type="number" placeholder="Grade" v-model="quiz.point" />
+						<main-input required type="number" step=".1" placeholder="Grade" v-model="quiz.point" />
 						<span class="error"></span>
 
 					</div>
@@ -27,10 +27,7 @@
 							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
 							v-model="quiz.category">
 							<option value="" selected disabled hidden>Which category?</option>
-							<option value="Math">Math</option>
-							<option value="History">History</option>
-							<option value="English">English</option>
-							<option value="Physics">Physics</option>
+							<option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
 						</select>
 						<span class="error"></span>
 					</div>
@@ -42,6 +39,17 @@
 							<option value="" selected disabled hidden>Which type?</option>
 							<option value="Test">Test</option>
 							<option value="true-false">True False</option>
+						</select>
+						<span class="error"></span>
+					</div>
+					<div class="input">
+						<span class="subtitle">Type of score calculation</span>
+						<select required name="" id=""
+							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
+							v-model="quiz.mixedScore">
+							<option value='' selected disabled hidden>Which type?</option>
+							<option :value="true">Mixed score</option>
+							<option :value="false">Same score</option>
 						</select>
 						<span class="error"></span>
 					</div>
@@ -57,6 +65,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useQuizStore } from '@/stores/quizStore'
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { categories } from '@/constants/constant'
 import type { Quiz } from '@/types/quizType'
 const router = useRouter();
 const authStore = useAuthStore()
@@ -68,7 +77,8 @@ const quiz = reactive<Quiz>({
 	category: '',
 	quizType: '',
 	image: '',
-	user: ""
+	user: "",
+	mixedScore: ''
 })
 
 

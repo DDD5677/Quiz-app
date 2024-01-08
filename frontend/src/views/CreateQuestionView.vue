@@ -15,24 +15,20 @@
 						<option value="test">Test</option>
 						<option value="fill-in">Bo'sh joyni to'ldirish</option>
 					</select>
-					<main-input required type="number" placeholder="Grade (in points)" v-model="point" />
+					<main-input required type="number" step=".1" placeholder="Grade (in points)" v-model="point" />
 					<select required name="" id=""
 						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						v-model="category">
 						<option value="" selected disabled hidden>Savol qaysi fandan</option>
-						<option value="math">Matematika</option>
-						<option value="english">Ingliz tili</option>
-						<option value="history">Tarix</option>
-						<option value="physics">Fizika</option>
+						<option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
 					</select>
 					<select required name="" id=""
 						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						v-model="difficulty">
 						<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-						<option value="low">Onson</option>
-						<option value="medium">O'rtacha</option>
-						<option value="hard">Qiyin</option>
-						<option value="expert">Juda qiyin</option>
+						<option value="1">Onson</option>
+						<option value="2">O'rtacha</option>
+						<option value="3">Qiyin</option>
 					</select>
 				</div>
 				<ToggleTheme />
@@ -102,6 +98,7 @@ import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-rend
 import type { ShowAnswers, Answers } from '@/types/createQuizType';
 import { useRouter, useRoute } from 'vue-router'
 import ToggleTheme from '@/components/UI/ToggleTheme.vue';
+import { categories } from '@/constants/constant';
 const router = useRouter();
 const route = useRoute();
 const questionStore = useQuestionStore();
@@ -111,7 +108,7 @@ const quizStore = useQuizStore()
 const answerKey = ref(0)
 
 //difficulty question
-const difficulty = ref('low')
+const difficulty = ref<number | ''>('')
 //category of question
 const category = ref('')
 //point for question
@@ -221,7 +218,6 @@ const assignQuestionData = () => {
 
 //rendering Latex string
 function renderMath(editor: HTMLElement | null, word: string) {
-
 	if (editor) {
 		editor.textContent = word;
 
@@ -273,7 +269,9 @@ onMounted(() => {
 			assignQuestionData()
 		})
 	} else {
-		quizStore.getQuizById(quizId)
+		quizStore.getQuizById(quizId).then((res: any) => {
+			if (!res.mixedScore) point.value = res.point
+		})
 	}
 })
 </script>

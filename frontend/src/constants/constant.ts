@@ -1,0 +1,1 @@
+export const categories = ['Math','English','History','Physics','Biology'] 

@@ -109,6 +109,7 @@ router.get("/admin/:id", async (req, res, next) => {
             message: "The quiz with given ID was not found",
          });
       }
+      console.log(quiz);
       res.status(200).send(quiz);
    } catch (error) {
       next(error);
@@ -122,6 +123,7 @@ router.post("/", async (req, res, next) => {
          point: req.body.point,
          category: req.body.category,
          quizType: req.body.quizType,
+         mixedScore: req.body.mixedScore,
          user: req.body.user,
          image: req.body.image,
       });
@@ -150,6 +152,7 @@ router.put("/:id", async (req, res, next) => {
          point: req.body.point,
          category: req.body.category,
          quizType: req.body.quizType,
+         mixedScore: req.body.mixedScore,
       };
       const quiz = await Quiz.findByIdAndUpdate(req.params.id, updateBlock, {
          new: true,

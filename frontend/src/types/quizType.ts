@@ -5,5 +5,6 @@ export interface Quiz{
 	category:string,
 	quizType:string,
 	user:string,
-	image:string
+	image:string,
+	mixedScore:boolean|''
 }

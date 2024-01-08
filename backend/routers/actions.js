@@ -147,21 +147,42 @@ router.put("/finish/:id", async (req, res, next) => {
       if (!mongoose.isValidObjectId(req.params.id)) {
          return res.status(400).send("Invalid Quiz ID");
       }
+      const actionExist = await Action.findById(req.params.id).populate("quiz");
+      if (!actionExist) {
+         return res.status(404).json({
+            success: false,
+            message: "The action is not found",
+         });
+      }
       let updateBlock = {
          finished: true,
       };
       let correctAnswers = 0;
       let score = 0;
       if (req.body.chooses) {
-         for (const key in req.body.chooses) {
-            const question = await Question.findById(key);
-            if (question) {
-               if (question.correctAnswer === req.body.chooses[key]) {
-                  correctAnswers++;
-                  score += question.point;
+         if (actionExist.quiz.mixedScore) {
+            for (const key in req.body.chooses) {
+               const question = await Question.findById(key);
+               if (question) {
+                  if (question.correctAnswer === req.body.chooses[key]) {
+                     correctAnswers++;
+                     score += question.point;
+                  }
+               } else {
+                  console.log("question is not found");
                }
-            } else {
-               console.log("question is not found");
+            }
+         } else {
+            for (const key in req.body.chooses) {
+               const question = await Question.findById(key);
+               if (question) {
+                  if (question.correctAnswer === req.body.chooses[key]) {
+                     correctAnswers++;
+                     score += actionExist.quiz.point;
+                  }
+               } else {
+                  console.log("question is not found");
+               }
             }
          }
          updateBlock.correctAnswers = correctAnswers;

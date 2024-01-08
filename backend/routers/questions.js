@@ -49,7 +49,7 @@ router.post(
             text: req.body.text,
             correctAnswer: +req.body.correctAnswer,
             answers: JSON.parse(req.body.answers),
-            difficulty: req.body.difficulty,
+            difficulty: +req.body.difficulty,
             questionType: req.body.questionType,
             point: +req.body.point,
             category: req.body.category,
@@ -67,6 +67,7 @@ router.post(
          }
 
          if (req.body.questionId) {
+            //-----UPDATE QUESTION-----
             //find existed question
             const questionExist = await Question.findById(req.body.questionId);
             if (!questionExist) {
@@ -84,6 +85,45 @@ router.post(
                   fs.unlinkSync(result);
                }
             }
+            //change difficulty of quiz if question difficulty is updated
+            if (questionExist.difficulty !== questionData.difficulty) {
+               const quizExist = await Quiz.findById(req.body.quizId).select(
+                  "questions difficulty"
+               );
+               if (!quizExist) {
+                  return res.status(500).json({
+                     success: false,
+                     message: "The quiz with given quizId is not found",
+                  });
+               }
+               const amountOfQuestions = quizExist.questions.length;
+               const sumDifficulties = quizExist.difficulty * amountOfQuestions;
+               const newDifficulty = (
+                  (sumDifficulties -
+                     questionExist.difficulty +
+                     questionData.difficulty) /
+                  amountOfQuestions
+               ).toFixed(2);
+               console.log("quizExist", quizExist);
+               console.log("amountOfQuestions", amountOfQuestions);
+               console.log("sumDifficulties", sumDifficulties);
+               console.log("newDifficulty", newDifficulty);
+               //change difficulty of Quiz
+               const quiz = await Quiz.findByIdAndUpdate(
+                  req.body.quizId,
+                  {
+                     difficulty: newDifficulty,
+                  },
+                  { new: true }
+               );
+               if (!quiz) {
+                  return res.status(500).json({
+                     success: false,
+                     message: "The difficulty of quiz is not updated",
+                  });
+               }
+            }
+
             //update existed question
             question = await Question.findByIdAndUpdate(
                req.body.questionId,
@@ -97,7 +137,7 @@ router.post(
                });
             }
          } else {
-            //create new question
+            //------CREATE NEW QUESTION --------
             question = new Question({ ...questionData });
             question = await question.save();
 
@@ -107,12 +147,35 @@ router.post(
                   message: "The question is not created",
                });
             }
+            //get existed Quiz
+            const quizExist = await Quiz.findById(req.body.quizId).select(
+               "questions difficulty"
+            );
+            if (!quizExist) {
+               return res.status(500).json({
+                  success: false,
+                  message: "The quiz with given quizId is not found",
+               });
+            }
+            const amountOfQuestions = quizExist.questions.length;
+            const sumDifficulties = quizExist.difficulty * amountOfQuestions;
+            const newDifficulty = (
+               (sumDifficulties + question.difficulty) /
+               (amountOfQuestions + 1)
+            ).toFixed(2);
+            console.log("quizExist", quizExist);
+            console.log("amountOfQuestions", amountOfQuestions);
+            console.log("sumDifficulties", sumDifficulties);
+            console.log("newDifficulty", newDifficulty);
             //add created question to Quiz
             const quiz = await Quiz.findByIdAndUpdate(
                req.body.quizId,
-               { $push: { questions: question._id } },
+               {
+                  $push: { questions: question._id },
+                  difficulty: newDifficulty,
+               },
                { new: true }
-            ).populate("questions");
+            );
             if (!quiz) {
                return res.status(500).json({
                   success: false,
@@ -125,6 +188,7 @@ router.post(
             message: "Question is created or updated successfully",
          });
       } catch (error) {
+         console.log(error);
          next(error);
       }
    }
@@ -148,12 +212,41 @@ router.delete("/", async (req, res, next) => {
             fs.unlinkSync(result);
          }
       }
+      //get existed Quiz
+      const quizExist = await Quiz.findById(req.query.quizId).select(
+         "questions difficulty"
+      );
+      if (!quizExist) {
+         return res.status(500).json({
+            success: false,
+            message: "The quiz with given quizId is not found",
+         });
+      }
+      const amountOfQuestions = quizExist.questions.length;
+      let newDifficulty;
+      if (amountOfQuestions === 1) {
+         newDifficulty = 0;
+      } else {
+         const sumDifficulties = quizExist.difficulty * amountOfQuestions;
+         newDifficulty = (
+            (sumDifficulties - question.difficulty) /
+            (amountOfQuestions - 1)
+         ).toFixed(2);
+         console.log("sumDifficulties", sumDifficulties);
+      }
+      console.log("quizExist", quizExist);
+      console.log("amountOfQuestions", amountOfQuestions);
+      console.log("newDifficulty", newDifficulty);
       //delete from quiz
       const quiz = await Quiz.findByIdAndUpdate(
          req.query.quizId,
-         { $pull: { questions: req.query.questionId } },
+         {
+            $pull: { questions: req.query.questionId },
+            difficulty: newDifficulty,
+         },
          { new: true }
       );
+      console.log("quiiz", quiz);
       if (!quiz) {
          return res.status(500).json({
             success: false,
@@ -165,6 +258,7 @@ router.delete("/", async (req, res, next) => {
          message: "Question is deleted successfully",
       });
    } catch (error) {
+      console.log(error);
       next(error);
    }
 });

@@ -17,10 +17,10 @@
 						</select>
 						<select name="" id="" v-model="difficulty">
 							<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-							<option value="low">Onson</option>
-							<option value="medium">O'rtacha</option>
-							<option value="hard">Qiyin</option>
-							<option value="expert">Juda qiyin</option>
+							<option value="">All</option>
+							<option value="1">Onson</option>
+							<option value="2">O'rtacha</option>
+							<option value="3">Qiyin</option>
 						</select>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 									</div>
 								</td>
 								<td class="quiz_title">{{ quiz.title }}</td>
-								<td class="difficulty">Low</td>
+								<td class="difficulty">{{ checkDifficulty(quiz.difficulty) }}</td>
 								<td class="about">{{ quiz.category }}</td>
 								<td class="about">{{ quiz.questions.length }}</td>
 							</tr>
@@ -75,18 +75,31 @@ const difficulty = ref('')
 const goToQuizPlay = (id: string) => {
 	if (!actionStore.activeAction) {
 		router.push({ path: `/quiz/${id}` })
-		console.log(window.location.origin)
 	} else {
 		alert('Sizda tugatilmagan test mavjud. Yangi testni boshlash uchun oldin yakunlang!')
 	}
 }
-
+const checkDifficulty = (diff: number) => {
+	if (diff < 1.5) {
+		return 'Onson'
+	} else if (diff < 2.5) {
+		return "O'rtacha"
+	} else {
+		return "Qiyin"
+	}
+}
 const getData = (page: number, limit: number) => {
 	const queries = {
 		page: page,
 		limit: limit,
 		search: search.value,
-		category: category.value
+		category: category.value,
+		min_difficulty: '' as string | number,
+		max_difficulty: '' as string | number,
+	}
+	if (difficulty.value) {
+		queries.min_difficulty = +difficulty.value - 0.5
+		queries.max_difficulty = +difficulty.value + 0.5
 	}
 	quizStore.getQuiz(queries)
 	router.push({ path: '/quizes', replace: true, query: queries })
@@ -100,6 +113,14 @@ watch(search, () => {
 	}
 })
 watch(category, () => {
+	if (route.query.page && route.query.limit) {
+		getData(+route.query.page, +route.query.limit)
+	} else {
+		getData(1, 10)
+
+	}
+})
+watch(difficulty, () => {
 	if (route.query.page && route.query.limit) {
 		getData(+route.query.page, +route.query.limit)
 	} else {

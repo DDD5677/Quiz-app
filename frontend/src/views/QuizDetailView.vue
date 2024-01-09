@@ -27,11 +27,6 @@
 						<span class="subtitle">Time for Quiz (in minutes)</span>
 						<main-input required type="number" placeholder="Time" v-model="quiz.time" />
 						<span class="error"></span>
-						<span class="subtitle">Grade (in points)</span>
-						<main-input required type="number" placeholder="Grade" step=".1" v-model="quiz.point" />
-						<span class="error"></span>
-					</div>
-					<div class="input">
 						<span class="subtitle">Category of Quiz</span>
 						<select required name="" id=""
 							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
@@ -41,7 +36,9 @@
 
 						</select>
 						<span class="error"></span>
+
 					</div>
+
 					<div class="input">
 						<span class="subtitle">Type of Quiz</span>
 						<select required name="" id=""
@@ -59,23 +56,28 @@
 							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
 							v-model="quiz.mixedScore">
 							<option value="" selected disabled hidden>Which type?</option>
-							<option value="true">Mixed score</option>
-							<option value="false">Same score</option>
+							<option :value="true">Mixed score</option>
+							<option :value="false">Same score</option>
 						</select>
+						<span class="error"></span>
+					</div>
+					<div v-if="quiz.mixedScore === false" class="input">
+						<span class="subtitle">Grade (in points)</span>
+						<main-input required type="number" placeholder="Grade" step=".1" v-model="quiz.point" />
 						<span class="error"></span>
 					</div>
 					<div class="input">
 						<span class="subtitle">The difficulty of Quiz</span>
 						<select disabled name="" id=""
 							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
-							:value="quizStore.quiz.difficulty">
+							:value="difficulty">
 							<option value="1">Onson</option>
 							<option value="2">O'rtacha</option>
 							<option value="3">Qiyin</option>
 						</select>
 
 					</div>
-					<dark-button>Update</dark-button>
+					<dark-button :disabled="!changed">Update</dark-button>
 				</form>
 				<h2 class="title">Questions</h2>
 				<div class="questions">
@@ -99,7 +101,7 @@ import { categories } from '@/constants/constant';
 import { useQuestionStore } from '@/stores/questionStore';
 import { useQuizStore } from '@/stores/quizStore';
 import type { Quiz } from '@/types/quizType';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
@@ -117,6 +119,21 @@ const quiz = reactive<Quiz>({
 	image: '',
 	user: "",
 	mixedScore: ''
+})
+//disable button if nothing is changed
+const changed = computed(() => {
+	const data = quizStore.quiz;
+	return quiz.title !== data.title || quiz.time !== data.time || quiz.category !== data.category || quiz.mixedScore !== data.mixedScore || quiz.quizType !== data.quizType || +quiz.point !== data.point
+})
+//calculate difficulty of quiz
+const difficulty = computed(() => {
+	if (quizStore.quiz.difficulty < 1.5) {
+		return 1
+	} else if (quizStore.quiz.difficulty < 2.5) {
+		return 2
+	} else {
+		return 3
+	}
 })
 //upload Image
 const showUpload = ref(false)

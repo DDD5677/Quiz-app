@@ -13,7 +13,7 @@
 					<span class="image_name" ref="imageName"></span>
 					<div class="flex justify-end mt-8">
 						<dark-button :isLoading="imageCompressing" :disabled="!image || imageCompressing">Change
-							Avatar</dark-button>
+							Image</dark-button>
 					</div>
 				</form>
 			</div>

@@ -16,6 +16,17 @@
 
 					</div>
 					<div class="input">
+						<span class="subtitle">Type of score calculation</span>
+						<select required name="" id=""
+							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
+							v-model="quiz.mixedScore">
+							<option value='' selected disabled hidden>Which type?</option>
+							<option :value="true">Mixed score</option>
+							<option :value="false">Same score</option>
+						</select>
+						<span class="error"></span>
+					</div>
+					<div v-if="quiz.mixedScore === false" class="input">
 						<span class="subtitle">Grade (in points)</span>
 						<main-input required type="number" step=".1" placeholder="Grade" v-model="quiz.point" />
 						<span class="error"></span>
@@ -39,17 +50,6 @@
 							<option value="" selected disabled hidden>Which type?</option>
 							<option value="Test">Test</option>
 							<option value="true-false">True False</option>
-						</select>
-						<span class="error"></span>
-					</div>
-					<div class="input">
-						<span class="subtitle">Type of score calculation</span>
-						<select required name="" id=""
-							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
-							v-model="quiz.mixedScore">
-							<option value='' selected disabled hidden>Which type?</option>
-							<option :value="true">Mixed score</option>
-							<option :value="false">Same score</option>
 						</select>
 						<span class="error"></span>
 					</div>

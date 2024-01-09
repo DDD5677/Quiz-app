@@ -34,6 +34,29 @@ router.get("/", async (req, res, next) => {
       if (req.query.category) {
          filter["category"] = req.query.category;
       }
+      if (req.query.difficulty) {
+         if (req.query.difficulty.lte) {
+            filter.difficulty = {
+               ...filter.difficulty,
+               lte: req.query.difficulty.lte,
+            };
+         }
+
+         if (req.query.difficulty.gte) {
+            filter.difficulty = {
+               ...filter.difficulty,
+               gte: req.query.difficulty.gte,
+            };
+         }
+      }
+      //------------------------------------------
+      let queryStr = JSON.stringify(filter);
+      queryStr = queryStr.replace(
+         /\b(gte|gt|lte|lt)\b/g,
+         (match) => `$${match}`
+      );
+      filter = JSON.parse(queryStr);
+      //--------------------------------------------
 
       totalQuizes = await Quiz.countDocuments(filter).exec();
       if (!totalQuizes) {

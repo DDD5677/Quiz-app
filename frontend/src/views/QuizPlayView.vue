@@ -2,7 +2,7 @@
 	<section class="quiz_play">
 		<div class="timer bg-slate-900">
 			<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive && !actionStore.finished"
-				:time="+actionStore.time" />
+				:back-color="'#fff'" :color="'#fff'" :time="+actionStore.time" />
 			<ToggleTheme />
 		</div>
 		<div class="container">

@@ -12,9 +12,8 @@
 import { useActionStore } from '@/stores/actionStore';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-const props = defineProps<{ time: number }>()
+const props = defineProps<{ time: number, backColor: string, color: string }>()
 const actionStore = useActionStore()
-const route = useRoute()
 const router = useRouter()
 //variables
 const hours = ref(0)
@@ -61,13 +60,13 @@ onMounted(() => {
 
 	div {
 		padding: 5px 15px;
-		background-color: #fff;
+		background-color: v-bind(backColor);
 		border-radius: 5px;
 	}
 
 	span {
 		font-weight: 700;
-		color: #fff;
+		color: v-bind(color);
 	}
 }
 </style>

@@ -9,7 +9,11 @@ const QuizService = {
 				sort:payload.sort,
 				search:payload.search,
 				category:payload.category,
-				user:payload.user
+				user:payload.user,
+				difficulty:{
+					lte:payload.max_difficulty,
+					gte:payload.min_difficulty,
+				}
 			}
 		})
 	},

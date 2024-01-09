@@ -3,7 +3,8 @@
 		<div class="container">
 			<div class="wrapper">
 				<div class="timer"><span>Sizda tugatilmagan test mavjud! Sizda</span>
-					<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive" :time="+actionStore.time" />
+					<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive" :time="+actionStore.time"
+						:back-color="'#fff'" :color="'#000'" />
 					<span>vaqt qoldi</span>
 				</div>
 				<dark-button @click.prevent="goToQuizPlay">Davom etish</dark-button>

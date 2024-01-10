@@ -34,9 +34,11 @@ const quizStore = useQuizStore()
 
 
 const deleteQuizHandler = (id: string) => {
-	quizStore.deleteQuiz(id).then((res) => {
-		quizStore.getQuiz({ page: 1, limit: 10, user: route.query.user })
-	})
+	if (confirm("Do you really want to delete?")) {
+		quizStore.deleteQuiz(id).then((res) => {
+			quizStore.getQuiz({ page: 1, limit: 10, user: route.query.user })
+		})
+	}
 }
 const quizDetailHandler = () => {
 	router.push(`/admin/quiz/${props.quiz.id}`)

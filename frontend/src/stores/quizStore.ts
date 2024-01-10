@@ -145,7 +145,6 @@ export const useQuizStore = defineStore('quiz',()=>{
 		getQuizById,
 		getQuizByIdForAdmin,
 		deleteQuiz,
-		//assignQuiz,
 		isLoading,
 		quiz,
 		errors,

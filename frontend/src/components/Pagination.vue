@@ -2,10 +2,12 @@
 	<div class="pagination__wrapper">
 		<ul class="pagination">
 			<li v-for="pageNum in links" :key="pageNum" class="page-item" @click="changePageData(pageNum)">
-				<a class="page-link" :class="{ 'active': pageNum === page }" href="#">{{ pageNum }}</a>
+				<a class="page-link hover:bg-gray-100 hover:text-slate-950 dark:hover:bg-slate-700 dark:hover:text-stone-100"
+					:class="{ 'active': pageNum === page }" href="#">{{ pageNum }}</a>
 			</li>
 			<li class="page-item" @click="changePageData(increamentPage())">
-				<a class="page-link" href="#"><i class="fa-solid fa-chevron-right"></i></a>
+				<a class="page-link hover:bg-gray-100 hover:text-slate-950 dark:hover:bg-slate-700 dark:hover:text-stone-100"
+					href="#"><i class="fa-solid fa-chevron-right"></i></a>
 			</li>
 		</ul>
 	</div>
@@ -90,10 +92,6 @@ const increamentPage = () => {
 
 
 	.page-item {
-		&:focus {
-			border: 1px red solid;
-		}
-
 		margin-right: 7px;
 
 		.page-link {
@@ -103,19 +101,14 @@ const increamentPage = () => {
 			font-weight: 500;
 			font-size: 20px;
 			line-height: 25px;
-			color: #000000;
 			display: inline-block;
 
 			&:focus {
 				outline: none;
 			}
 
-			&:hover {
-				background-color: #f3f3fc
-			}
-
 			&.active {
-				background-color: #262626;
+				background-color: rgb(3 7 18);
 				color: #fff;
 			}
 

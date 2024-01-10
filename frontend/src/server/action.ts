@@ -4,8 +4,11 @@ const ActionService = {
 	getAction(payload:any){
 		return axios.get('/actions',{
 			params:{
-				user:payload.user,
-				finished:payload.finished
+				page:payload.page,
+				limit:payload.limit,
+				search:payload.search,
+				sort:payload.sort,
+				quiz:payload.quiz
 			}
 		})
 	},

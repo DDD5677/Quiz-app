@@ -21,11 +21,11 @@
 					</RouterLink>
 				</li>
 				<li class="item">
-					<RouterLink :to="{ name: 'create-quiz' }"
+					<RouterLink v-if="!authStore.isLoading" :to="{ name: 'statistics', query: { user: authStore.user?.id } }"
 						class="item-link hover:bg-stone-100 focus:bg-stone-100 dark:hover:bg-slate-700 dark:focus:bg-slate-700">
-						<i class="fa-solid fa-people-roof"></i>
+						<i class="fa-solid fa-chart-simple"></i>
 						<Transition>
-							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Classes</span>
+							<span v-if="!navbarStore.mobile && !navbarStore.showNavbar">Statistics</span>
 						</Transition>
 					</RouterLink>
 				</li>

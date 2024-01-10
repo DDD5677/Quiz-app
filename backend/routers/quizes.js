@@ -6,6 +6,7 @@ const Quiz = require("../models/quiz");
 const Question = require("../models/question");
 const mongoose = require("mongoose");
 const { upload } = require("../helpers/upload");
+const Action = require("../models/action");
 
 router.get("/", async (req, res, next) => {
    try {
@@ -14,7 +15,7 @@ router.get("/", async (req, res, next) => {
       let limit = 6;
       let totalQuizes = 0;
       let pageSize = 1;
-
+      console.log(req.query);
       if (req.query.page) {
          page = +req.query.page;
       }
@@ -98,6 +99,7 @@ router.get("/", async (req, res, next) => {
          },
       });
    } catch (error) {
+      console.log(error);
       next(error);
    }
 });
@@ -281,9 +283,16 @@ router.delete("/:id", async (req, res, next) => {
                fs.unlinkSync(result);
             }
          }
-         //----------------------------------
       });
-      //res.status(200).send(quiz);
+      //-----Delete all actions depent on quiz-------
+      const actions = await Action.deleteMany({ quiz: req.params.id });
+      if (!actions) {
+         return res.status(500).json({
+            success: false,
+            message: "The actions wasn't deleted",
+         });
+      }
+      //-------------------------
       res.status(200).json({
          success: true,
          message: "The quiz was deleted",

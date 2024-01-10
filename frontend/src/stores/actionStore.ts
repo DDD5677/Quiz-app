@@ -9,9 +9,11 @@ export const useActionStore = defineStore('action',()=>{
 	const finishLoading = ref(true);
 
 	const action = ref<any>(null)
-	const actionsList = ref<any>(null)
+	const actionList = ref<any>(null)
 	const activeAction = ref<any>(null)
-
+	const pageSize = ref(1)
+	const page = ref(1)
+	const limit = ref<number|null>(null)
 	const errors = ref<any|null>(null);
 	const finished= ref(false)
 	const chooses = ref<any|undefined>(undefined)
@@ -22,13 +24,16 @@ export const useActionStore = defineStore('action',()=>{
 
 	const getAction = (payload:any)=> {
 		return new Promise(() => {
-			isLoading.value=true,
-			actionsList.value = null,
+			//isLoading.value=true,
+			//actionList.value = null,
 			errors.value = null
 			ActionService.getAction(payload)
 				.then((res) => {
 					isLoading.value = false;
-					actionsList.value = res.data;
+					actionList.value = res.data.actionList;
+					pageSize.value = res.data.pagination.pageSize;
+					page.value = res.data.pagination.page;
+					limit.value = res.data.pagination.limit;
 				})
 				.catch((error) => {
 					isLoading.value=false;
@@ -151,7 +156,7 @@ export const useActionStore = defineStore('action',()=>{
 		finishAction,
 		action,
 		activeAction,
-		actionsList,
+		actionList,
 		actionLoading,
 		isLoading,
 		isLoadingActive,
@@ -160,6 +165,8 @@ export const useActionStore = defineStore('action',()=>{
 		time,
 		created,
 		finished,
-		chooses
+		chooses,
+		pageSize,
+		page
 	}
 })

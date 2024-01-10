@@ -12,6 +12,8 @@ import QuizPlayView from '@/views/QuizPlayView.vue'
 import StartQuizView from '@/views/StartQuizView.vue'
 import SettingsView from '@/views/SettingsView.vue'
 import ErrorView from '@/views/ErrorView.vue'
+import StatisticsView from '@/views/StatisticsView.vue'
+import StatisticsDetailView from '@/views/StatisticsDetailView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -62,6 +64,18 @@ const router = createRouter({
 			name: 'library',
 			meta: { layout: "dashboard" },
 			component: LibraryView
+		},
+		{
+			path: '/admin/statistics',
+			name: 'statistics',
+			meta: { layout: "dashboard" },
+			component: StatisticsView
+		},
+		{
+			path: '/admin/statistics/:id',
+			name: 'statistics-detail',
+			meta: { layout: "dashboard" },
+			component: StatisticsDetailView
 		},
 		{
 			path: '/admin/settings',

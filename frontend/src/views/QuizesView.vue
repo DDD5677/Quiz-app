@@ -29,7 +29,13 @@
 						<thead>
 							<tr class="quiz">
 								<th>Image</th>
-								<th>Title</th>
+								<th>
+									<span class="sort_btn" @click="sortHandler('title')">
+										Title
+										<i v-if="sort === 'title' || sort === '-title'" class="fa fa-arrow-up"
+											:class="sort[0] === '-' ? 'rotate' : ''" aria-hidden="true"></i>
+									</span>
+								</th>
 								<th>Difficulty</th>
 								<th>Category</th>
 								<th>Number of Questions</th>
@@ -50,8 +56,8 @@
 						</tbody>
 					</table>
 				</div>
+				<loader v-else />
 				<Pagination :pageSize="quizStore.pageSize" :page="quizStore.page" :pageLimit="4" :getData="getData" />
-				<loader v-if="quizStore.isLoading" />
 			</div>
 		</div>
 	</section>
@@ -71,7 +77,19 @@ const router = useRouter()
 const category = ref('')
 const search = ref('')
 const difficulty = ref('')
+const sort = ref<string | null>(null)
 
+const sortHandler = (item: string) => {
+	if (sort.value === item) {
+		if (sort.value[0] === '-') {
+			sort.value = sort.value.substring(1)
+		} else {
+			sort.value = '-' + sort.value
+		}
+	} else {
+		sort.value = item
+	}
+}
 const goToQuizPlay = (id: string) => {
 	if (!actionStore.activeAction) {
 		router.push({ path: `/quiz/${id}` })
@@ -94,6 +112,7 @@ const getData = (page: number, limit: number) => {
 		limit: limit,
 		search: search.value,
 		category: category.value,
+		sort: sort.value,
 		min_difficulty: '' as string | number,
 		max_difficulty: '' as string | number,
 	}
@@ -126,6 +145,13 @@ watch(difficulty, () => {
 	} else {
 		getData(1, 10)
 
+	}
+})
+watch(sort, () => {
+	if (route.query.page && route.query.limit) {
+		getData(+route.query.page, +route.query.limit)
+	} else {
+		getData(1, 10)
 	}
 })
 onMounted(() => {
@@ -189,6 +215,24 @@ onMounted(() => {
 					border-radius: 10px 10px 0 0;
 					position: sticky;
 					top: 60px;
+
+					.sort_btn {
+						cursor: pointer;
+						transition: all 0.3s ease-in-out;
+
+						i {
+							transition: all 0.3s ease-in;
+						}
+
+						&:hover {
+							color: #000;
+						}
+
+						.rotate {
+							transition: all 0.3s ease-in-out;
+							transform: rotate(180deg);
+						}
+					}
 
 					tr th {
 						background-color: #f2f2f2;

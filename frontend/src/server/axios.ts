@@ -10,9 +10,8 @@ axios.interceptors.response.use(null,error=>{
 	let path = '/error';
 	switch (error.response.status) {
 		case 401: path = '/login'; break;
-		case 404: path = '/404'; break;
 	 }
-	 router.push(path);
+	 if(path ==='/login')router.push(path);
 	 return Promise.reject(error);
 })
 export default axios

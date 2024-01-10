@@ -9,23 +9,65 @@ const axios = require("axios");
 router.get("/", async (req, res, next) => {
    try {
       let filter = {};
-      if (req.query.user) {
-         filter.user = req.query.user;
+      let page = 1;
+      let limit = 10;
+      let totalActions = 0;
+      let pageSize = 1;
+      if (req.query.page) {
+         page = +req.query.page;
+      }
+      if (req.query.limit) {
+         limit = +req.query.limit;
+      }
+      //----Building filter object------
+      if (req.query.quiz) {
+         filter.quiz = req.query.quiz;
       }
       if (req.query.finished) {
          filter.finished = req.query.finished;
       }
-      const actions = await Action.find(filter);
 
-      if (!actions) {
+      totalActions = await Action.countDocuments(filter).exec();
+      if (!totalActions) {
+         return res.status(200).send({
+            actionList: [],
+            pagination: {
+               pageSize: 1,
+               limit: limit,
+               page: page,
+            },
+         });
+      }
+      pageSize = Math.ceil(totalActions / limit);
+      if (page > pageSize) {
          return res.status(404).json({
             success: false,
-            message: "The action is not found",
+            message: "Page is not found!",
          });
       }
 
-      res.status(200).send(actions);
+      const actionList = await Action.find(filter)
+         .sort(req.query.sort)
+         .skip((page - 1) * limit)
+         .limit(limit);
+
+      if (!actionList) {
+         return res.status(404).json({
+            success: false,
+            message: "The actions are not found",
+         });
+      }
+
+      res.status(200).send({
+         actionList: actionList,
+         pagination: {
+            pageSize: pageSize,
+            limit: limit,
+            page: page,
+         },
+      });
    } catch (error) {
+      console.log(error);
       next(error);
    }
 });

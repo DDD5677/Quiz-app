@@ -187,6 +187,7 @@ quizStore.getQuizByIdForAdmin(quizId).then((res) => {
 
 .quiz_detail {
 	min-height: 100vh;
+	padding-bottom: 10px;
 
 	.btns {
 		display: flex;
@@ -283,5 +284,31 @@ quizStore.getQuizByIdForAdmin(quizId).then((res) => {
 		}
 	}
 
+}
+
+@media(max-width:720px) {
+	.quiz_detail {
+		.wrapper {
+			form {
+				flex-direction: column;
+
+				.input {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.quiz_detail {
+		.wrapper {
+			padding: 10px;
+		}
+
+		.btns {
+			font-size: 14px;
+		}
+	}
 }
 </style>

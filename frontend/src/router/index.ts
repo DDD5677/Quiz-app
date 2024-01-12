@@ -47,6 +47,12 @@ const router = createRouter({
 			meta: { layout: "empty" },
 			component: CreateQuestionView
 		},
+		// {
+		// 	path: '/admin/createquestion',
+		// 	name: 'create-question',
+		// 	meta: { layout: "empty" },
+		// 	component: CreateQuestionView
+		// },
 		{
 			path: '/admin/createquiz',
 			name: 'create-quiz',

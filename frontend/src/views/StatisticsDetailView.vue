@@ -5,9 +5,9 @@
 				<h1 v-if="!quizStore.isLoading" class="title ">{{ quizStore.quiz.title }}</h1>
 				<div class="nav">
 					<main-input type="text" placeholder="Search" v-model="search" />
-					<div class="selects">
-						<main-input class="w-[130px]" type="date" placeholder="Search" v-model="date" />
-					</div>
+
+					<main-input type="date" placeholder="Search" v-model="date" />
+
 				</div>
 				<div v-if="!actionStore.isLoading && !quizStore.isLoading" class="main">
 					<table>
@@ -59,7 +59,7 @@
 					</table>
 				</div>
 				<loader v-else />
-				<Pagination :pageSize="actionStore.pageSize" :page="actionStore.page" :pageLimit="4" :getData="getData" />
+				<Pagination :pageSize="actionStore.pageSize" :pageLimit="2" :page="actionStore.page" :getData="getData" />
 			</div>
 		</div>
 	</section>
@@ -170,21 +170,17 @@ onMounted(() => {
 		.nav {
 			display: flex;
 			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: 10px;
 
-			.selects {
-				display: flex;
-				gap: 10px;
-
-				select,
-				.main-input {
-					padding: 5px;
-					border: 1px solid;
-					border-radius: 5px;
-					outline: none;
-				}
-
-
+			.main-input {
+				padding: 5px;
+				border: 1px solid;
+				border-radius: 5px;
+				outline: none;
+				flex: 1 0 40%;
 			}
+
 		}
 
 		.main {
@@ -192,15 +188,15 @@ onMounted(() => {
 			border: 1px solid #f2f2f2;
 			border-radius: 7px;
 
+
 			table {
 				width: 100%;
 				border-collapse: collapse;
 				border-spacing: 0px;
+				font-size: 18px;
 
 				thead {
 					border-radius: 5px;
-					position: sticky;
-					top: 60px;
 
 					.sort_btn {
 						display: flex;
@@ -248,7 +244,7 @@ onMounted(() => {
 							padding: 10px;
 						}
 
-						font-size: 18px;
+
 						border-bottom: 1px solid #f2f2f2;
 						text-align: center;
 						cursor: pointer;
@@ -273,5 +269,50 @@ onMounted(() => {
 		}
 	}
 
+}
+
+@media(max-width:1100px) {
+	.quizes {
+		.wrapper {
+			.main {
+				overflow-x: auto;
+
+				table {
+					min-width: 900px;
+				}
+
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.quizes {
+		.wrapper {
+			padding: 10px;
+
+			.title {
+				font-size: 20px;
+			}
+
+			.nav {
+				flex-direction: column;
+			}
+
+			.main {
+				table {
+					font-size: 16px;
+
+					thead {
+						tr {
+							th {
+								padding: 10px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 </style>

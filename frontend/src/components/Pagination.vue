@@ -1,11 +1,16 @@
 <template>
 	<div class="pagination__wrapper">
 		<ul class="pagination">
-			<li v-for="pageNum in links" :key="pageNum" class="page-item" @click="changePageData(pageNum)">
+			<li v-if="pageSize > 3" class="page-item" @click="changePageData(decreamentPage())">
+				<a class="page-link hover:bg-gray-100 hover:text-slate-950 dark:hover:bg-slate-700 dark:hover:text-stone-100"
+					href="#"><i class="fa-solid fa-chevron-left"></i></a>
+			</li>
+			<li v-if="pageSize !== 1" v-for="pageNum in links" :key="pageNum" class="page-item"
+				@click="changePageData(pageNum)">
 				<a class="page-link hover:bg-gray-100 hover:text-slate-950 dark:hover:bg-slate-700 dark:hover:text-stone-100"
 					:class="{ 'active': pageNum === page }" href="#">{{ pageNum }}</a>
 			</li>
-			<li class="page-item" @click="changePageData(increamentPage())">
+			<li v-if="pageSize > 3" class="page-item" @click="changePageData(increamentPage())">
 				<a class="page-link hover:bg-gray-100 hover:text-slate-950 dark:hover:bg-slate-700 dark:hover:text-stone-100"
 					href="#"><i class="fa-solid fa-chevron-right"></i></a>
 			</li>
@@ -19,7 +24,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 const props = withDefaults(defineProps<{ page: number, pageSize: number, pageLimit: number, getData: any }>(), {
-	pageLimit: 4
+	pageLimit: 2
 })
 
 const pagesList = computed(() => {
@@ -31,10 +36,10 @@ const pagesList = computed(() => {
 })
 const links = computed(() => {
 	let first = [1, '...'], last = ['...', props.pageSize], ranges: (number | string)[] = [];
-	if (props.page < props.pageLimit) {
-		ranges = range(1, props.pageLimit)
+	if (props.page <= props.pageLimit + 1) {
+		ranges = range(1, props.pageLimit + 1)
 		return (ranges.length < props.pageSize) ? ranges.concat(last) : ranges
-	} else if (props.page > props.pageSize - props.pageLimit) {
+	} else if (props.page >= props.pageSize - props.pageLimit) {
 		ranges = range(props.pageSize - props.pageLimit, props.pageSize)
 		return (ranges.length < props.pageSize) ? first.concat(ranges) : ranges
 	} else {
@@ -60,6 +65,14 @@ const changePageData = (page: number | string) => {
 		props.getData(+page, 10)
 	}
 	window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+}
+
+const decreamentPage = () => {
+	if (props.page === 1) {
+		return props.pageSize
+	}
+	return props.page - 1
+
 }
 const increamentPage = () => {
 	if (props.page === props.pageSize) {
@@ -112,6 +125,31 @@ const increamentPage = () => {
 				color: #fff;
 			}
 
+		}
+	}
+}
+
+@media(max-width:610px) {
+	.pagination {
+		.page-item {
+			margin-right: 0px;
+
+			.page-link {
+				font-size: 16px;
+				padding: 3px 10px;
+			}
+		}
+	}
+}
+
+@media(max-width:380px) {
+	.pagination {
+		.page-item {
+
+			.page-link {
+				font-size: 12px;
+				padding: 2px 8px;
+			}
 		}
 	}
 }

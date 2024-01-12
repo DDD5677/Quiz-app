@@ -21,9 +21,26 @@
 
 <script setup lang="ts">
 import { useNavbarStore } from '@/stores/navbarStore';
+import { onMounted, ref } from 'vue';
 
 
 const navbarStore = useNavbarStore();
+const windowWith = ref<number>();
+function checkScreen() {
+	windowWith.value = window.innerWidth;
+	if (+windowWith.value <= 820) {
+		navbarStore.assignMobile(true)
+		return
+	}
+	navbarStore.assignMobile(false)
+	navbarStore.showNavbarHandler(false)
+}
+window.addEventListener('resize', checkScreen);
+
+onMounted(() => {
+	checkScreen()
+})
+
 </script>
 
 <style lang="scss" scoped>

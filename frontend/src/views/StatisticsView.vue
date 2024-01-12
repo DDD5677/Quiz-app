@@ -76,4 +76,42 @@ onMounted(() => {
 		}
 	}
 }
+
+@media(max-width:980px) {
+	.library {
+		.wrapper {
+			.cards {
+				grid-template-columns: 1fr 1fr 1fr;
+			}
+		}
+	}
+}
+
+@media(max-width:780px) {
+	.library {
+		.wrapper {
+			.cards {
+				grid-template-columns: 1fr 1fr;
+			}
+
+			.quiz {
+				.quiz_title {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.library {
+		.wrapper {
+			padding: 15px;
+
+			.cards {
+				grid-template-columns: 1fr;
+			}
+		}
+	}
+}
 </style>

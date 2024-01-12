@@ -1,7 +1,7 @@
 <template>
 	<div class="quiz_card bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-100">
 		<div class="img_box">
-			<a href="">
+			<a v-if="quiz.image" :href="quiz.image" target="_blank">
 				<img :src="quiz.image" alt="">
 			</a>
 		</div>
@@ -62,6 +62,10 @@ const quizDetailHandler = () => {
 		background: url(../assets/images/card__bg.svg);
 		background-repeat: no-repeat;
 		background-position: center;
+		height: 160px;
+		-webkit-box-shadow: 0px -2px 0px 0px rgba(0, 0, 0, 1) inset;
+		-moz-box-shadow: 0px -2px 0px 0px rgba(0, 0, 0, 1) inset;
+		box-shadow: 0px -2px 0px 0px rgba(0, 0, 0, 1) inset;
 
 		img {
 			width: 100%;

@@ -234,7 +234,7 @@ router.put("/finish/:id", async (req, res, next) => {
             }
          }
          updateBlock.correctAnswers = correctAnswers;
-         updateBlock.score = score;
+         updateBlock.score = score.toFixed(2);
       }
       //-------Send result to telegram-----------
       const TOKEN = process.env.TOKEN;

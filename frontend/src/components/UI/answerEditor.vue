@@ -35,7 +35,7 @@ const answer = ref(props.valueEditor)
 
 function toggleAnswerEditor(v: boolean) {
 	questionStore.toggleEditors(v, props.index)
-	window.scrollTo(0, document.body.scrollHeight);
+	//window.scrollTo(0, document.body.scrollHeight);
 }
 function removeEventListener() {
 	emit('removeAnswer', false)
@@ -68,7 +68,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .answer-wrap {
-	flex: 1 0 15%;
+	flex: 1 0 200px;
+	position: relative;
 }
 
 .answer {
@@ -116,16 +117,16 @@ onMounted(() => {
 }
 
 .text-editor {
-	position: fixed;
+	position: absolute;
 	margin-top: 20px;
 	z-index: 5;
-	bottom: 0;
+	top: 90%;
 	width: 90%;
 	left: 50%;
 	transform: translateX(-50%);
 	border: 2px solid #000;
 	border-radius: 10px;
-	height: 30vh;
+	height: 150px;
 
 	textarea {
 		&:focus {

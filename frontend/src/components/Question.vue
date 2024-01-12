@@ -1,9 +1,10 @@
 <template>
 	<div ref="questionElem">
 		<div class="quiz" :class="{ 'bg-red-200 dark:bg-rose-950': choosed === undefined && actionStore.finished }">
+			<span class="number">{{ index + 1 }}.</span>
 			<div class="question" :class="{ 'min-h-[200px]': question.image }">
 				<img v-if="question.image" :src="question.image" alt="">
-				<span class="number">{{ index + 1 }}.</span>{{ question.text }}
+				{{ question.text }}
 			</div>
 			<div class="options">
 				<ul v-if="!actionStore.finished">
@@ -83,6 +84,11 @@ onMounted(() => {
 		background-color: #FFCCCC;
 	}
 
+	.number {
+		font-size: 22px;
+		font-weight: 700;
+		padding: 0px 30px;
+	}
 
 	.question {
 		padding: 10px 30px;
@@ -96,10 +102,6 @@ onMounted(() => {
 			top: 0;
 		}
 
-		.number {
-			font-weight: 700;
-			margin-right: 5px;
-		}
 	}
 
 	.options {
@@ -127,6 +129,31 @@ onMounted(() => {
 			&.incorrect {
 				background-color: rgb(185 28 28);
 				color: #fff;
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.quiz {
+		.number {
+			padding: 0 10px;
+			font-size: 20px;
+		}
+
+		.question {
+			padding: 10px;
+			font-size: 18px;
+
+			img {
+				width: 100%;
+				height: auto;
+			}
+		}
+
+		.options {
+			.item {
+				padding: 10px;
 			}
 		}
 	}

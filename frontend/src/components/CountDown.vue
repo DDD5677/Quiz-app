@@ -70,4 +70,18 @@ onMounted(() => {
 		color: v-bind(color);
 	}
 }
+
+@media(max-width:480px) {
+	.countdown {
+		div {
+			font-size: 16px;
+			padding: 4px 7px;
+			font-weight: 700;
+		}
+
+		span {
+			font-weight: 500;
+		}
+	}
+}
 </style>

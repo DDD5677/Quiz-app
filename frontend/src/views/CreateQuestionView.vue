@@ -7,35 +7,42 @@
 				</RouterLink>
 			</div>
 			<form @submit.prevent="createQuestionHandler" action="" enctype="multipart/form-data" class="flex gap-2">
-				<div class="selects">
-					<select required name="" id=""
-						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-						v-model="questionType">
-						<option value="" selected disabled hidden>Savol turi</option>
-						<option value="test">Test</option>
-						<option value="fill-in">Bo'sh joyni to'ldirish</option>
-					</select>
-					<main-input required type="number" step=".1" placeholder="Grade (in points)" v-model="point" />
-					<select required name="" id=""
-						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-						v-model="category">
-						<option value="" selected disabled hidden>Savol qaysi fandan</option>
-						<option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-					</select>
-					<select required name="" id=""
-						class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-						v-model="difficulty">
-						<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-						<option value="1">Onson</option>
-						<option value="2">O'rtacha</option>
-						<option value="3">Qiyin</option>
-					</select>
-				</div>
+				<Transition>
+					<div v-if="showSelects || !navbarStore.mobile" class="wrapper-selects">
+						<div class="selects bg-white dark:bg-slate-800">
+							<select required name="" id=""
+								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								v-model="questionType">
+								<option value="" selected disabled hidden>Savol turi</option>
+								<option value="test">Test</option>
+								<option value="fill-in">Bo'sh joyni to'ldirish</option>
+							</select>
+							<main-input required type="number" step=".1" placeholder="Grade (in points)" v-model="point" />
+							<select required name="" id=""
+								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								v-model="category">
+								<option value="" selected disabled hidden>Savol qaysi fandan</option>
+								<option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+							</select>
+							<select required name="" id=""
+								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								v-model="difficulty">
+								<option value="" selected disabled hidden>Qiyinlik darajasi</option>
+								<option value="1">Onson</option>
+								<option value="2">O'rtacha</option>
+								<option value="3">Qiyin</option>
+							</select>
+						</div>
+					</div>
+				</Transition>
+				<light-button v-if="navbarStore.mobile" @click.prevent="toggleSelects" class="toggle-selects">
+					<i class="fa-solid fa-sliders"></i>
+				</light-button>
 				<ToggleTheme />
-				<dark-button>Save question</dark-button>
+				<dark-button>Save</dark-button>
 			</form>
 		</div>
-		<div class="container" :style="editorActive || true ? 'padding-bottom:30vh' : ''">
+		<div class="container" :style="editorActive ? 'padding-bottom:100px' : ''">
 			<div class="question-editor bg-white dark:bg-slate-800">
 				<div class="question-wrapper">
 					<div class="quiz-text bg-stone-100 dark:bg-slate-700">
@@ -45,21 +52,21 @@
 								<i class="fa-regular fa-image"></i>
 							</light-button>
 						</div>
-						<div class="h-full flex justify-between pt-2">
+						<div class="question-body pt-2">
 							<div class="question_img relative">
 								<delete-button v-if="image" class="" @click.prevent="removeImage"><i
 										class="fa-solid fa-xmark"></i></delete-button>
 								<img class="h-full rounded" src="" alt="" ref="target">
 							</div>
-							<div @click="toggleQuestionEditor(true)" class="textarea text-slate-900 dark:text-stone-200"
-								ref="questionElem"></div>
+							<p @click="toggleQuestionEditor(true)" class="textarea text-slate-900 dark:text-stone-200"
+								ref="questionElem"></p>
 						</div>
-					</div>
-					<div v-if="questionStore.editors.question" class="text-editor">
-						<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-						<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni"
-							class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200"
-							v-model="question"></textarea>
+						<div v-if="questionStore.editors.question" class="text-editor">
+							<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
+							<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni"
+								class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200"
+								v-model="question"></textarea>
+						</div>
 					</div>
 					<div class="quiz-answers" :key="answerKey">
 						<AnswerEditor v-if="showAnswers.showAnswer1 || answers.answer1" :index="'answer1'"
@@ -99,12 +106,13 @@ import type { ShowAnswers, Answers } from '@/types/createQuizType';
 import { useRouter, useRoute } from 'vue-router'
 import ToggleTheme from '@/components/UI/ToggleTheme.vue';
 import { categories } from '@/constants/constant';
+import { useNavbarStore } from '@/stores/navbarStore';
 const router = useRouter();
 const route = useRoute();
 const questionStore = useQuestionStore();
 const authStore = useAuthStore()
 const quizStore = useQuizStore()
-
+const navbarStore = useNavbarStore()
 const answerKey = ref(0)
 
 //difficulty question
@@ -118,6 +126,10 @@ const questionType = ref('')
 //image of question
 const image = ref<any>(null)
 
+const showSelects = ref(false)
+const toggleSelects = () => {
+	showSelects.value = !showSelects.value
+}
 //question
 const questionElem = ref<HTMLElement | null>(null)
 const question = ref('');
@@ -277,17 +289,43 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.v-enter-active,
+.v-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+	opacity: 0;
+}
+
 .navbar {
 	width: 100%;
 	display: flex;
 	padding: 10px;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
+
 
 	.brand {
 		font-family: 'Henny Penny', serif;
 		font-size: 28px;
 		margin: 0 10px;
+	}
+
+	.toggle-selects {
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 20px;
+
+		&:hover {
+			background-color: rgb(2 6 23);
+		}
 	}
 
 	.selects {
@@ -318,19 +356,21 @@ onMounted(() => {
 	justify-content: center;
 
 	.question-editor {
-		width: 90%;
+		width: 100%;
+		margin: 20px 0;
 		padding: 20px;
-		margin-top: 20px;
 		border-radius: 20px;
 
 
 
 		.question-wrapper {
+
+
 			.text-editor {
-				position: fixed;
+				position: absolute;
 				margin-top: 20px;
 				z-index: 5;
-				bottom: 0;
+				top: 100%;
 				width: 90%;
 				left: 50%;
 				transform: translateX(-50%);
@@ -347,7 +387,7 @@ onMounted(() => {
 					height: 100%;
 					width: 100%;
 					padding: 20px 10px 10px;
-					border-radius: 10px;
+					border-radius: 8px;
 					resize: none;
 				}
 
@@ -393,15 +433,7 @@ onMounted(() => {
 
 			}
 
-			.textarea {
-				height: 180px;
-				flex-grow: 1;
-				padding: 0 10px;
-				font-size: 20px;
-				overflow: auto;
-				overflow-wrap: break-word;
-				cursor: text;
-			}
+
 
 			.textarea-nav {
 				position: absolute;
@@ -428,15 +460,31 @@ onMounted(() => {
 				}
 			}
 
-
-
 			.quiz-text {
 				padding: 10px;
 				border-radius: 10px;
 				padding-top: 45px;
 				position: relative;
 				width: 100%;
-				height: max(30vh, 250px);
+				position: relative;
+				min-height: 250px;
+
+				.question-body {
+					height: 100%;
+
+					.question_img {
+						float: right;
+					}
+
+					.textarea {
+						display: block;
+						padding: 0 10px;
+						font-size: 20px;
+						min-height: 200px;
+						overflow-wrap: break-word;
+						cursor: text;
+					}
+				}
 			}
 
 			.quiz-answers {
@@ -450,6 +498,69 @@ onMounted(() => {
 			.dark-btn {
 				width: 100%;
 				margin-top: 20px;
+			}
+		}
+	}
+}
+
+@media(max-width:820px) {
+	.create-question {
+		.navbar {
+			position: relative;
+			z-index: 27;
+
+			form {
+				.wrapper-selects {
+					position: absolute;
+					top: 60px;
+					left: 0;
+					width: 100vw;
+					height: calc(100vh - 60px);
+					background-color: #00000069;
+					z-index: -10;
+					display: flex;
+					justify-content: center;
+
+					.selects {
+						padding: 30px;
+						margin-top: 50px;
+						margin-bottom: auto;
+						flex-direction: column;
+
+						border: 2px solid #000;
+						border-radius: 10px;
+
+						.main-input,
+						select {
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.create-question {
+		.navbar {
+			.brand {
+				font-size: 24px;
+				margin: 0;
+			}
+		}
+
+		.question-wrapper {
+			.quiz-text {
+				.question_img {
+					width: 100%;
+					height: auto;
+
+					img {
+						width: 100%;
+						height: auto;
+					}
+				}
 			}
 		}
 	}

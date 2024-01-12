@@ -57,7 +57,7 @@
 					</table>
 				</div>
 				<loader v-else />
-				<Pagination :pageSize="quizStore.pageSize" :page="quizStore.page" :pageLimit="4" :getData="getData" />
+				<Pagination :pageSize="quizStore.pageSize" :page="quizStore.page" :pageLimit="2" :getData="getData" />
 			</div>
 		</div>
 	</section>
@@ -213,8 +213,6 @@ onMounted(() => {
 
 				thead {
 					border-radius: 10px 10px 0 0;
-					position: sticky;
-					top: 60px;
 
 					.sort_btn {
 						cursor: pointer;
@@ -283,11 +281,57 @@ onMounted(() => {
 					}
 				}
 			}
-
-
-
 		}
 	}
+}
 
+@media(max-width:1100px) {
+	.quizes {
+		.wrapper {
+			.main {
+				overflow-x: auto;
+
+				table {
+					min-width: 900px;
+				}
+
+			}
+		}
+	}
+}
+
+@media(max-width:610px) {
+	.quizes {
+		.wrapper {
+			.nav {
+				flex-direction: column;
+				gap: 10px;
+
+				.selects {
+					justify-content: space-between;
+
+					select {
+						flex: 1 0 45%;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media(max-width:380px) {
+	.quizes {
+		.wrapper {
+			.title {
+				font-size: 24px;
+			}
+
+			.nav {
+				.selects {
+					flex-direction: column;
+				}
+			}
+		}
+	}
 }
 </style>

@@ -314,4 +314,51 @@ onMounted(() => {
 	}
 
 }
+
+@media(max-width:680px) {
+	.wrapper {
+		.input {
+
+			.main-input,
+			.subtitle {
+				font-size: 16px;
+			}
+
+
+		}
+
+		.avatar {
+			.registered {
+				font-size: 16px;
+			}
+		}
+	}
+
+}
+
+@media(max-width:620px) {
+	.wrapper {
+		form {
+			align-items: start;
+			flex-direction: column;
+		}
+
+		.input {
+			width: 100%;
+		}
+	}
+
+}
+
+@media(max-width:480px) {
+	.wrapper {
+		padding: 15px;
+
+		.avatar {
+			gap: 5px;
+			justify-content: space-between;
+		}
+	}
+
+}
 </style>

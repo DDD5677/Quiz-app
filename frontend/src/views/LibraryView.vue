@@ -54,4 +54,24 @@ onMounted(() => {
 		}
 	}
 }
+
+@media(max-width:680px) {
+	.library {
+		.wrapper {
+			.cards {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.library {
+		.wrapper {
+			.cards {
+				grid-template-columns: 1fr;
+			}
+		}
+	}
+}
 </style>

@@ -107,7 +107,6 @@ function createQuizHandler() {
 	margin-top: 20px;
 	padding: 20px;
 	border-radius: 10px;
-	min-height: 80vh;
 
 	form {
 		display: flex;
@@ -158,5 +157,37 @@ function createQuizHandler() {
 		padding: 10px 16px;
 	}
 
+}
+
+@media(max-width:610px) {
+	.wrapper {
+		form {
+			.input {
+				flex-grow: 1;
+			}
+
+			.dark-btn {
+				width: 100%;
+			}
+		}
+	}
+}
+
+@media(max-width:380px) {
+	.wrapper {
+		padding: 15px;
+
+		form {
+			.input {
+				.subtitle {
+					font-size: 16px;
+				}
+
+				.main-select {
+					font-size: 14px;
+				}
+			}
+		}
+	}
 }
 </style>

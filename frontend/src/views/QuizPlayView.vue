@@ -55,6 +55,7 @@ actionStore.getActionById(actionId)
 
 //finish action
 const finishHandler = () => {
+
 	const data = {
 		actionId: route.params.id,
 		firstname: actionStore.action.firstname,
@@ -62,7 +63,10 @@ const finishHandler = () => {
 		quiz: actionStore.action.quiz.title,
 		chooses: actionStore.activeAction.chooses
 	}
-	actionStore.finishAction(data)
+	if (confirm("Do you really want to finish?")) {
+		actionStore.finishAction(data)
+
+	}
 }
 </script>
 
@@ -137,6 +141,53 @@ const finishHandler = () => {
 			font-weight: 500;
 			text-transform: capitalize;
 			border-bottom: 5px solid #f2f2f2;
+		}
+	}
+}
+
+@media(max-width:1100px) {
+	.quiz_play {
+		.wrapper {
+			width: 100%;
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.quiz_play {
+		.timer {
+			padding: 10px;
+
+			.brand {
+				font-size: 24px;
+			}
+
+			.countdown {
+				gap: 5px;
+			}
+		}
+
+		.wrapper {
+			padding-top: 10px;
+
+			.title {
+				font-size: 22px;
+			}
+
+			.result {
+				div {
+					padding: 10px;
+					font-size: 20px;
+				}
+			}
+
+			.menu {
+				.finish {
+					.dark-btn {
+						font-size: 20px;
+					}
+				}
+			}
 		}
 	}
 }

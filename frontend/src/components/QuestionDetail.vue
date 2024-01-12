@@ -166,4 +166,12 @@ onMounted(() => {
 		}
 	}
 }
+
+@media(max-width:480px) {
+	.question_detail {
+		.question {
+			font-size: 14px;
+		}
+	}
+}
 </style>

@@ -50,14 +50,17 @@
 							class="text-slate-400">Quiz</span>
 					</RouterLink>
 				</div>
-				<input type="text" placeholder="Search quiz" class="search bg-stone-100 dark:bg-slate-700 dark:text-stone-100">
-				<ToggleTheme />
-				<div v-if="!authStore.isLoading" @click="toggleDropdown"
-					class="avatar bg-slate-800 text-white dark:bg-slate-600">
-					<span v-if="authStore.user.image" class="avatar-link">
-						<img :src="authStore.user.image" alt="">
-					</span>
-					<span v-else>{{ authStore.user.firstname[0] }}</span>
+				<input v-if="!navbarStore.mobile" type="text" placeholder="Search quiz"
+					class="search bg-stone-100 dark:bg-slate-700 dark:text-stone-100">
+				<div class="flex gap-4">
+					<ToggleTheme />
+					<div v-if="!authStore.isLoading" @click="toggleDropdown"
+						class="avatar bg-slate-800 text-white dark:bg-slate-600">
+						<span v-if="authStore.user.image" class="avatar-link">
+							<img :src="authStore.user.image" alt="">
+						</span>
+						<span v-else>{{ authStore.user.firstname[0] }}</span>
+					</div>
 				</div>
 				<Transition name="fade">
 					<div v-if="dropdown" @click="logoutAdmin"
@@ -80,7 +83,7 @@ import InfoActiveAction from '@/components/InfoActiveAction.vue';
 import { useActionStore } from '@/stores/actionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNavbarStore } from '@/stores/navbarStore';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const authStore = useAuthStore();
@@ -111,6 +114,9 @@ window.addEventListener('resize', checkScreen);
 const sidebarToggle = () => {
 	navbarStore.showNavbarHandler(!navbarStore.showNavbar)
 }
+onMounted(() => {
+	checkScreen()
+})
 
 </script>
 

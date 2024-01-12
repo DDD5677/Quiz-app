@@ -12,7 +12,7 @@
 						</div>
 						<div v-if="quizStore.quiz.mixedScore" class="point">
 							<span>Har bir savol uchun</span>
-							<span>qiyinlik darajasiga qarab ball beriladi</span>
+							<span class="text-right">qiyinlik darajasiga qarab ball beriladi</span>
 						</div>
 						<div v-else class="point">
 							<span>Har bir savol uchun</span>
@@ -99,6 +99,7 @@ const startQuizHandler = () => {
 				div {
 					display: flex;
 					justify-content: space-between;
+					align-items: center;
 					font-size: 18px;
 					margin-bottom: 10px;
 				}
@@ -119,6 +120,23 @@ const startQuizHandler = () => {
 			.dark-btn {
 				width: 40%;
 				font-size: 18px;
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.start_quiz {
+		.wrapper {
+			padding: 15px 20px;
+
+			.quiz_info {
+				.info {
+					div {
+						font-size: 16px;
+						line-height: 1.3;
+					}
+				}
 			}
 		}
 	}

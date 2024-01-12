@@ -1,8 +1,7 @@
 <template>
 	<footer class="footer">
-		<div class="container flex justify-between items-center">
-			<div class="brand">Easy<span>Quiz</span></div>
-			<ul class="menu flex">
+		<div class="container ">
+			<ul class="menu flex gap-4 items-center">
 				<li class="item"><a href="#" class="link">Terms and Conditions</a></li>
 				<li class="item"><a href="#" class="link">Privacy Policy</a></li>
 				<li class="item"><a href="#" class="link">Cookie Policy</a></li>
@@ -40,6 +39,40 @@
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
+		}
+	}
+}
+
+@media(max-width:820px) {
+	.footer {
+		.container {
+			padding: 25px 10px;
+		}
+
+		.menu {
+			.item {
+				text-align: center;
+				margin: 0 10px;
+				font-size: 18px;
+				line-height: 1.4;
+			}
+		}
+	}
+}
+
+@media(max-width:480px) {
+	.footer {
+		.container {
+			padding: 20px 10px;
+		}
+
+		.menu {
+			justify-content: space-between;
+			gap: 0;
+
+			.item {
+				font-size: 12px;
+			}
 		}
 	}
 }

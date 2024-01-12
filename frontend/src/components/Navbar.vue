@@ -8,15 +8,17 @@
 				</div>
 				<div v-if="navbarStore.showNavbar || !navbarStore.mobile" class="nav flex">
 					<div class="brand-mobile">
-						<a href="">Easy<span>Quiz</span></a>
+						<RouterLink :to="{ name: 'home' }" @click="clickBrand">Easy<span>Quiz</span></RouterLink>
 						<button @click.prevent="navbarStore.showNavbarHandler(false)" class="close-btn"></button>
 					</div>
 					<ul class="menu flex font-medium">
 						<li class="item">
 							<RouterLink :to="{ name: 'home' }" @click="clickBrand" class="item-link">Home</RouterLink>
 						</li>
-						<li class="item"><a href="#about" class="item-link">About Us</a></li>
-						<li class="item"><a href="#contacts" class="item-link">Contacts</a></li>
+						<li @click="navbarStore.showNavbarHandler(false)" class="item"><a href="#about" class="item-link">About
+								Us</a></li>
+						<li @click="navbarStore.showNavbarHandler(false)" class="item"><a href="#contacts"
+								class="item-link">Contacts</a></li>
 						<li v-if="authStore.isLogged && authStore.user.role === 'student'" @click="logoutAdmin" class="item">
 							<span class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
 						</li>
@@ -24,7 +26,7 @@
 							<RouterLink :to="{ name: 'admin' }" class="item-link">Dashboard</RouterLink>
 						</li>
 					</ul>
-					<RouterLink v-if="!authStore.isLogged" :to="{ name: 'login' }"
+					<RouterLink @click="navbarStore.showNavbarHandler(false)" v-if="!authStore.isLogged" :to="{ name: 'login' }"
 						class="login-btn font-medium bg-transparent border-2 border-black rounded-lg cursor-pointer px-8 py-2">
 						Log In
 					</RouterLink>
@@ -38,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useNavbarStore } from '@/stores/navbarStore'
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
@@ -58,6 +60,7 @@ function checkScreen() {
 window.addEventListener('resize', checkScreen);
 
 function clickBrand() {
+	navbarStore.showNavbarHandler(false)
 	window.scrollTo({
 		top: 0,
 		behavior: "smooth",
@@ -67,6 +70,9 @@ const logoutAdmin = () => {
 	router.replace('/')
 	authStore.logout();
 }
+onMounted(() => {
+	checkScreen()
+})
 </script>
 
 <style scoped lang="scss">

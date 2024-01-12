@@ -49,6 +49,7 @@ if (!actionStore.finished) {
 
 onMounted(() => {
 	const created = Date.parse(actionStore.created) + props.time * 60 * 1000
+	console.log('created', created)
 	launchDate.value = created
 })
 </script>

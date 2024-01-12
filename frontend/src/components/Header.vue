@@ -1,6 +1,6 @@
 <template>
 	<section id="home">
-		<div class="container sm:flex justify-between items-center">
+		<div class="container flex justify-between items-center">
 			<div class="left py-8">
 				<h2 class="title">EasyQuiz Makes It Very Easy </h2>
 				<img class="light-icon" src="@/assets/images/light.svg" alt="">
@@ -30,7 +30,7 @@ function goToQuizes() {
 <style scoped lang="scss">
 .left {
 	position: relative;
-	flex: 0 0 50%;
+	flex: 1 0 50%;
 
 	.light-icon {
 		position: absolute;
@@ -48,6 +48,8 @@ function goToQuizes() {
 		line-height: 80px;
 		width: calc(100% - 50px);
 		margin-bottom: 40px;
+
+
 	}
 
 	.subtitle {
@@ -73,6 +75,83 @@ function goToQuizes() {
 
 	img {
 		width: 100%;
+	}
+}
+
+
+
+
+@media(max-width:1100px) {
+	.left {
+		.title {
+			font-size: 50px;
+			line-height: 1.5;
+		}
+
+		.subtitle {
+			font-size: 20px;
+		}
+
+		.dark-btn {
+			font-size: 28px;
+		}
+
+	}
+}
+
+@media(max-width:820px) {
+	.left {
+		.title {
+			font-size: 40px;
+			line-height: 1.3;
+		}
+
+		.subtitle {
+			font-size: 18px;
+		}
+
+		.dark-btn {
+			margin-top: 0;
+		}
+	}
+}
+
+@media(max-width:610px) {
+	.container {
+		flex-direction: column-reverse;
+
+	}
+
+	.left {
+		padding: 0;
+
+		.light-icon {
+			top: -300px;
+			right: 0;
+		}
+
+		.title {
+			margin-bottom: 15px;
+		}
+	}
+
+	.right {
+		padding: 0;
+	}
+}
+
+@media(max-width:380px) {
+	.left {
+
+		.title {
+			font-size: 35px;
+			line-height: 1.2;
+		}
+
+		.subtitle {
+			font-size: 16px;
+			line-height: 1.2;
+		}
 	}
 }
 </style>

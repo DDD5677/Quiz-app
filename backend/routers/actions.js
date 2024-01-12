@@ -23,10 +23,16 @@ router.get("/", async (req, res, next) => {
       if (req.query.quiz) {
          filter.quiz = req.query.quiz;
       }
-      if (req.query.finished) {
-         filter.finished = req.query.finished;
+      if (req.query.search) {
+         filter.firstname = { $regex: req.query.search, $options: "i" };
       }
-
+      if (req.query.date) {
+         filter.createdAt = {
+            $gte: req.query.date, // Greater than or equal to startDate
+            //$lte: endDate    // Less than or equal to endDate
+         };
+      }
+      console.log(filter);
       totalActions = await Action.countDocuments(filter).exec();
       if (!totalActions) {
          return res.status(200).send({

@@ -1,37 +1,18 @@
 <template>
 	<section class="quizes">
 		<div class="container">
-			<div class="wrapper bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-100">
+			<div class="wrapper bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-200">
 				<h1 v-if="!quizStore.isLoading" class="title ">{{ quizStore.quiz.title }}</h1>
 				<div class="nav">
 					<main-input type="text" placeholder="Search" v-model="search" />
 					<div class="selects">
-						<select
-							class="bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-							name="" id="" v-model="category">
-							<option value="" selected disabled hidden>Category</option>
-							<option value="">All</option>
-							<option value="Math">Matematika</option>
-							<option value="English">Ingliz tili</option>
-							<option value="History">Tarix</option>
-							<option value="Physics">Fizika</option>
-						</select>
-						<select
-							class="bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
-							name="" id="" v-model="difficulty">
-							<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-							<option value="">All</option>
-							<option value="1">Onson</option>
-							<option value="2">O'rtacha</option>
-							<option value="3">Qiyin</option>
-						</select>
+						<main-input class="w-[130px]" type="date" placeholder="Search" v-model="date" />
 					</div>
 				</div>
 				<div v-if="!actionStore.isLoading && !quizStore.isLoading" class="main">
 					<table>
 						<thead>
 							<tr class="quiz bg-stone-100 dark:bg-slate-700">
-								<th>User</th>
 								<th>
 									<span class="sort_btn" @click="sortHandler('lastname')">
 										Lastname
@@ -65,10 +46,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="action in  actionStore.actionList" :key="action.id" @click.prevent="console.log('click')"
-								class="hover:bg-stone-50 dark:hover:bg-slate-600">
-
-								<td>User</td>
+							<tr v-for="action in  actionStore.actionList" :key="action.id"
+								@click.prevent="goToQuizPlay(action.id)" class="hover:bg-stone-50 dark:hover:bg-slate-600">
 								<td>{{ action.lastname }}</td>
 								<td>{{ action.firstname }}</td>
 								<td>{{ action.correctAnswers }}/{{ quizStore.quiz.questions.length }}</td>
@@ -96,9 +75,8 @@ const quizStore = useQuizStore()
 const actionStore = useActionStore()
 const route = useRoute()
 const router = useRouter()
-const category = ref('')
+const date = ref('')
 const search = ref('')
-const difficulty = ref('')
 const sort = ref<string | null>(null)
 //Date format
 const formatDate = (dateString: string) => {
@@ -116,49 +94,36 @@ const sortHandler = (item: string) => {
 	}
 }
 const goToQuizPlay = (id: string) => {
-	if (!actionStore.activeAction) {
-		router.push({ path: `/quiz/${id}` })
-	} else {
-		alert('Sizda tugatilmagan test mavjud. Yangi testni boshlash uchun oldin yakunlang!')
-	}
+	router.push({ path: `/quiz/start/${id}` })
 }
-// const checkDifficulty = (diff: number) => {
-// 	if (diff < 1.5) {
-// 		return 'Onson'
-// 	} else if (diff < 2.5) {
-// 		return "O'rtacha"
-// 	} else {
-// 		return "Qiyin"
-// 	}
-// }
 const getData = (page: number, limit: number) => {
 	const queries = {
 		quiz: route.params.id,
 		page: page,
 		limit: limit,
+		date: date.value,
 		search: search.value,
-		category: category.value,
 		sort: sort.value,
 	}
 	actionStore.getAction(queries)
 	router.push({ replace: true, query: { page: page, limit: limit } })
 }
-// watch(search, () => {
-// 	if (route.query.page && route.query.limit) {
-// 		getData(+route.query.page, +route.query.limit)
-// 	} else {
-// 		getData(1, 10)
+watch(date, () => {
+	if (route.query.page && route.query.limit) {
+		getData(+route.query.page, +route.query.limit)
+	} else {
+		getData(1, 10)
 
-// 	}
-// })
-// watch(category, () => {
-// 	if (route.query.page && route.query.limit) {
-// 		getData(+route.query.page, +route.query.limit)
-// 	} else {
-// 		getData(1, 10)
+	}
+})
+watch(search, () => {
+	if (route.query.page && route.query.limit) {
+		getData(+route.query.page, +route.query.limit)
+	} else {
+		getData(1, 10)
 
-// 	}
-// })
+	}
+})
 // watch(difficulty, () => {
 // 	if (route.query.page && route.query.limit) {
 // 		getData(+route.query.page, +route.query.limit)
@@ -192,7 +157,7 @@ onMounted(() => {
 
 
 	.wrapper {
-		margin-top: 30px;
+		margin-top: 20px;
 		padding: 20px;
 		border-radius: 10px;
 
@@ -218,9 +183,7 @@ onMounted(() => {
 					outline: none;
 				}
 
-				.main-input {
-					width: 80px;
-				}
+
 			}
 		}
 
@@ -242,6 +205,7 @@ onMounted(() => {
 					.sort_btn {
 						display: flex;
 						align-items: center;
+						justify-content: center;
 						cursor: pointer;
 						transition: all 0.3s ease-in-out;
 
@@ -291,6 +255,14 @@ onMounted(() => {
 
 						&:last-child {
 							border: none;
+
+							td:first-child {
+								border-radius: 0 0 0 7px;
+							}
+
+							td:last-child {
+								border-radius: 0 0 7px 0;
+							}
 						}
 					}
 				}

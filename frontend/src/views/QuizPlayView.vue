@@ -1,6 +1,11 @@
 <template>
 	<section class="quiz_play">
 		<div class="timer bg-slate-900">
+			<div class="brand">
+				<RouterLink class="text-stone-100 dark:text-stone-100" :to="{ name: 'home' }">Easy<span
+						class="text-slate-400">Quiz</span>
+				</RouterLink>
+			</div>
 			<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive && !actionStore.finished"
 				:back-color="'#fff'" :color="'#fff'" :time="+actionStore.time" />
 			<ToggleTheme />
@@ -75,6 +80,11 @@ const finishHandler = () => {
 		width: 100%;
 		top: 0;
 		z-index: 999;
+
+		.brand {
+			font-family: 'Henny Penny', serif;
+			font-size: 28px;
+		}
 
 		.countdown {
 			color: #000;

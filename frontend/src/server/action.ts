@@ -8,6 +8,7 @@ const ActionService = {
 				limit:payload.limit,
 				search:payload.search,
 				sort:payload.sort,
+				date:payload.date,
 				quiz:payload.quiz
 			}
 		})

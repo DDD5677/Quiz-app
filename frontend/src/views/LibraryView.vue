@@ -35,7 +35,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .library {
-	padding: 20px 0;
 
 	.title {
 		font-size: 25px;
@@ -44,6 +43,7 @@ onMounted(() => {
 	}
 
 	.wrapper {
+		margin-top: 20px;
 		border-radius: 10px;
 		padding: 20px;
 
@@ -51,8 +51,6 @@ onMounted(() => {
 			display: grid;
 			gap: 20px;
 			grid-template-columns: 1fr 1fr 1fr;
-
-
 		}
 	}
 }

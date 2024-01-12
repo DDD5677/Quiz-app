@@ -15,7 +15,6 @@ router.get("/", async (req, res, next) => {
       let limit = 6;
       let totalQuizes = 0;
       let pageSize = 1;
-      console.log(req.query);
       if (req.query.page) {
          page = +req.query.page;
       }
@@ -24,40 +23,22 @@ router.get("/", async (req, res, next) => {
       }
       //Building filter object
       if (req.query.user) {
-         filter["user"] = req.query.user;
+         filter.user = req.query.user;
       }
       if (req.query.search) {
-         filter = {
-            ...filter,
-            title: { $regex: req.query.search, $options: "i" },
-         };
+         filter.title = { $regex: req.query.search, $options: "i" };
       }
       if (req.query.category) {
-         filter["category"] = req.query.category;
+         filter.category = req.query.category;
       }
       if (req.query.difficulty) {
-         if (req.query.difficulty.lte) {
+         if (req.query.difficulty.lte && req.query.difficulty.gte) {
             filter.difficulty = {
-               ...filter.difficulty,
-               lte: req.query.difficulty.lte,
-            };
-         }
-
-         if (req.query.difficulty.gte) {
-            filter.difficulty = {
-               ...filter.difficulty,
-               gte: req.query.difficulty.gte,
+               $lte: req.query.difficulty.lte,
+               $gte: req.query.difficulty.gte,
             };
          }
       }
-      //------------------------------------------
-      let queryStr = JSON.stringify(filter);
-      queryStr = queryStr.replace(
-         /\b(gte|gt|lte|lt)\b/g,
-         (match) => `$${match}`
-      );
-      filter = JSON.parse(queryStr);
-      //--------------------------------------------
 
       totalQuizes = await Quiz.countDocuments(filter).exec();
       if (!totalQuizes) {
@@ -134,7 +115,6 @@ router.get("/admin/:id", async (req, res, next) => {
             message: "The quiz with given ID was not found",
          });
       }
-      console.log(quiz);
       res.status(200).send(quiz);
    } catch (error) {
       next(error);

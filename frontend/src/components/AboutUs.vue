@@ -1,6 +1,6 @@
 <template>
 	<section class="about-us" id="about">
-		<div class="container sm:flex items-center justify-between">
+		<div class="container flex items-center justify-between">
 			<div class="left">
 				<h3 class="title">About Us</h3>
 				<p class="text">
@@ -40,10 +40,10 @@
 
 <style scoped lang="scss">
 .about-us {
-	padding: 80px 0 50px;
+	padding: 50px 0;
 
 	.left {
-		flex: 0 0 50%;
+		flex: 1 0 50%;
 
 		.title {
 			color: #000;
@@ -64,6 +64,10 @@
 		.info {
 			text-align: center;
 
+			.info-item {
+				flex: 1 0 33%;
+			}
+
 			.amount {
 				font-size: 48px;
 				font-weight: 600;
@@ -83,9 +87,78 @@
 
 	.right {
 		flex: 0 0 40%;
+		margin-left: 25px;
 
 		img {
 			width: 100%;
+		}
+	}
+}
+
+@media(max-width:820px) {
+	.about-us {
+		.left {
+			.title {
+				font-size: 40px;
+				margin-bottom: 15px;
+			}
+
+			.text {
+				font-size: 18px;
+				line-height: 1.5;
+				margin-bottom: 0;
+			}
+
+			.info {
+				.amount {
+					font-size: 40px;
+				}
+
+				.info-title {
+					font-size: 18px;
+				}
+			}
+		}
+	}
+
+}
+
+@media(max-width:610px) {
+	.about-us {
+		.container {
+			flex-direction: column-reverse;
+
+			.right {
+				margin-left: 0;
+
+				img {
+					width: 350px;
+				}
+			}
+		}
+	}
+}
+
+@media(max-width:380px) {
+	.about-us {
+		.left {
+			.title {
+				font-size: 35px;
+			}
+
+			.text {
+				font-size: 16px;
+			}
+
+			.info {
+				.amount {
+					font-size: 35px;
+				}
+
+				.info-title {
+					font-size: 16px;
+				}
+			}
 		}
 	}
 }

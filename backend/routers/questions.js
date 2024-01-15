@@ -47,14 +47,26 @@ router.post(
          let question;
          let questionData = {
             text: req.body.text,
-            correctAnswer: +req.body.correctAnswer,
             answers: JSON.parse(req.body.answers),
-            difficulty: +req.body.difficulty,
-            questionType: req.body.questionType,
-            point: +req.body.point,
-            category: req.body.category,
             user: req.body.user,
          };
+         console.log(req.body);
+         if (req.body.correctAnswer || +req.body.correctAnswer === 0) {
+            questionData.correctAnswer = +req.body.correctAnswer;
+         }
+         if (req.body.difficulty) {
+            questionData.difficulty = +req.body.difficulty;
+         }
+         if (req.body.questionType) {
+            questionData.questionType = req.body.questionType;
+         }
+         if (req.body.point) {
+            questionData.point = +req.body.point;
+         }
+         if (req.body.category) {
+            questionData.category = req.body.category;
+         }
+         console.log(questionData);
          //check file exist or not
          if (req.file) {
             const basePath = `${req.protocol}://${req.get(
@@ -104,10 +116,6 @@ router.post(
                      questionData.difficulty) /
                   amountOfQuestions
                ).toFixed(2);
-               console.log("quizExist", quizExist);
-               console.log("amountOfQuestions", amountOfQuestions);
-               console.log("sumDifficulties", sumDifficulties);
-               console.log("newDifficulty", newDifficulty);
                //change difficulty of Quiz
                const quiz = await Quiz.findByIdAndUpdate(
                   req.body.quizId,
@@ -163,10 +171,6 @@ router.post(
                (sumDifficulties + question.difficulty) /
                (amountOfQuestions + 1)
             ).toFixed(2);
-            console.log("quizExist", quizExist);
-            console.log("amountOfQuestions", amountOfQuestions);
-            console.log("sumDifficulties", sumDifficulties);
-            console.log("newDifficulty", newDifficulty);
             //add created question to Quiz
             const quiz = await Quiz.findByIdAndUpdate(
                req.body.quizId,

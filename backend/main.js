@@ -16,6 +16,7 @@ const usersRouter = require("./routers/users");
 const quizesRouter = require("./routers/quizes");
 const questionsRouter = require("./routers/questions");
 const actionsRouter = require("./routers/actions");
+const settingsRouter = require("./routers/settings");
 //!Middlewares
 app.use(cors());
 app.options("*", cors());
@@ -28,6 +29,7 @@ app.use(`${api}/users`, usersRouter);
 app.use(`${api}/quizes`, quizesRouter);
 app.use(`${api}/questions`, questionsRouter);
 app.use(`${api}/actions`, actionsRouter);
+app.use(`${api}/settings`, settingsRouter);
 
 //! Error Handler
 app.use(errorHandler);

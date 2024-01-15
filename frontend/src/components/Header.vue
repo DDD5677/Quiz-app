@@ -5,9 +5,8 @@
 				<h2 class="title">EasyQuiz Makes It Very Easy </h2>
 				<img class="light-icon" src="@/assets/images/light.svg" alt="">
 				<p class="subtitle">
-					With our teachers who write a program for
-					each student, you will be able to make your
-					first sketch after the first lesson.
+					Tired of printing tests and checking results over and over again? Sign up for EasyQuiz today and experience
+					the joy of creating quizzes without the complexity!
 				</p>
 				<dark-button @click.prevent="goToQuizes">Get started</dark-button>
 			</div>

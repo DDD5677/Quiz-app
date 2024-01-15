@@ -4,27 +4,25 @@
 			<div class="left">
 				<h3 class="title">About Us</h3>
 				<p class="text">
-					The model offers a framework for discussing problems related to the user's experience, as well as possible
-					ways
-					and means of solving them. Application development begins at the top level (strategy), where the future
-					software product is described quite abstractly from the point of view of the expectations of both users and
-					the
-					customer.
+					The main purpose of creating this project is to reduce the difficulties of teachers and students in creating
+					various quizzes through automation. The project also supports Latex commands, which helps to express various
+					formulas clearly and beautifully.
 				</p>
-				<div class="info flex justify-between">
+				<div v-if="!settingStore.isLoading" class="info flex justify-between">
 					<div class="info-item">
-						<span class="amount">800</span>
+						<span class="amount">{{ settingStore.statistics.pupils }}</span>
 						<span class="info-title">Pupils</span>
 					</div>
 					<div class="info-item">
-						<span class="amount">18</span>
+						<span class="amount">{{ settingStore.statistics.teachers }}</span>
 						<span class="info-title">Teachers</span>
 					</div>
 					<div class="info-item">
-						<span class="amount">6</span>
-						<span class="info-title">Foreign languages</span>
+						<span class="amount">{{ settingStore.statistics.quizes }}</span>
+						<span class="info-title">Quizzes</span>
 					</div>
 				</div>
+
 			</div>
 			<div class="right">
 				<img src="@/assets/images/about.svg" alt="">
@@ -35,7 +33,10 @@
 </template>
 
 <script setup lang="ts">
+import { useSettingStore } from '@/stores/settingStore';
 
+const settingStore = useSettingStore()
+settingStore.getStatistics()
 </script>
 
 <style scoped lang="scss">

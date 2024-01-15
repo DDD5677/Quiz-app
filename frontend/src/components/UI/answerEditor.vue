@@ -12,7 +12,7 @@
 		</div>
 		<div v-if="questionStore.editors[index]" class="text-editor ">
 			<button @click.prevent="toggleAnswerEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-			<textarea name="" id="" cols="30" rows="5" placeholder="Variantni kiriting"
+			<textarea name="" id="" cols="30" rows="5" placeholder="Enter the option"
 				class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200" v-model="answer"
 				@input="$emit('answer', answer)"></textarea>
 		</div>

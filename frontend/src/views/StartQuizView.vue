@@ -7,19 +7,19 @@
 					<h2 class="title">Matematika</h2>
 					<div v-if="!quizStore.isLoading" class="info">
 						<div class="num_questions">
-							<span>Savollar soni</span>
+							<span>Number of questions</span>
 							<span>{{ quizStore.quiz.questions.length }}</span>
 						</div>
 						<div v-if="quizStore.quiz.mixedScore" class="point">
-							<span>Har bir savol uchun</span>
-							<span class="text-right">qiyinlik darajasiga qarab ball beriladi</span>
+							<span>Points</span>
+							<span class="text-right">based on the level of difficulty</span>
 						</div>
 						<div v-else class="point">
-							<span>Har bir savol uchun</span>
+							<span>Points</span>
 							<span>{{ quizStore.quiz.point }} ball</span>
 						</div>
 						<div class="time">
-							<span>Ajratilgan vaqt</span>
+							<span>Time</span>
 							<span>{{ quizStore.quiz.time }} minut</span>
 						</div>
 					</div>

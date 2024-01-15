@@ -16,7 +16,7 @@ const QuestionService = {
 		let formData = new FormData();
 		if(question.image) formData.append("image", question.image);
 		if(question.text) formData.append("text", question.text);
-		if(correctAnswer)formData.append("correctAnswer",correctAnswer );
+		if(question.correctAnswer||question.correctAnswer===0)formData.append("correctAnswer",correctAnswer );
 		if(question.answers)formData.append("answers", JSON.stringify(question.answers));
 		if(question.difficulty)formData.append("difficulty", question.difficulty);
 		if(question.point)formData.append("point", question.point);

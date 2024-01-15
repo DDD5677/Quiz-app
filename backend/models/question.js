@@ -20,11 +20,11 @@ const questionSchema = new mongoose.Schema(
       },
       questionType: {
          type: String,
-         required: true,
+         required: [true, "Please choose type of question"],
       },
       point: {
          type: Number,
-         required: true,
+         required: [true, "Please enter point for question"],
       },
       category: {
          type: String,

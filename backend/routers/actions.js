@@ -244,7 +244,9 @@ router.put("/finish/:id", async (req, res, next) => {
          text: `${req.body.lastname} ${req.body.firstname}\n ${req.body.quiz} testidan ${updateBlock.correctAnswers} ta savolga tog'ri javob berib, ${updateBlock.score}ball to'pladi`,
       };
       const TELEGRAM_URL = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
-      await axios.post(TELEGRAM_URL, data);
+      await axios
+         .post(TELEGRAM_URL, data)
+         .catch((err) => console.log("ERROR IN SENDING RESULT OF QUIZ", err));
       //--------------------
       const action = await Action.findByIdAndUpdate(
          req.params.id,

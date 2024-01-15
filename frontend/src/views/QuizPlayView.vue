@@ -29,7 +29,7 @@
 						:question="question" :index="index"
 						:choosed="actionStore.chooses ? actionStore.chooses[question.id] : undefined" />
 					<div v-if="!actionStore.action.finished" class="finish">
-						<dark-button @click.prevent="finishHandler">Yakunlash</dark-button>
+						<dark-button @click.prevent="finishHandler">Finish</dark-button>
 					</div>
 				</div>
 				<loader v-else />

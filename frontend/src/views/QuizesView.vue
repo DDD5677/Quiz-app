@@ -3,7 +3,7 @@
 		<InfoActiveAction v-if="actionStore.activeAction" />
 		<div class="container">
 			<div class="wrapper">
-				<h1 class="title">Quizes</h1>
+				<h1 class="title">Quizzes</h1>
 				<div class="nav">
 					<main-input type="text" placeholder="Search" v-model="search" />
 					<div class="selects">
@@ -16,11 +16,11 @@
 							<option value="Physics">Fizika</option>
 						</select>
 						<select name="" id="" v-model="difficulty">
-							<option value="" selected disabled hidden>Qiyinlik darajasi</option>
+							<option value="" selected disabled hidden>Difficulty</option>
 							<option value="">All</option>
-							<option value="1">Onson</option>
-							<option value="2">O'rtacha</option>
-							<option value="3">Qiyin</option>
+							<option value="1">Low</option>
+							<option value="2">Medium</option>
+							<option value="3">High</option>
 						</select>
 					</div>
 				</div>

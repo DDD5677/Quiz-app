@@ -6,31 +6,31 @@
 						class="text-slate-400">Quiz</span>
 				</RouterLink>
 			</div>
-			<form @submit.prevent="createQuestionHandler" action="" enctype="multipart/form-data" class="flex gap-2">
+			<form @submit.prevent="createQuestionHandler" action="" enctype="multipart/form-data" class="flex">
 				<Transition>
 					<div v-if="showSelects || !navbarStore.mobile" class="wrapper-selects">
 						<div class="selects bg-white dark:bg-slate-800">
 							<select required name="" id=""
-								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								class="quiz-type w-[150px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 								v-model="questionType">
-								<option value="" selected disabled hidden>Savol turi</option>
+								<option value="" selected disabled hidden>Question type</option>
 								<option value="test">Test</option>
-								<option value="fill-in">Bo'sh joyni to'ldirish</option>
+								<option value="fill-in">Fill in</option>
 							</select>
-							<main-input required type="number" step=".1" placeholder="Grade (in points)" v-model="point" />
+							<main-input required type="number" step=".1" placeholder="Point" v-model="point" />
 							<select required name="" id=""
-								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								class="quiz-type w-[120px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 								v-model="category">
-								<option value="" selected disabled hidden>Savol qaysi fandan</option>
+								<option value="" selected disabled hidden>Category</option>
 								<option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
 							</select>
 							<select required name="" id=""
-								class="quiz-type w-[130px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+								class="quiz-type w-[120px] bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 								v-model="difficulty">
-								<option value="" selected disabled hidden>Qiyinlik darajasi</option>
-								<option value="1">Onson</option>
-								<option value="2">O'rtacha</option>
-								<option value="3">Qiyin</option>
+								<option value="" selected disabled hidden>Difficulty</option>
+								<option value="1">Low</option>
+								<option value="2">Medium</option>
+								<option value="3">High</option>
 							</select>
 						</div>
 					</div>
@@ -39,15 +39,16 @@
 					<i class="fa-solid fa-sliders"></i>
 				</light-button>
 				<ToggleTheme />
-				<dark-button>Save</dark-button>
+				<dark-button :disabled="disableSaveBtn">Save</dark-button>
 			</form>
 		</div>
+		<Errors v-if="questionStore.errors" :errors="questionStore.errors" />
 		<div class="container" :style="editorActive ? 'padding-bottom:100px' : ''">
 			<div class="question-editor bg-white dark:bg-slate-800">
 				<div class="question-wrapper">
 					<div class="quiz-text bg-stone-100 dark:bg-slate-700">
 						<div class="textarea-nav border-b-4 border-b-white dark:border-b-slate-800">
-							<span class="textarea-title text-slate-900 dark:text-stone-200">Savol matni</span>
+							<span class="textarea-title text-slate-900 dark:text-stone-200">Question</span>
 							<light-button @click.prevent="toggleShowUpload(true)" class="upload-img">
 								<i class="fa-regular fa-image"></i>
 							</light-button>
@@ -63,7 +64,7 @@
 						</div>
 						<div v-if="questionStore.editors.question" class="text-editor">
 							<button @click.prevent="toggleQuestionEditor(false)"><i class="fa-solid fa-square-xmark"></i></button>
-							<textarea name="" id="" cols="30" rows="5" placeholder="Savol matni"
+							<textarea name="" id="" cols="30" rows="5" placeholder="Enter the question"
 								class="bg-stone-100 dark:bg-slate-700 text-slate-900 dark:text-stone-200"
 								v-model="question"></textarea>
 						</div>
@@ -85,7 +86,8 @@
 							@answer="answerHandler($event, 'answer5')" @removeAnswer="removeAnswerHandler($event, 'showAnswer5')"
 							:valueEditor="answers.answer5" />
 					</div>
-					<dark-button :disabled="activeAnswers === 5" @click.prevent="addAnswer">Variant qo'shish</dark-button>
+					<dark-button :disabled="activeAnswers === 5" @click.prevent="addAnswer"><i class="fa-solid fa-plus"></i> Add
+						option</dark-button>
 				</div>
 			</div>
 		</div>
@@ -126,6 +128,7 @@ const questionType = ref('')
 //image of question
 const image = ref<any>(null)
 
+//selects modal
 const showSelects = ref(false)
 const toggleSelects = () => {
 	showSelects.value = !showSelects.value
@@ -170,7 +173,7 @@ function removeAnswerHandler(show: boolean, title: keyof ShowAnswers) {
 		showAnswers.value[title] = show
 		activeAnswers.value -= 1
 	} else {
-		alert('Savol kamida ikkita variantdan tashkil topishi kerak ')
+		alert('The question should consist of at least two options')
 	}
 }
 function addAnswer() {
@@ -185,6 +188,19 @@ function addAnswer() {
 		}
 	}
 }
+//disable button
+const checkAnswers = computed(() => {
+	if (showAnswers.value.showAnswer1 && (answers.value.answer1 === '')) return true
+	if (showAnswers.value.showAnswer2 && (answers.value.answer2 === '')) return true
+	if (showAnswers.value.showAnswer3 && (answers.value.answer3 === '')) return true
+	if (showAnswers.value.showAnswer4 && (answers.value.answer4 === '')) return true
+	if (showAnswers.value.showAnswer5 && (answers.value.answer5 === '')) return true
+
+	return false
+})
+const disableSaveBtn = computed(() => {
+	return checkAnswers.value
+})
 //upload Image
 const showUpload = ref(false)
 const target = ref<HTMLImageElement | null>(null);
@@ -307,6 +323,9 @@ onMounted(() => {
 	justify-content: space-between;
 	position: relative;
 
+	form {
+		gap: 15px
+	}
 
 	.brand {
 		font-family: 'Henny Penny', serif;
@@ -344,7 +363,7 @@ onMounted(() => {
 		}
 
 		.main-input {
-			width: 60px;
+			width: 70px;
 		}
 	}
 
@@ -547,6 +566,10 @@ onMounted(() => {
 			.brand {
 				font-size: 24px;
 				margin: 0;
+			}
+
+			form {
+				gap: 5px;
 			}
 		}
 

@@ -308,6 +308,7 @@ quizStore.getQuizByIdForAdmin(quizId).then((res) => {
 
 		.btns {
 			font-size: 14px;
+			gap: 5px
 		}
 	}
 }

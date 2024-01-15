@@ -32,7 +32,6 @@ export const useQuestionStore = defineStore('question', () => {
 	correctAnswer.value=answer
   }
   //create Question
-  const quizStore = useQuizStore()
   const isLoading = ref(true);
 	const question = ref<any|null>(null);
 	const errors = ref<any|null>(null);
@@ -94,6 +93,8 @@ export const useQuestionStore = defineStore('question', () => {
 		correctAnswer,
 		question,
 		assignCorrectAnswer,
-		createQuestion 
+		createQuestion,
+		errors,
+		isLoading
 	}
 })

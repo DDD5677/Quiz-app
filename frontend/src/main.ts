@@ -9,6 +9,7 @@ import DeleteButton from './components/UI/DeleteButton.vue'
 import Checkbox from './components/UI/checkbox.vue'
 import MainInput from './components/UI/MainInput.vue'
 import Loader from './components/UI/Loader.vue'
+import Errors from './components/UI/Errors.vue'
 
 const app = createApp(App)
 app.component('dark-button', DarkButton);
@@ -17,6 +18,7 @@ app.component('delete-button', DeleteButton);
 app.component('check-box', Checkbox);
 app.component('main-input', MainInput);
 app.component('Loader', Loader);
+app.component('Errors', Errors);
 app.use(createPinia())
 app.use(router)
 

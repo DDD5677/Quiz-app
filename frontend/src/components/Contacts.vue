@@ -8,12 +8,13 @@
 				<div class="right">
 					<h3 class="title">Contact Us</h3>
 					<p class="text">
-						Discover your current English level by taking our free online English test.Sign up to our newsletter for
-						learning tips and free resources
+						At EasyQuiz, we strive to provide you with the best experience possible. Your satisfaction is
+						our top priority. If you're experiencing any issues, have questions, or need assistance, our dedicated
+						support team is ready to help.
 					</p>
-					<form @click.prevent="sendMessageHandler" class="flex justify-between " action="">
-						<main-input type="text" placeholder="Enter Your E-mail" v-model="email" />
-						<dark-button :disabled="telegramStore.isLoading">Subscribe</dark-button>
+					<form @submit.prevent="sendMessageHandler" action="">
+						<textarea placeholder="Enter Your Problem" v-model="problem"></textarea>
+						<dark-button :isLoading="settingStore.msgLoading">Send</dark-button>
 					</form>
 				</div>
 			</div>
@@ -24,20 +25,21 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore';
+import { useSettingStore } from '@/stores/settingStore';
 import { ref } from 'vue';
-import { useTelegramStore } from '../stores/telegramStore'
-const telegramStore = useTelegramStore()
-const email = ref('')
+const authStore = useAuthStore()
+const settingStore = useSettingStore()
+const problem = ref('')
 
 const sendMessageHandler = () => {
 	const data = {
-		chat_id: 'customChatId',
-		text: email.value
+		user: authStore.user.id,
+		msg: problem.value,
 	}
-	console.log(data, 'data sended successfully')
-	// telegramStore.sendMessage(data).then((res) => {
-	// 	email.value = ''
-	// })
+	settingStore.sendMessage(data).then(() => {
+		problem.value = ''
+	})
 }
 </script>
 
@@ -61,8 +63,8 @@ const sendMessageHandler = () => {
 			font-size: 48px;
 			font-style: normal;
 			font-weight: 600;
-			line-height: 80px;
-			margin-bottom: 35px;
+			line-height: 1.3;
+			margin-bottom: 10px;
 		}
 
 		.text {
@@ -71,21 +73,29 @@ const sendMessageHandler = () => {
 			font-style: normal;
 			font-weight: 400;
 			line-height: normal;
-			margin-bottom: 50px;
+			margin-bottom: 20px;
 		}
 
 		form {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
 			width: 100%;
+			gap: 10px;
 
-			.main-input {
-				flex: 0 0 60%;
-				padding: 20px;
-				border-radius: 10px;
+			textarea {
+				width: 100%;
+				height: 100px;
+				font-size: 18px;
+				resize: none;
+				padding: 10px;
+				border-radius: 5px;
+				border: 1px solid;
 			}
 
 			button {
-				flex: 0 0 35%;
-				font-size: 20px;
+				width: 130px;
+				font-size: 18px;
 				font-weight: 500;
 			}
 		}
@@ -104,19 +114,11 @@ const sendMessageHandler = () => {
 
 			.text {
 				font-size: 18px;
-				margin-bottom: 30px;
+				line-height: 1.3;
+				margin-bottom: 20px;
 			}
 
-			form {
-				flex-direction: column;
 
-				.main-input {
-					margin-right: 0;
-					margin-bottom: 10px;
-					border-radius: 10px;
-					padding: 15px;
-				}
-			}
 		}
 	}
 }
@@ -130,6 +132,14 @@ const sendMessageHandler = () => {
 
 				img {
 					width: 350px;
+				}
+			}
+
+			.right {
+				form {
+					textarea {
+						font-size: 16px;
+					}
 				}
 			}
 		}

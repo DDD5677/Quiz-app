@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 const api = process.env.API_URL;
-const client_site = process.env.CLIENT_SITE;
+//const client_site = process.env.CLIENT_SITE;
 const errorHandler = require("./helpers/error-handler");
 const { authJwt } = require("./helpers/jwt");
 
@@ -20,12 +20,34 @@ const actionsRouter = require("./routers/actions");
 const settingsRouter = require("./routers/settings");
 const cookieParser = require("cookie-parser");
 //!Middlewares
+const allowedOrigins = [
+   "http://localhost:5173",
+   "https://www.decco.space",
+   "https://easy-quiz.onrender.com",
+];
 app.use(
    cors({
-      origin: client_site,
+      origin: function (origin, callback) {
+         // allow requests with no origin
+         // (like mobile apps or curl requests)
+         if (!origin) return callback(null, true);
+         if (allowedOrigins.indexOf(origin) === -1) {
+            var msg =
+               "The CORS policy for this site does not " +
+               "allow access from the specified Origin.";
+            return callback(new Error(msg), false);
+         }
+         return callback(null, true);
+      },
       credentials: true,
    })
 );
+// app.use(
+//    cors({
+//       origin: client_site,
+//       credentials: true,
+//    })
+// );
 app.options("*", cors());
 app.enable("trust proxy");
 app.use(bodyParser.json());

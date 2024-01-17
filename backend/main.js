@@ -24,7 +24,7 @@ const allowedOrigins = [
    "http://localhost:5173",
    "https://www.decco.space",
    "https://easy-quiz.onrender.com",
-   "https://easyquiz1.netlify.app/",
+   "https://easyquiz1.netlify.app",
 ];
 app.use(
    cors({

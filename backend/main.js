@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 const api = process.env.API_URL;
+const client_site = process.env.CLIENT_SITE;
 const errorHandler = require("./helpers/error-handler");
 const { authJwt } = require("./helpers/jwt");
 
@@ -21,11 +22,12 @@ const cookieParser = require("cookie-parser");
 //!Middlewares
 app.use(
    cors({
-      origin: "http://decco.space",
+      origin: client_site,
       credentials: true,
    })
 );
 app.options("*", cors());
+app.enable("trust proxy");
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(morgan("tiny"));

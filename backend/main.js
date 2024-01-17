@@ -21,7 +21,11 @@ const cookieParser = require("cookie-parser");
 //!Middlewares
 app.use(
    cors({
-      origin: "http://localhost:5173",
+      origin: [
+         "http://localhost:5173",
+         "https://www.decco.com",
+         "https://decco.com",
+      ],
       credentials: true,
    })
 );

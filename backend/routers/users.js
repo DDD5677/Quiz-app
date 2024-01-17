@@ -86,8 +86,10 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
    try {
+      console.log(req.body);
       const user = await User.findOne({ email: req.body.email });
       const secret = process.env.secret;
+      const REFRESH_SECRET = process.env.REFRESH_SECRET;
       const err = {
          email: "",
          password: "",
@@ -98,17 +100,32 @@ router.post("/login", async (req, res, next) => {
       }
 
       if (user && bcrypt.compareSync(req.body.password, user.password)) {
-         const token = jwt.sign(
+         const accessToken = jwt.sign(
             {
-               userId: user.id,
+               id: user.id,
                role: user.role,
             },
             secret,
             {
-               expiresIn: "7d",
+               expiresIn: "60s",
             }
          );
-         res.status(200).send({ user: user, token: token });
+         const refreshToken = jwt.sign(
+            {
+               id: user.id,
+               role: user.role,
+            },
+            REFRESH_SECRET,
+            {
+               expiresIn: "1d",
+            }
+         );
+         res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+         });
+         console.log(refreshToken);
+         res.status(200).send({ user: user, token: accessToken });
       } else {
          err.password = "the password is wrong";
          res.status(400).send(err);
@@ -117,7 +134,55 @@ router.post("/login", async (req, res, next) => {
       next(error);
    }
 });
-
+router.post("/refresh", async (req, res, next) => {
+   try {
+      const secret = process.env.secret;
+      const REFRESH_SECRET = process.env.REFRESH_SECRET;
+      const refreshToken = req.cookies["refreshToken"];
+      console.log(refreshToken);
+      let payload;
+      jwt.verify(refreshToken, REFRESH_SECRET, function (err, decoded) {
+         // if (err) {
+         //    return res.status(401).send({
+         //       err: err,
+         //       auth: "The user is not authorized, please sign in",
+         //    });
+         // }
+         payload = decoded;
+      });
+      console.log("payload", payload);
+      if (!payload) {
+         return res.status(401).send({
+            auth: "The user is not authorized, please sign in",
+         });
+      }
+      //const user = await User.findById(payload.id);
+      const accessToken = jwt.sign(
+         {
+            id: payload.id,
+            role: payload.role,
+         },
+         secret,
+         {
+            expiresIn: "60s",
+         }
+      );
+      res.status(200).send({ token: accessToken });
+   } catch (error) {
+      next(error);
+   }
+});
+router.post("/logout", async (req, res, next) => {
+   try {
+      res.cookie("refreshToken", "", { maxAge: 0 });
+      res.status(200).send({
+         success: true,
+         message: "User successfully logged out",
+      });
+   } catch (error) {
+      next(error);
+   }
+});
 router.get("/user/refresh", async (req, res, next) => {
    try {
       let token;
@@ -133,14 +198,15 @@ router.get("/user/refresh", async (req, res, next) => {
       }
       jwt.verify(token, secret, function (err, decoded) {
          if (err) {
-            console.log("Error: ", err);
+            console.log("Error jwt users/refresh: ", err);
          }
          currentUser = decoded;
       });
-      const user = await User.findById(currentUser.userId).select("-password");
+      console.log(currentUser);
+      const user = await User.findById(currentUser.id).select("-password");
 
       if (!user) {
-         res.status(500).json({
+         return res.status(500).json({
             message: "The user with givven Id was not found",
          });
       }

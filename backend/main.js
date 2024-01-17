@@ -17,10 +17,17 @@ const quizesRouter = require("./routers/quizes");
 const questionsRouter = require("./routers/questions");
 const actionsRouter = require("./routers/actions");
 const settingsRouter = require("./routers/settings");
+const cookieParser = require("cookie-parser");
 //!Middlewares
-app.use(cors());
+app.use(
+   cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+   })
+);
 app.options("*", cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use(authJwt());
 app.use("/public", express.static(__dirname + "/public"));

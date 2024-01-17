@@ -5,7 +5,14 @@ const AuthService = {
     return axios.post('/users/register', user)
   },
   login(user:object){
-	return axios.post('/users/login',user)
+	return axios.post('/users/login',user,{
+		withCredentials:true
+	})
+  },
+  logout(){
+	return axios.post('/users/logout',{},{
+		withCredentials:true
+	})
   },
   refresh(){
 	return axios.get("/users/user/refresh");

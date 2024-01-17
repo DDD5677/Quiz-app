@@ -34,14 +34,30 @@
 								<span class="error">{{ authStore.errors ? authStore.errors.role : '' }}</span>
 							</div>
 							<div class="input">
-								<main-input type="text" placeholder="Password" v-model="password" />
+								<div class="relative">
+									<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password"
+										v-model="password" />
+									<light-button @click.prevent="togglePasswordType"
+										class="absolute right-0 top-0 h-full bg-white">
+										<i v-if="passwordType" class="fa-regular fa-eye"></i>
+										<i v-else class="fa-regular fa-eye-slash"></i>
+									</light-button>
+								</div>
 								<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
 							</div>
 							<div class="input">
-								<main-input type="text" placeholder="Confirm password" v-model="confirmPassword" />
-								<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
+								<div class="relative">
+									<main-input :type="cfmPasswordType ? 'password' : 'text'" placeholder="Confirm password"
+										v-model="confirmPassword" />
+									<light-button @click.prevent="togglecfmPasswordType"
+										class="absolute right-0 top-0 h-full bg-white">
+										<i v-if="cfmPasswordType" class="fa-regular fa-eye"></i>
+										<i v-else class="fa-regular fa-eye-slash"></i>
+									</light-button>
+								</div>
+								<span class="error">{{ checkPassword ? '' : 'Password is not match' }}</span>
 							</div>
-							<dark-button @click.prevent="SignUpHandler">Create</dark-button>
+							<dark-button :disabled="!checkPassword" @click.prevent="SignUpHandler">Create</dark-button>
 						</div>
 					</div>
 
@@ -52,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router';
 const authStore = useAuthStore()
@@ -64,6 +80,17 @@ const email = ref('')
 const role = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const passwordType = ref(true)
+const cfmPasswordType = ref(true)
+const togglePasswordType = () => {
+	passwordType.value = !passwordType.value
+}
+const togglecfmPasswordType = () => {
+	cfmPasswordType.value = !cfmPasswordType.value
+}
+const checkPassword = computed(() => {
+	return password.value === confirmPassword.value
+})
 
 function SignUpHandler() {
 	const data = {
@@ -133,10 +160,18 @@ function SignUpHandler() {
 			width: 100%;
 			position: relative;
 
+			div {
+				margin-bottom: 20px;
+
+				.main-input {
+					margin-bottom: 0;
+				}
+			}
+
 			.main-input {
 				width: 100%;
 				background-color: #f2f2f2;
-				padding: 10px 15px;
+				//padding: 10px 15px;
 				margin-bottom: 20px;
 			}
 

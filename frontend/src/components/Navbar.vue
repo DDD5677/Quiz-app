@@ -23,7 +23,7 @@
 							<li @click="navbarStore.showNavbarHandler(false)" class="item"><a href="#contacts"
 									class="item-link">Contacts</a></li>
 							<li v-if="authStore.isLogged && authStore.user.role === 'student'" @click="logoutAdmin" class="item">
-								<span class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+								<span class="logout-btn">Log out <i class="fa-solid fa-arrow-right-from-bracket"></i></span>
 							</li>
 							<li v-if="authStore.isLogged && authStore.user.role === 'teacher'" class="item">
 								<RouterLink :to="{ name: 'admin' }" @click="navbarStore.showNavbarHandler(false)"
@@ -152,7 +152,7 @@ onMounted(() => {
 .logout-btn {
 	width: 100%;
 	height: 100%;
-	padding: 5px 10px 2px;
+	padding: 5px 10px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -167,6 +167,10 @@ onMounted(() => {
 
 	&:hover {
 		border-color: #000;
+	}
+
+	i {
+		margin-left: 10px;
 	}
 }
 
@@ -246,6 +250,16 @@ onMounted(() => {
 			}
 		}
 
+		.logout-btn {
+			padding: 10px 15px;
+			border: none;
+			border-radius: 0;
+			justify-content: flex-start;
+
+			&:hover {
+				background-color: #2f424b49;
+			}
+		}
 
 		.login-btn {
 			margin: 10px 15px 0;

@@ -11,7 +11,9 @@ function authJwt() {
       path: [
          { url: /\/public(.*)/, methods: ["GET", "OPTIONS"] },
          `${api}/users/login`,
+         `${api}/users/refresh`,
          `${api}/users/register`,
+         `${api}/settings/statistics`,
       ],
    });
 }

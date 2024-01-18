@@ -39,7 +39,6 @@ function loginHandler() {
 		email: email.value,
 		password: password.value
 	}
-	console.log(data)
 	authStore.login(data).then((res => {
 		router.replace('/')
 	})).catch((err) => {
@@ -52,8 +51,6 @@ function loginHandler() {
 
 <style lang="scss" scoped>
 .signinView {
-
-
 	.wrapper {
 		display: flex;
 		align-items: center;

@@ -1,7 +1,8 @@
 <template>
-	<div class="upload_img bg-slate-950/30 dark:bg-slate-950/50">
+	<div class="upload_img bg-slate-950/30 dark:bg-slate-950/50"
+		:class="{ 'active_nav': !navbarStore.mobile && !navbarStore.showNavbar }">
 		<div class="box">
-			<div class="wrapper bg-white dark:bg-slate-700" :class="{ 'active_nav': !navbarStore.mobile }">
+			<div class="wrapper bg-white dark:bg-slate-700" :class="{ 'active_nav': (!navbarStore.showNavbar) }">
 				<button @click.prevent="$emit('close', false)" class="close_btn"><i
 						class="fa-solid fa-square-xmark"></i></button>
 				<form @submit.prevent="submitHandler" action="" enctype="multipart/form-data">
@@ -10,8 +11,8 @@
 						<span>Choose Image</span>
 						<input type="file" @input="changeImage" />
 					</label>
-					<span class="image_name" ref="imageName"></span>
-					<div class="flex justify-end mt-8">
+					<span class="image_name dark:text-stone-200" ref="imageName"></span>
+					<div class="btns flex justify-end mt-8">
 						<dark-button :isLoading="imageCompressing" :disabled="!image || imageCompressing">Change
 							Image</dark-button>
 					</div>
@@ -96,22 +97,23 @@ const submitHandler = async () => {
 	position: fixed;
 	width: 100%;
 	height: 100vh;
+	padding-left: 45px;
 
 	.box {
 		width: 400px;
 		margin: 150px auto;
 	}
 
+	&.active_nav {
+		padding-left: 175px;
+	}
+
 	.wrapper {
 		padding: 50px 40px 30px;
 		border-radius: 10px;
-		width: 400px;
 		position: relative;
 		transition: all 0.3s ease-in;
 
-		&.active_nav {
-			margin-left: 90px;
-		}
 
 		.close_btn {
 			position: absolute;
@@ -148,6 +150,37 @@ const submitHandler = async () => {
 
 		.dark-btn {
 			margin-left: auto;
+		}
+	}
+}
+
+
+@media(max-width:480px) {
+	.upload_img {
+
+		.box {
+			width: calc(100% - 30px);
+
+			.wrapper {
+				padding: 40px 25px 25px;
+
+				label {
+					font-size: 16px;
+					padding: 10px 15px;
+
+					span {
+						margin-left: 5px;
+					}
+				}
+
+				.btns {
+					margin-top: 15px;
+				}
+
+				.dark-btn {
+					font-size: 16px;
+				}
+			}
 		}
 	}
 }

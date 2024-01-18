@@ -166,7 +166,7 @@ router.post("/refresh", async (req, res, next) => {
          },
          secret,
          {
-            expiresIn: "60s",
+            expiresIn: "1h",
          }
       );
       res.status(200).send({ token: accessToken });

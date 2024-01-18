@@ -357,6 +357,14 @@ onMounted(() => {
 		.avatar {
 			gap: 5px;
 			justify-content: space-between;
+
+			.img_box {
+				.img_link {
+					.img_camera {
+						height: 50%;
+					}
+				}
+			}
 		}
 	}
 

@@ -3,8 +3,8 @@ import axios from 'axios'
 import router from'@/router'
 
 //axios.defaults.baseURL = 'http://localhost:3000/api/v1'
-axios.defaults.baseURL = 'https://easy-quiz.onrender.com/api/v1'
-//axios.defaults.baseURL = 'https://decco.space/api/v1'
+//axios.defaults.baseURL = 'https://easy-quiz.onrender.com/api/v1'
+axios.defaults.baseURL = 'https://decco.space/api/v1'
 
 axios.interceptors.request.use((config) => {
 	config.headers.Authorization = "Bearer " + getItem("token");

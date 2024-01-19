@@ -20,7 +20,7 @@ const actionStore = useActionStore()
 <style lang="scss" scoped>
 .active_action {
 	position: fixed;
-	z-index: 15;
-	top: 60px;
+	z-index: 1;
+	top: 65px;
 }
 </style>

@@ -319,6 +319,26 @@ onMounted(() => {
 	}
 }
 
+@media(max-width:480px) {
+	.quizes {
+		.wrapper {
+			.main {
+				table {
+					tbody {
+						tr {
+							.img_box {
+								width: 80px;
+								margin-right: 0;
+								min-height: 40px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 @media(max-width:380px) {
 	.quizes {
 		.wrapper {

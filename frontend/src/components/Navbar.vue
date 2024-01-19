@@ -26,7 +26,7 @@
 								<span class="logout-btn">Log out <i class="fa-solid fa-arrow-right-from-bracket"></i></span>
 							</li>
 							<li v-if="authStore.isLogged && authStore.user.role === 'teacher'" class="item">
-								<RouterLink :to="{ name: 'admin' }" @click="navbarStore.showNavbarHandler(false)"
+								<RouterLink :to="{ name: 'create-quiz' }" @click="navbarStore.showNavbarHandler(false)"
 									class="item-link">
 									Dashboard</RouterLink>
 							</li>

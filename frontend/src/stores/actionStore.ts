@@ -97,6 +97,7 @@ export const useActionStore = defineStore('action',()=>{
 				actionLoading.value=false;
 				activeAction.value=response.data;
 				finished.value = response.data.finished
+				created.value = response.data.createdAt
 				resolve(response.data);
 			}).catch((error)=>{
 				actionLoading.value=false;
@@ -134,6 +135,7 @@ export const useActionStore = defineStore('action',()=>{
 				action.value=response.data;
 				activeAction.value=null;
 				finished.value = response.data.finished
+				created.value = null;
 				chooses.value = response.data.chooses
 				isLoading.value=false;
 				console.log('finishAction success',isLoading.value)

@@ -2,12 +2,14 @@
 	<div class="active_action">
 		<div class="container">
 			<div class="wrapper">
-				<div class="timer"><span>Sizda tugatilmagan test mavjud! Sizda</span>
-					<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive" :time="+actionStore.time"
-						:back-color="'#fff'" :color="'#000'" />
-					<span>vaqt qoldi</span>
+				<div class="timer"><span>You have an unfinished test!</span>
+					<span class="flex items-center">
+						Test finished after
+						<CountDown v-if="!actionStore.isLoading && !actionStore.isLoadingActive" :time="+actionStore.time"
+							:back-color="'#fff'" :color="'#000'" />
+					</span>
 				</div>
-				<dark-button @click.prevent="goToQuizPlay">Davom etish</dark-button>
+				<dark-button @click.prevent="goToQuizPlay">Continue</dark-button>
 			</div>
 		</div>
 	</div>
@@ -43,11 +45,34 @@ const goToQuizPlay = () => {
 		.timer {
 			display: flex;
 			align-items: center;
+			margin-left: 5px;
 
 			.countdown {
 				font-size: 18px;
 				color: #263238;
 			}
+		}
+	}
+}
+
+@media(max-width:720px) {
+	.active_action {
+		.wrapper {
+			padding: 10px 15px;
+			font-size: 14px;
+
+			.timer {
+				flex-direction: column;
+				align-items: start;
+			}
+		}
+	}
+}
+
+@media(max-width:420px) {
+	.active_action {
+		.wrapper {
+			flex-direction: column;
 		}
 	}
 }

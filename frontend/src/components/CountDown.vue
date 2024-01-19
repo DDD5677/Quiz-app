@@ -47,11 +47,11 @@ if (!actionStore.finished) {
 	}, 1000)
 }
 
-onMounted(() => {
-	const created = Date.parse(actionStore.created) + props.time * 60 * 1000
-	console.log('created', created)
-	launchDate.value = created
-})
+
+const created = Date.parse(actionStore.created) + props.time * 60 * 1000
+console.log('created', actionStore.created)
+launchDate.value = created
+
 </script>
 
 <style lang="scss" scoped>
@@ -81,6 +81,14 @@ onMounted(() => {
 
 		span {
 			font-weight: 500;
+		}
+	}
+}
+
+@media(max-width:450px) {
+	.countdown {
+		div {
+			font-size: 14px;
 		}
 	}
 }

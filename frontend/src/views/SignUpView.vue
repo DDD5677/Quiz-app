@@ -126,6 +126,7 @@ function SignUpHandler() {
 		flex-direction: column;
 		align-items: center;
 		gap: 10px;
+		margin-bottom: 30px;
 
 		.body {
 			display: flex;
@@ -175,6 +176,10 @@ function SignUpHandler() {
 				margin-bottom: 20px;
 			}
 
+			.light-btn {
+				border-radius: 0 5px 5px 0;
+			}
+
 			.error {
 				width: 100%;
 				color: red;
@@ -198,6 +203,36 @@ function SignUpHandler() {
 			width: 150px;
 			margin-bottom: 20px;
 			padding: 10px 16px;
+		}
+	}
+}
+
+@media(max-width:720px) {
+	.signinView {
+		form {
+			padding: 20px 30px 30px;
+
+			.body {
+				gap: 15px;
+			}
+		}
+	}
+}
+
+@media(max-width:520px) {
+	.signinView {
+		form {
+			.body {
+				flex-direction: column;
+			}
+		}
+	}
+}
+
+@media(max-width:380px) {
+	.signinView {
+		form {
+			padding: 20px;
 		}
 	}
 }

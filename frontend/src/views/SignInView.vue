@@ -10,10 +10,16 @@
 						<span class="error">{{ authStore.errors ? authStore.errors.email : '' }}</span>
 					</div>
 					<div class="input">
-						<main-input type="text" placeholder="Password" v-model="password" />
+						<div class="relative">
+							<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password" v-model="password" />
+							<light-button @click.prevent="togglePasswordType" class="absolute right-0 top-0 h-full bg-white">
+								<i v-if="passwordType" class="fa-regular fa-eye"></i>
+								<i v-else class="fa-regular fa-eye-slash"></i>
+							</light-button>
+						</div>
 						<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
 					</div>
-					<dark-button @click.prevent="loginHandler">Sign In</dark-button>
+					<dark-button :isLoading="isLoading" @click.prevent="loginHandler">Sign In</dark-button>
 					<div class="links">
 						<span>No account? <RouterLink :to="{ name: 'register' }" class="register"> Create here</RouterLink>
 						</span>
@@ -33,15 +39,22 @@ const authStore = useAuthStore()
 const router = useRouter();
 const email = ref('');
 const password = ref('');
-
+const passwordType = ref(true)
+const isLoading = ref(false)
+const togglePasswordType = () => {
+	passwordType.value = !passwordType.value
+}
 function loginHandler() {
+	isLoading.value = true
 	const data = {
 		email: email.value,
 		password: password.value
 	}
 	authStore.login(data).then((res => {
+		isLoading.value = false
 		router.replace('/')
 	})).catch((err) => {
+		isLoading.value = false
 		console.log(err)
 	})
 }
@@ -112,6 +125,14 @@ function loginHandler() {
 			a {
 				text-decoration: underline;
 			}
+		}
+	}
+}
+
+@media(max-width:450px) {
+	.signinView {
+		form {
+			padding: 20px 30px 30px;
 		}
 	}
 }

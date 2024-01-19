@@ -62,7 +62,7 @@ const startQuizHandler = () => {
 	}
 	actionStore.createAction(data).then((res: any) => {
 		console.log(res)
-		actionStore.getActiveAction(authStore.user.id).then((res) => {
+		actionStore.getActiveAction(authStore.user.id).then((res: any) => {
 			console.log(res)
 		}).catch((err) => {
 			console.log(err)

@@ -24,4 +24,18 @@
 		font-weight: 700;
 	}
 }
+
+@media(max-width:480px) {
+	.error_page {
+		.wrapper {
+			img {
+				width: 100%;
+			}
+
+			.title {
+				font-size: 60px;
+			}
+		}
+	}
+}
 </style>

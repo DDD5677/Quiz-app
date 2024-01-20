@@ -3,11 +3,16 @@
 		<div class="container">
 			<div class="wrapper bg-white dark:bg-slate-800">
 				<h1 class="title dark:text-stone-100">Quiz statistics</h1>
-				<div v-if="!quizStore.isLoading" class="cards">
-					<div v-for="quiz in quizStore.quizList" :key="quiz.id"
-						class="quiz bg-stone-100 dark:bg-slate-700 text-slate-950 dark:text-stone-100">
-						<span class="quiz_title">{{ quiz.title }}</span>
-						<light-button @click="StatisticsDetail(quiz.id)">Statistics</light-button>
+				<div v-if="!quizStore.isLoading">
+					<div v-if="quizStore.quizList.length === 0" class="empty dark:text-stone-100">
+						There are no quiz statistics yet
+					</div>
+					<div class="cards">
+						<div v-for="quiz in quizStore.quizList" :key="quiz.id"
+							class="quiz bg-stone-100 dark:bg-slate-700 text-slate-950 dark:text-stone-100">
+							<span class="quiz_title">{{ quiz.title }}</span>
+							<light-button @click="StatisticsDetail(quiz.id)">Statistics</light-button>
+						</div>
 					</div>
 				</div>
 				<Loader v-else />

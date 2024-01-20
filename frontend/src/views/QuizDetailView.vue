@@ -71,9 +71,9 @@
 						<select disabled name="" id=""
 							class="main-select border-slate-900 dark:border-stone-100 bg-stone-100 dark:bg-slate-700"
 							:value="difficulty">
-							<option value="1">Onson</option>
-							<option value="2">O'rtacha</option>
-							<option value="3">Qiyin</option>
+							<option value="1">Low</option>
+							<option value="2">Medium</option>
+							<option value="3">High</option>
 						</select>
 
 					</div>

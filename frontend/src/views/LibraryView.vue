@@ -3,8 +3,13 @@
 		<div class="container">
 			<div class="wrapper bg-white dark:bg-slate-800">
 				<h1 class="title dark:text-stone-100">Library</h1>
-				<div v-if="!quizStore.isLoading" class="cards">
-					<QuizCards v-for="quiz in quizStore.quizList" :key="quiz.id" :quiz="quiz" />
+				<div v-if="!quizStore.isLoading">
+					<div v-if="quizStore.quizList.length === 0" class="empty dark:text-stone-100">
+						There are no quizzes yet
+					</div>
+					<div class="cards">
+						<QuizCards v-for="quiz in quizStore.quizList" :key="quiz.id" :quiz="quiz" />
+					</div>
 				</div>
 				<Loader v-else />
 			</div>
@@ -46,6 +51,11 @@ onMounted(() => {
 		margin-top: 20px;
 		border-radius: 10px;
 		padding: 20px;
+
+		.empty {
+			font-size: 18px;
+		}
+
 
 		.cards {
 			display: grid;

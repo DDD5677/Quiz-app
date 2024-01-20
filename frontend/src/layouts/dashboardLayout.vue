@@ -43,7 +43,7 @@
 		<div class="content bg-stone-100 dark:bg-slate-700"
 			:style="!navbarStore.mobile && !navbarStore.showNavbar ? 'padding-left:180px' : ''">
 			<div class="navbar bg-white dark:bg-slate-900">
-				<div class="brand">
+				<div class="brand select-none">
 					<button v-if="!navbarStore.mobile" @click.prevent="sidebarToggle" class="sidebar-btn"
 						:class="{ 'mobile': navbarStore.showNavbar }"></button>
 					<RouterLink class="text-black dark:text-stone-100" :to="{ name: 'home' }">Easy<span

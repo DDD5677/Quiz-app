@@ -12,10 +12,10 @@
 					<div class="input">
 						<div class="relative">
 							<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password" v-model="password" />
-							<light-button @click.prevent="togglePasswordType" class="absolute right-0 top-0 h-full bg-white">
+							<span @click.prevent="togglePasswordType" class="eye-btn absolute right-0 top-0 h-full bg-white">
 								<i v-if="passwordType" class="fa-regular fa-eye"></i>
 								<i v-else class="fa-regular fa-eye-slash"></i>
-							</light-button>
+							</span>
 						</div>
 						<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
 					</div>
@@ -80,6 +80,7 @@ function loginHandler() {
 		align-items: center;
 		gap: 20px;
 
+
 		.icon {
 			font-size: 30px;
 			text-align: center;
@@ -100,6 +101,18 @@ function loginHandler() {
 				width: 100%;
 				background-color: #f2f2f2;
 				padding: 10px 15px;
+			}
+
+			.eye-btn {
+				display: flex;
+				align-items: center;
+				width: 50px;
+				font-weight: 500;
+				padding: 0.4em 1em;
+				border-radius: 0 5px 5px 0;
+				transition: all 0.3s ease;
+				cursor: pointer;
+				border: 1px solid #000;
 			}
 
 			.error {

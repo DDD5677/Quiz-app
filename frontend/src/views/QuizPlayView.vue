@@ -1,7 +1,7 @@
 <template>
 	<section class="quiz_play">
 		<div class="timer bg-slate-900">
-			<div class="brand">
+			<div class="brand select-none">
 				<RouterLink class="text-stone-100 dark:text-stone-100" :to="{ name: 'home' }">Easy<span
 						class="text-slate-400">Quiz</span>
 				</RouterLink>

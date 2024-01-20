@@ -3,7 +3,7 @@
 		<div class="container">
 			<nav class="navbar py-2 flex justify-between items-center"
 				:class="{ 'mobile-navbar': navbarStore.showNavbar || !navbarStore.mobile }">
-				<div class="brand">
+				<div class="brand select-none">
 					<RouterLink :to="{ name: 'home' }" @click="clickBrand">Easy<span>Quiz</span></RouterLink>
 					<button @click.prevent="navbarStore.showNavbarHandler(true)" class="nav-btn"></button>
 				</div>

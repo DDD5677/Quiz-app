@@ -57,6 +57,7 @@
 							</tr>
 						</tbody>
 					</table>
+					<div v-if="actionStore.actionList.length === 0" class="p-6 text-red-400">There is not actions</div>
 				</div>
 				<loader v-else />
 				<Pagination :pageSize="actionStore.pageSize" :pageLimit="2" :page="actionStore.page" :getData="getData" />
@@ -178,7 +179,6 @@ onMounted(() => {
 				border: 1px solid;
 				border-radius: 5px;
 				outline: none;
-				flex: 1 0 40%;
 			}
 
 		}

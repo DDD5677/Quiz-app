@@ -21,10 +21,6 @@
 							<span class="subtitle">Registered date:</span>
 							<span class="date">{{ formatDate(authStore.user.createdAt) }}</span>
 						</div>
-						<div @click="toggleShowUpload(true)" class="upload_img-mobile">
-							<i class="fa-regular fa-image image"></i>
-							<i class="fa-solid fa-circle-plus plus"></i>
-						</div>
 					</div>
 					<div class="input">
 						<span class="subtitle">Firstname</span>
@@ -59,12 +55,28 @@
 					</div>
 					<div class="input">
 						<span class="subtitle">Password</span>
-						<main-input type="password" placeholder="Password" v-model="user.password" />
+						<div class="relative">
+							<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password"
+								v-model="user.password" />
+							<span @click.prevent="togglePasswordType"
+								class="eye-btn absolute right-0 top-0 h-full border-slate-900 dark:border-stone-100 bg-white dark:bg-slate-800">
+								<i v-if="passwordType" class="fa-regular fa-eye"></i>
+								<i v-else class="fa-regular fa-eye-slash"></i>
+							</span>
+						</div>
 						<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
 					</div>
 					<div class="input">
 						<span class="subtitle">New Password</span>
-						<main-input type="password" placeholder="New password" v-model="user.newPassword" />
+						<div class="relative">
+							<main-input :type="newPasswordType ? 'password' : 'text'" placeholder="New password"
+								v-model="user.newPassword" />
+							<span @click.prevent="toggleNewPasswordType"
+								class="eye-btn absolute right-0 top-0 h-full bottom-0 border-slate-900 dark:border-stone-100 bg-white dark:bg-slate-800">
+								<i v-if="newPasswordType" class="fa-regular fa-eye"></i>
+								<i v-else class="fa-regular fa-eye-slash"></i>
+							</span>
+						</div>
 						<span class="error">{{ authStore.errors ? authStore.errors.password : '' }}</span>
 					</div>
 					<dark-button :isLoading="authStore.isLoading" :disabled="!changed">Update</dark-button>
@@ -92,6 +104,14 @@ const user = reactive({
 	role: ''
 })
 
+const passwordType = ref(true)
+const newPasswordType = ref(true)
+const togglePasswordType = () => {
+	passwordType.value = !passwordType.value
+}
+const toggleNewPasswordType = () => {
+	newPasswordType.value = !newPasswordType.value
+}
 //disable button if nothing is changed
 const changed = computed(() => {
 	const data = authStore.user;
@@ -235,47 +255,32 @@ onMounted(() => {
 			}
 		}
 
-		.upload_img-mobile {
-			display: none;
-			border-radius: 50%;
-			border: 2px solid #263238;
-			width: 60px;
-			height: 60px;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			font-size: 18px;
-			align-items: center;
-			justify-content: center;
-			position: relative;
 
-			.image {
-				font-size: 28px;
-			}
-
-			.plus {
-				position: absolute;
-				top: 50%;
-				left: 55%;
-				background-color: #fff;
-				border-radius: 50%;
-				height: 15px;
-				width: 15px;
-			}
-
-			&:hover {
-				background-color: #263238;
-				color: #fff;
-
-				.plus {
-					background-color: #263238;
-				}
-			}
-		}
 	}
 
 	.input {
 		flex: 1 0 48%;
 		position: relative;
+
+		div {
+			margin-bottom: 20px;
+
+			.main-input {
+				margin-bottom: 0;
+			}
+		}
+
+		.eye-btn {
+			display: flex;
+			align-items: center;
+			width: 50px;
+			font-weight: 500;
+			padding: 0.4em 1em;
+			border-radius: 0 5px 5px 0;
+			transition: all 0.3s ease;
+			cursor: pointer;
+			border-width: 1px;
+		}
 
 		.error {
 			width: 100%;

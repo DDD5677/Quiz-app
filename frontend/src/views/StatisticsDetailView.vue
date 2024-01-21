@@ -5,9 +5,10 @@
 				<h1 v-if="!quizStore.isLoading" class="title ">{{ quizStore.quiz.title }}</h1>
 				<div class="nav">
 					<main-input type="text" placeholder="Search" v-model="search" />
-
-					<main-input type="date" placeholder="Search" v-model="date" />
-
+					<input
+						class="main-input bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
+						type="date" data-placeholder="Date: dd.mm.yy" v-model="date" name="trip-start" lang="en" />
+					<!-- <main-input datepicker type="date" placeholder="Search"  /> -->
 				</div>
 				<div v-if="!actionStore.isLoading && !quizStore.isLoading" class="main">
 					<table>
@@ -175,10 +176,52 @@ onMounted(() => {
 			gap: 10px;
 
 			.main-input {
-				padding: 5px;
+				padding: 5px 10px;
 				border: 1px solid;
 				border-radius: 5px;
 				outline: none;
+			}
+
+			input[type="date"]::-webkit-clear-button {
+				display: none;
+			}
+
+			input[type="date"] {
+				padding-right: 20px;
+				position: relative;
+				background-image: url(@/assets/images/input__date-icon.svg);
+				background-repeat: no-repeat;
+				background-position: right 16px center;
+			}
+
+			input[type="date"]::-webkit-clear-button,
+			input[type="date"]::-webkit-inner-spin-button {
+				display: none;
+			}
+
+			input[type="date"]::-webkit-calendar-picker-indicator {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: transparent;
+				color: transparent;
+				cursor: pointer;
+			}
+
+			input[type="date"]::before {
+				content: attr(data-placeholder);
+				width: 100%;
+				font-weight: 400;
+				font-size: 13.3553px;
+				line-height: 17px;
+				color: #C6C6C6;
+			}
+
+			input[type="date"]:valid::before {
+				display: none;
+
 			}
 
 		}
@@ -297,6 +340,10 @@ onMounted(() => {
 
 			.nav {
 				flex-direction: column;
+
+				.main-input {
+					width: 100%;
+				}
 			}
 
 			.main {

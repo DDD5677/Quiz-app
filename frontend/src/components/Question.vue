@@ -93,6 +93,7 @@ onMounted(() => {
 	.question {
 		padding: 10px 30px;
 		font-size: 22px;
+		overflow-x: auto;
 
 		img {
 			border-radius: 5px;

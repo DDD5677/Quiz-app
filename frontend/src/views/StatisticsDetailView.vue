@@ -4,7 +4,7 @@
 			<div class="wrapper bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-200">
 				<h1 v-if="!quizStore.isLoading" class="title ">{{ quizStore.quiz.title }}</h1>
 				<div class="nav">
-					<main-input type="text" placeholder="Search" v-model="search" />
+					<main-input type="text" placeholder="Search by firstname" v-model="search" />
 					<input
 						class="main-input bg-stone-100 border-slate-900 dark:border-stone-100 dark:bg-slate-700 text-slate-900 dark:text-gray-100"
 						type="date" data-placeholder="Date: dd.mm.yy" v-model="date" name="trip-start" lang="en" />

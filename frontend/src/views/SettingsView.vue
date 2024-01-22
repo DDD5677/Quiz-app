@@ -58,8 +58,7 @@
 						<div class="relative">
 							<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password"
 								v-model="user.password" />
-							<span @click.prevent="togglePasswordType"
-								class="eye-btn absolute right-0 top-0 h-full border-slate-900 dark:border-stone-100 bg-white dark:bg-slate-800">
+							<span @click.prevent="togglePasswordType" class="eye-btn absolute right-0 top-0 h-full ">
 								<i v-if="passwordType" class="fa-regular fa-eye"></i>
 								<i v-else class="fa-regular fa-eye-slash"></i>
 							</span>
@@ -71,8 +70,7 @@
 						<div class="relative">
 							<main-input :type="newPasswordType ? 'password' : 'text'" placeholder="New password"
 								v-model="user.newPassword" />
-							<span @click.prevent="toggleNewPasswordType"
-								class="eye-btn absolute right-0 top-0 h-full bottom-0 border-slate-900 dark:border-stone-100 bg-white dark:bg-slate-800">
+							<span @click.prevent="toggleNewPasswordType" class="eye-btn absolute right-0 top-0 h-full bottom-0 ">
 								<i v-if="newPasswordType" class="fa-regular fa-eye"></i>
 								<i v-else class="fa-regular fa-eye-slash"></i>
 							</span>
@@ -267,6 +265,7 @@ onMounted(() => {
 
 			.main-input {
 				margin-bottom: 0;
+				padding-right: 50px;
 			}
 		}
 
@@ -276,10 +275,8 @@ onMounted(() => {
 			width: 50px;
 			font-weight: 500;
 			padding: 0.4em 1em;
-			border-radius: 0 5px 5px 0;
 			transition: all 0.3s ease;
 			cursor: pointer;
-			border-width: 1px;
 		}
 
 		.error {

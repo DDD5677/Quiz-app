@@ -37,8 +37,7 @@
 								<div class="relative">
 									<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password"
 										v-model="password" />
-									<span @click.prevent="togglePasswordType"
-										class="eye-btn absolute right-0 top-0 h-full bg-white">
+									<span @click.prevent="togglePasswordType" class="eye-btn absolute right-0 top-0 h-full">
 										<i v-if="passwordType" class="fa-regular fa-eye"></i>
 										<i v-else class="fa-regular fa-eye-slash"></i>
 									</span>
@@ -49,8 +48,7 @@
 								<div class="relative">
 									<main-input :type="cfmPasswordType ? 'password' : 'text'" placeholder="Confirm password"
 										v-model="confirmPassword" />
-									<span @click.prevent="togglecfmPasswordType"
-										class="eye-btn absolute right-0 top-0 h-full bg-white">
+									<span @click.prevent="togglecfmPasswordType" class="eye-btn absolute right-0 top-0 h-full">
 										<i v-if="cfmPasswordType" class="fa-regular fa-eye"></i>
 										<i v-else class="fa-regular fa-eye-slash"></i>
 									</span>
@@ -175,16 +173,20 @@ function SignUpHandler() {
 				margin-bottom: 20px;
 			}
 
+			.relative {
+				.main-input {
+					padding-right: 50px;
+				}
+			}
+
 			.eye-btn {
 				display: flex;
 				align-items: center;
 				width: 50px;
 				font-weight: 500;
 				padding: 0.4em 1em;
-				border-radius: 0 5px 5px 0;
 				transition: all 0.3s ease;
 				cursor: pointer;
-				border: 1px solid #000;
 			}
 
 			.error {

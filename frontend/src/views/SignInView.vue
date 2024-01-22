@@ -12,7 +12,7 @@
 					<div class="input">
 						<div class="relative">
 							<main-input :type="passwordType ? 'password' : 'text'" placeholder="Password" v-model="password" />
-							<span @click.prevent="togglePasswordType" class="eye-btn absolute right-0 top-0 h-full bg-white">
+							<span @click.prevent="togglePasswordType" class="eye-btn absolute right-0 top-0 h-full ">
 								<i v-if="passwordType" class="fa-regular fa-eye"></i>
 								<i v-else class="fa-regular fa-eye-slash"></i>
 							</span>
@@ -97,10 +97,17 @@ function loginHandler() {
 		.input {
 			width: 100%;
 
+
 			.main-input {
 				width: 100%;
 				background-color: #f2f2f2;
 				padding: 10px 15px;
+			}
+
+			.relative {
+				.main-input {
+					padding-right: 50px;
+				}
 			}
 
 			.eye-btn {
@@ -109,10 +116,8 @@ function loginHandler() {
 				width: 50px;
 				font-weight: 500;
 				padding: 0.4em 1em;
-				border-radius: 0 5px 5px 0;
 				transition: all 0.3s ease;
 				cursor: pointer;
-				border: 1px solid #000;
 			}
 
 			.error {

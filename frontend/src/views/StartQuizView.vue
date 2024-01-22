@@ -26,8 +26,8 @@
 					<loader v-if="quizStore.isLoading" />
 				</div>
 				<form @submit.prevent="startQuizHandler" action="">
-					<main-input type="text" placeholder="Firstname" v-model="firstname" />
-					<main-input type="text" placeholder="Lastname" v-model="lastname" />
+					<main-input required type="text" placeholder="Firstname" v-model="firstname" />
+					<main-input required type="text" placeholder="Lastname" v-model="lastname" />
 					<dark-button>Start</dark-button>
 				</form>
 			</div>

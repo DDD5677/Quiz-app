@@ -195,10 +195,7 @@ router.put("/finish/:id", async (req, res, next) => {
       if (!mongoose.isValidObjectId(req.params.id)) {
          return res.status(400).send("Invalid Quiz ID");
       }
-      const actionExist = await Action.findById(req.params.id)
-         .populate("quiz")
-         .populate("user");
-      console.log(actionExist);
+      const actionExist = await Action.findById(req.params.id).populate("quiz");
       if (!actionExist) {
          return res.status(404).json({
             success: false,
@@ -240,8 +237,9 @@ router.put("/finish/:id", async (req, res, next) => {
          updateBlock.score = score.toFixed(2);
       }
       //-------Send result to telegram-----------
+      const quiz = await Quiz.findById(actionExist.quiz._id).populate("user");
       const TOKEN = process.env.TOKEN;
-      const CHAT_ID = actionExist.user.telegramId;
+      const CHAT_ID = quiz.user.telegramId;
       const data = {
          chat_id: CHAT_ID,
          text: `${req.body.lastname} ${req.body.firstname}\n ${req.body.quiz} testidan ${updateBlock.correctAnswers} ta savolga tog'ri javob berib, ${updateBlock.score}ball to'pladi`,

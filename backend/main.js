@@ -5,7 +5,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+const bot = require("./bot/bot");
+bot.start();
 const port = process.env.PORT || 3000;
 const api = process.env.API_URL;
 //const client_site = process.env.CLIENT_SITE;

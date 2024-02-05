@@ -16,6 +16,12 @@
 					</div>
 				</div>
 				<Loader v-else />
+				<div class="footer">
+					<p class="dark:text-stone-200">Subscribe to our bot if you want to automatically receive statistical
+						information through the Telegram
+						bot</p>
+					<light-button @click.prevent="subscribeBot">Subscribe <i class="fa-solid fa-robot"></i></light-button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -28,12 +34,15 @@ import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const quizStore = useQuizStore()
-const authStore = useAuthStore()
 
 const router = useRouter()
 const route = useRoute();
 const StatisticsDetail = (id: string) => {
 	router.push(`/admin/statistics/${id}`)
+}
+const subscribeBot = () => {
+	let botUrl = `https://t.me/easyquiz1_bot?start=${route.query.user}`;
+	window.open(botUrl);
 }
 onMounted(() => {
 	quizStore.getQuiz({ page: 1, limit: 10, user: route.query.user })
@@ -79,6 +88,17 @@ onMounted(() => {
 				margin-top: 15px;
 			}
 		}
+	}
+
+	.footer {
+		margin-top: 30px;
+		font-size: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 10px;
+
 	}
 }
 

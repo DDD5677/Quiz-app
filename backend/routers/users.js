@@ -25,7 +25,9 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
    try {
-      const user = await User.findById(req.params.id).select("-password");
+      const user = await User.findById(req.params.id).select(
+         "-password -telegramId"
+      );
 
       if (!user) {
          res.status(500).json({
@@ -78,7 +80,10 @@ router.post("/register", async (req, res, next) => {
          return res.status(404).send("the user cannot be created");
       }
 
-      res.status(200).send(user);
+      res.status(200).send({
+         success: true,
+         message: "User is registered successufully",
+      });
    } catch (error) {
       next(error);
    }
@@ -87,7 +92,9 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
    try {
       console.log(req.body);
-      const user = await User.findOne({ email: req.body.email });
+      const user = await User.findOne({ email: req.body.email }).select(
+         "-telegramId"
+      );
       const secret = process.env.secret;
       const REFRESH_SECRET = process.env.REFRESH_SECRET;
       const err = {
@@ -107,7 +114,7 @@ router.post("/login", async (req, res, next) => {
             },
             secret,
             {
-               expiresIn: "60s",
+               expiresIn: "1h",
             }
          );
          const refreshToken = jwt.sign(
@@ -124,7 +131,7 @@ router.post("/login", async (req, res, next) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
             secure: true,
-            sameSite: "none",
+            //sameSite: "none",
          });
          console.log(refreshToken);
          res.status(200).send({ user: user, token: accessToken });
@@ -205,7 +212,9 @@ router.get("/user/refresh", async (req, res, next) => {
          currentUser = decoded;
       });
       console.log(currentUser);
-      const user = await User.findById(currentUser.id).select("-password");
+      const user = await User.findById(currentUser.id).select(
+         "-password -telegramId"
+      );
 
       if (!user) {
          return res.status(500).json({
@@ -293,7 +302,7 @@ router.put(
                new: true,
                runValidators: true,
             }
-         ).select("-password");
+         ).select("-password -telegramId");
 
          if (!user) {
             return res.status(400).send({

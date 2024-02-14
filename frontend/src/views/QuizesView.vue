@@ -99,11 +99,11 @@ const goToQuizPlay = (id: string) => {
 }
 const checkDifficulty = (diff: number) => {
 	if (diff < 1.5) {
-		return 'Onson'
+		return 'Low'
 	} else if (diff < 2.5) {
-		return "O'rtacha"
+		return "Medium"
 	} else {
-		return "Qiyin"
+		return "High"
 	}
 }
 const getData = (page: number, limit: number) => {

@@ -11,16 +11,16 @@ Easy Quiz is online test maker for teachers and a collection of various tests fo
 1. Go to [Easy Quiz](https://easyquiz1.netlify.app).
 2. Log in with the following example accaunts.
 
-		[
-			{
-				username:'student',
-				password:'student'
-			},
-			{
-				username:'teacher',
-				password:'teacher'
-			}
-		]
+`[
+	{
+		username:'student',
+		password:'student'
+	},
+	{
+		username:'teacher',
+		password:'teacher'
+	}
+]`
 # Installation
 If you want to check how it works, you can clone the repository and test it.
 1. Clone repository.
@@ -30,14 +30,15 @@ If you want to check how it works, you can clone the repository and test it.
 `cd backend`
 `npm install `
 3. Create an empty ` .env` file in `/backend`, copy the following contents into it and fill in these variables:
-
-    PORT = 3000
-    API_URL  = /api/v1
-    secret = secret_for_access_token
-		REFRESH_SECRET = secet_for_refresh_token
-		TOKEN = token_of_telegram_bot
-		CHAT_ID  = telegram_id  //CHAT_ID is optional it is need for sending support messages. 
-		CONNECTION_STRING = mongodb_atlas_url
+`
+PORT = 3000
+API_URL  = /api/v1
+secret = secret_for_access_token
+REFRESH_SECRET = secet_for_refresh_token
+TOKEN = token_of_telegram_bot
+CHAT_ID  = telegram_id  //CHAT_ID is optional it is need for sending support messages. 
+CONNECTION_STRING = mongodb_atlas_url
+`
 4. Run project in developer mode.
 `npm install -D nodemon`
 `npm run dev`

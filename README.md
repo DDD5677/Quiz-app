@@ -11,25 +11,28 @@ Easy Quiz is online test maker for teachers and a collection of various tests fo
 1. Go to [Easy Quiz](https://easyquiz1.netlify.app).
 2. Log in with the following example accaunts.
 
-```[
-	{
-		username:'student',
-		password:'student'
-	},
-	{
-		username:'teacher',
-		password:'teacher'
-	}
-]```
+```
+[
+  {
+    username:'student',//log in as student
+    password:'student'
+  },
+  {
+    username:'teacher',//log in as teacher
+    password:'teacher'
+  }
+]
+```
 # Installation
 If you want to check how it works, you can clone the repository and test it.
 1. Clone repository.
 `git clone git@github.com:DDD5677/Quiz-app.git`
-###Backend
+### Backend
 2. Install all dependencies for backend.
 `cd backend`
 `npm install `
 3. Create an empty ` .env` file in `/backend`, copy the following contents into it and fill in these variables:
+
 ```
 PORT = 3000
 API_URL  = /api/v1
@@ -44,7 +47,7 @@ CONNECTION_STRING = mongodb_atlas_url
 `npm run dev`
 5. Run project in production mode.
 `npm start`
-###Frontend
+### Frontend
 6. Install all dependencies for frontend.
 `cd frontend`
 `npm install `

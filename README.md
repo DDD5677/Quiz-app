@@ -14,11 +14,11 @@ Easy Quiz is online test maker for teachers and a collection of various tests fo
 ```
 [
   {
-    username:'student',//log in as student
+    email:'student@gmail.com',//log in as student
     password:'student'
   },
   {
-    username:'teacher',//log in as teacher
+    email:'teacher@gmail.com',//log in as teacher
     password:'teacher'
   }
 ]
